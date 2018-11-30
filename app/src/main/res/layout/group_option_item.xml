@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/option_layout"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="69dp"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        >
+
+    <TextView
+        android:id="@+id/option_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:text="轮灌时长"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+
+
+    <EditText
+        android:id="@+id/option_time_second"
+        android:layout_width="80dp"
+        android:layout_height="36dip"
+        android:background="@drawable/bg_edittext"
+        android:textColorHint="@color/main_item_desc_color"
+        android:textSize="@dimen/main_text_14"
+        android:singleLine="true"
+        android:maxLength="3"
+        android:inputType="numberDecimal"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_gravity="center_vertical"
+        android:hint="请输入小时"
+        />
+
+
+        <TextView
+            android:id="@+id/option_level"
+            android:text="轮灌优先级"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <EditText
+            android:id="@+id/option_level_value"
+            android:layout_width="80dp"
+            android:layout_height="36dip"
+            android:background="@drawable/bg_edittext"
+            android:textColorHint="@color/main_item_desc_color"
+            android:textSize="@dimen/main_text_14"
+            android:singleLine="true"
+            android:maxLength="2"
+            android:inputType="number"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center_vertical"
+            android:hint="优先级"
+        />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/main_divider"
+        />
+</LinearLayout>

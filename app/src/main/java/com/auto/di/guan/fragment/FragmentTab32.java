@@ -1,0 +1,162 @@
+package com.auto.di.guan.fragment;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+
+import com.auto.di.guan.GroupOptionActivity;
+import com.auto.di.guan.GroupStatusActivity;
+import com.auto.di.guan.OptionSettingActivity;
+import com.auto.di.guan.R;
+import com.auto.di.guan.adapter.GroupExpandableListViewaAdapter;
+import com.auto.di.guan.db.ControlInfo;
+import com.auto.di.guan.db.DBManager;
+import com.auto.di.guan.db.DeviceInfo;
+import com.auto.di.guan.db.GroupInfo;
+import com.auto.di.guan.db.GroupList;
+import com.auto.di.guan.dialog.MainShowDialog;
+import com.auto.di.guan.entity.Entiy;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+
+ *
+ */
+public class FragmentTab32 extends BaseFragment {
+	private View view;
+	private ExpandableListView expandableListView;
+	private List<GroupList> groupLists = new ArrayList<>();
+	private  List<GroupInfo> groupInfos = new ArrayList<>();
+	private GroupExpandableListViewaAdapter adapter;
+	private Button fragment_3_2_edit;
+	private Button fragment_3_2_stop;
+	private Button fragment_3_2_start;
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.fragment_3_2, null);
+
+		expandableListView =(ExpandableListView)view.findViewById(R.id.fragment_3_2_expand);
+		adapter = new GroupExpandableListViewaAdapter(getActivity(), groupLists);
+		expandableListView.setGroupIndicator(null);
+		expandableListView.setAdapter(adapter);
+		expandableListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent intent = new Intent(getActivity(), OptionSettingActivity.class);
+				intent.putExtra("id",groupLists.get(position).groupInfo.getGroupId());
+				startActivity(intent);
+			}
+		});
+		fragment_3_2_start = (Button) view.findViewById(R.id.fragment_3_2_start);
+		fragment_3_2_start.setVisibility(View.GONE);
+		fragment_3_2_start.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MainShowDialog.ShowDialog(getActivity(), "开启轮灌组", "是否开启轮灌组轮灌操作", new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+                        int size = groupInfos.size();
+                        for (int i = 0; i < size; i++) {
+                            doRun(true,groupInfos.get(i));
+                        }
+					}
+				});
+			}
+		});
+
+		fragment_3_2_edit = (Button) view.findViewById(R.id.fragment_3_2_edit);
+		fragment_3_2_edit.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activity.startActivity(new Intent(activity, GroupOptionActivity.class));
+
+			}
+		});
+
+		fragment_3_2_stop = (Button) view.findViewById(R.id.fragment_3_2_status);
+		fragment_3_2_stop.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activity.startActivity(new Intent(activity, GroupStatusActivity.class));
+
+			}
+		});
+		return view;
+	}
+
+    private void doRun(boolean isSatrt, GroupInfo groupInfo) {
+        List<DeviceInfo>deveiceInfo = DBManager.getInstance(activity).queryDeviceList();
+        int size = deveiceInfo.size();
+        int imageId;
+        int status;
+		int groupStatus;
+        if (isSatrt) {
+            status = Entiy.CONTROL_STATUS＿RUN;
+            imageId = R.mipmap.lighe_2;
+			groupStatus = Entiy.GROUP_STATUS_OPEN;
+        }else {
+            status = Entiy.CONTROL_STATUS＿CONNECT;
+            imageId = R.mipmap.lighe_1;
+			groupStatus = Entiy.GROUP_STATUS_COLSE;
+		}
+		groupInfo.setGroupStatus(groupStatus);
+        for (int i =0 ; i < size; i++) {
+            if (groupInfo.getGroupId() == deveiceInfo.get(i).controlInfos.get(0).groupId) {
+                deveiceInfo.get(i).controlInfos.get(0).status = status;
+                deveiceInfo.get(i).controlInfos.get(0).imageId = imageId;
+            }
+            if (groupInfo.getGroupId() == deveiceInfo.get(i).controlInfos.get(1).groupId) {
+                deveiceInfo.get(i).controlInfos.get(1).status = status;
+                deveiceInfo.get(i).controlInfos.get(1).imageId = imageId;
+            }
+        }
+        DBManager.getInstance(activity).updateDeviceList(deveiceInfo);
+		DBManager.getInstance(activity).updateGroup(groupInfo);
+        initData();
+    }
+	@Override
+	public void onResume() {
+		super.onResume();
+		initData();
+
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		initData();
+	}
+
+	private void initData() {
+		groupInfos.clear();
+		groupLists.clear();
+		groupInfos = DBManager.getInstance(getActivity()).queryGrouplList();
+		int size = groupInfos.size();
+		if (size > 0) {
+			for (int i = 0; i < size; i++) {
+				List<ControlInfo>clist = DBManager.getInstance(getActivity()).queryControlList(groupInfos.get(i).getGroupId());
+				if (clist.size() > 0) {
+					GroupList list = new GroupList();
+					list.groupInfo = groupInfos.get(i);
+					list.controlInfos.addAll(clist);
+					groupLists.add(list);
+				}
+			}
+            adapter.setData(groupLists);
+		}
+	}
+
+	@Override
+	public void adapterUpdate() {
+		super.adapterUpdate();
+		adapter.notifyDataSetChanged();
+	}
+
+}

@@ -1,0 +1,37 @@
+package com.auto.di.guan.fragment;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.auto.di.guan.R;
+
+/**
+ *
+ */
+public class FragmentTab11 extends BaseFragment {
+	private Button login_out;
+	private View view;
+	private Activity activity;
+
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		this.activity = activity;
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.fragment_11, null);
+		login_out = (Button) view.findViewById(R.id.login_out);
+
+
+		return view;
+	}
+
+}

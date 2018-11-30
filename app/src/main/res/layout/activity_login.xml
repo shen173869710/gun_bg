@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.auto.di.guan.MainActivity">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_item_top_normal_rect"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/text_layout"
+            android:layout_width="300dp"
+            android:layout_height="@dimen/main_button_height"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/text_big"
+                android:layout_width="80dp"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:text="账号"
+                android:textColor="#000000" />
+
+            <com.auto.di.guan.view.ClearEditText
+                android:id="@+id/user_login_name"
+                style="@style/text_big"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:digits="1234567890"
+                android:hint="请输入账号"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:singleLine="true"
+                android:textColor="@color/login_text"
+                android:textColorHint="@color/login_edit_hint_color"
+                android:textCursorDrawable="@drawable/iv_cursor_bg" />
+        </LinearLayout>
+
+        <View
+            style="@style/PersonalProfileLayoutDivider"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="13dp"
+            android:background="@color/color_divide_line"
+            android:gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="@dimen/main_button_height"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+
+            >
+
+            <TextView
+                style="@style/text_big"
+                android:layout_width="80dp"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:text="密码"
+                android:textColor="#000000" />
+
+            <com.auto.di.guan.view.ClearEditText
+                android:id="@+id/user_login_pwd"
+                style="@style/text_big"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:digits="@string/register_english_input_type"
+                android:hint="请输入密码"
+                android:inputType="textPassword"
+                android:maxLength="12"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:password="true"
+                android:singleLine="true"
+                android:textColor="@color/login_text"
+                android:textColorHint="@color/login_edit_hint_color"
+                android:textCursorDrawable="@drawable/iv_cursor_bg" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/main_button_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="top|center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/user_login"
+                style="@style/text_large"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/main_button_height"
+                android:background="@drawable/bg_renew_btn"
+                android:text="登录"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/user_root"
+                style="@style/text_large"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/main_button_height"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_renew_btn"
+                android:text="root账号输入"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context=".MainActivity" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <Button
+        android:id="@+id/login_out"
+        android:layout_width="@dimen/main_button_width"
+        android:layout_height="@dimen/main_button_height"
+        android:text="农田管理"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+
+        android:textColor="@color/white"
+        android:background="@drawable/bg_red_buttom_rect"
+        />
+    </RelativeLayout>
+</RelativeLayout>

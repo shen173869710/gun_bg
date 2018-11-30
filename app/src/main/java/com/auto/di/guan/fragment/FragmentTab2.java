@@ -1,0 +1,160 @@
+package com.auto.di.guan.fragment;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+
+import com.auto.di.guan.ChooseGroupctivity;
+import com.auto.di.guan.R;
+import com.auto.di.guan.adapter.GroupExpandableListViewaAdapter2;
+import com.auto.di.guan.db.ControlInfo;
+import com.auto.di.guan.db.DBManager;
+import com.auto.di.guan.db.DeviceInfo;
+import com.auto.di.guan.db.GroupInfo;
+import com.auto.di.guan.db.GroupList;
+import com.auto.di.guan.db.LevelInfo;
+import com.auto.di.guan.dialog.MainShowDialog;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ *
+ */
+public class FragmentTab2 extends BaseFragment {
+	private Button addBtn;
+	private View view;
+	private  List<GroupList> groupLists = new ArrayList<>();
+	private  List<GroupInfo> groupInfos = new ArrayList<>();
+	private  List<DeviceInfo> deviceInfos = new ArrayList<>();
+	private  List<ControlInfo> controlInfos = new ArrayList<>();
+
+	private GroupExpandableListViewaAdapter2 adapter;
+	private ExpandableListView expandableListView;
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.fragment_2, null);
+		addBtn = (Button) view.findViewById(R.id.addBtn);
+
+		expandableListView =(ExpandableListView)view.findViewById(R.id.expandableListView);
+		adapter = new GroupExpandableListViewaAdapter2(getActivity(), groupLists);
+		expandableListView.setAdapter(adapter);
+		expandableListView.setGroupIndicator(null);
+		addBtn = (Button) view.findViewById(R.id.addBtn);
+		addBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getActivity().startActivity(new Intent(getActivity(), ChooseGroupctivity.class));
+			}
+		});
+
+//		expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+//			@Override
+//			public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+//				Intent intent = new Intent(getActivity(), GroupEditctivity.class);
+//				intent.putExtra("groupId",groupLists.get(groupPosition).groupInfo.getGroupId());
+//				startActivity(intent);
+//				return false;
+//			}
+//		});
+//
+//		expandableListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//				Intent intent = new Intent(getActivity(), GroupEditctivity.class);
+//				intent.putExtra("groupId",groupLists.get(position).groupInfo.getGroupId());
+//				startActivity(intent);
+//			}
+//		});
+
+
+		Button button = (Button) view.findViewById(R.id.delBtn);
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MainShowDialog.ShowDialog(getActivity(), "删所有分组除", "当前操作会删除所有的分组", new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						List<DeviceInfo> deviceInfos = DBManager.getInstance(activity).queryDeviceList();
+						int size = deviceInfos.size();
+						for (int i = 0; i < size; i++) {
+							deviceInfos.get(i).controlInfos.get(0).groupId = 0;
+							deviceInfos.get(i).controlInfos.get(0).isSelect = false;
+							deviceInfos.get(i).controlInfos.get(1).groupId = 0;
+							deviceInfos.get(i).controlInfos.get(1).isSelect = false;
+						}
+						DBManager.getInstance(activity).updateDeviceList(deviceInfos);
+						groupInfos = DBManager.getInstance(activity).queryGrouplList();
+						int count = groupInfos.size();
+						for (int i = 0; i < count; i++) {
+							DBManager.getInstance(activity).deleteGroup(groupInfos.get(i));
+						}
+						groupInfos.clear();
+						adapter.notifyDataSetChanged();
+						 DBManager.getInstance(activity).delLevelInfoList();
+						if (DBManager.getInstance(activity).queryLevelInfoList().size() == 0) {
+							List<LevelInfo> levelInfos = new ArrayList<>();
+							for (int i = 1; i < 20; i++) {
+								LevelInfo info = new LevelInfo();
+								info.setLevelId(i);
+								info.setIsGroupUse(false);
+								info.setIsLevelUse(false);
+								levelInfos.add(info);
+							}
+							DBManager.getInstance(activity).insertLevelInfoList(levelInfos);
+						}
+					}
+				});
+			}
+		});
+		return view;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		initData();
+	}
+
+	private void initData() {
+		groupLists.clear();
+		groupInfos = DBManager.getInstance(getActivity()).queryGrouplList();
+		deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
+		int size = deviceInfos.size();
+		controlInfos.clear();
+		for (int i = 0; i < size; i++) {
+			controlInfos.addAll(deviceInfos.get(i).controlInfos);
+		}
+		int gSize = groupInfos.size();
+		if (gSize > 0) {
+			for (int i = 0; i < gSize; i++) {
+				GroupInfo groupInfo = groupInfos.get(i);
+				int controlSize = controlInfos.size();
+				GroupList groupList = new GroupList();
+				groupList.controlInfos = new ArrayList<>();
+				groupList.groupInfo = groupInfo;
+				for (int j = 0; j < controlSize; j++) {
+					if (controlInfos.get(j).groupId == groupInfo.getGroupId()) {
+						groupList.controlInfos.add(controlInfos.get(j));
+					}
+
+				}
+				groupLists.add(groupList);
+			}
+		}
+		if (adapter != null)
+		adapter.setData(groupLists);
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		initData();
+	}
+}

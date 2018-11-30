@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/main_item_height"
+    android:orientation="horizontal"
+    android:gravity="center"
+    >
+    <TextView
+        android:id="@+id/item_title"
+        style="@style/main_item_title"
+        />
+
+    <EditText
+        android:id="@+id/item_desc"
+        android:layout_width="80dp"
+        android:layout_height="36dip"
+        android:background="@drawable/bg_edittext"
+        android:textColorHint="@color/main_item_desc_color"
+        android:textSize="@dimen/main_text_14"
+        android:singleLine="true"
+        android:maxLength="8"
+        android:hint="请输入..."
+        />
+</LinearLayout>
