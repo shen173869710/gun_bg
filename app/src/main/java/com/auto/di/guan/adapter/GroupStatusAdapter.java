@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -66,10 +67,14 @@ public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter
             holder.status_start.setVisibility(View.GONE);
             holder.status_stop.setVisibility(View.GONE);
             holder.status_next.setVisibility(View.GONE);
+            holder.status_cur_time.setVisibility(View.GONE);
+            holder.status_set_time.setVisibility(View.GONE);
         }else {
             holder.status_start.setVisibility(View.VISIBLE);
             holder.status_stop.setVisibility(View.VISIBLE);
             holder.status_next.setVisibility(View.VISIBLE);
+            holder.status_cur_time.setVisibility(View.VISIBLE);
+            holder.status_set_time.setVisibility(View.VISIBLE);
         }
         if (info.getGroupRunTime() == info.getGroupTime()) {
             holder.status_par.setMax(100);
@@ -78,13 +83,14 @@ public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter
             holder.status_start.setVisibility(View.GONE);
             holder.status_stop.setVisibility(View.GONE);
             holder.status_next.setVisibility(View.GONE);
-
+            holder.status_cur_time.setVisibility(View.GONE);
+            holder.status_set_time.setVisibility(View.GONE);
         }else {
             holder.status_status.setVisibility(View.GONE);
         }
 
 
-        holder.status_cur_time.setText("当前设置的时间"+info.getGroupTime() + " 剩余时间"+(info.getGroupTime() - info.getGroupRunTime()));
+        holder.status_cur_time.setText("总时间 "+info.getGroupTime() + " 剩余时间 "+(info.getGroupTime() - info.getGroupRunTime()));
         holder.status_set_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +101,7 @@ public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter
                         if (!TextUtils.isEmpty(tag)) {
                             int i = Integer.valueOf(tag);
                             mItems.get(position).setGroupTime(i*60);
-                            DBManager.getInstance(context).updateGroupList(mItems);
+                            DBManager.getInstance(context).updateGroup(mItems.get(position));
                         }
                     }
                 });

@@ -23,6 +23,7 @@ import com.auto.di.guan.utils.CrashHandler;
 import com.auto.di.guan.utils.FloatWindowUtil;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.ShareUtil;
+import com.facebook.stetho.Stetho;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,6 +61,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         this.instance = this;
+        Stetho.initializeWithDefaults(this);
         mSerialPortFinder = new SerialPortFinder();
         LogUtils.setFilterLevel(LogUtils.ALL);
         CrashHandler.getInstance().init(getApplicationContext());

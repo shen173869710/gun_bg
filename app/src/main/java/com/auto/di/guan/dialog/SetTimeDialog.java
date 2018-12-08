@@ -24,7 +24,6 @@ public class SetTimeDialog extends Dialog {
 	public Button sure_load_cancle;
 	public Button sure_load_sure;
 	public TextView sure_load_title;
-	public EditText sure_load_count_value;
 	public EditText sure_load_group_value;
 	public View mView;
 	public SetTimeDialog(Context context) {
@@ -46,15 +45,12 @@ public class SetTimeDialog extends Dialog {
 	}
 
 	private void setCustomView() {
-		mView = LayoutInflater.from(getContext()).inflate(R.layout.sure_load_dialog, null);
+		mView = LayoutInflater.from(getContext()).inflate(R.layout.set_time_dialog, null);
 		sure_load_title =  (TextView) mView.findViewById(R.id.sure_load_title);
 		sure_load_title.setText("设置时间");
-		sure_load_count_value = (EditText) mView.findViewById(R.id.sure_load_count_value);
-		sure_load_count_value.setVisibility(View.GONE);
 		sure_load_group_value = (EditText) mView.findViewById(R.id.sure_load_group_value);
 		sure_load_sure = (Button) mView.findViewById(R.id.sure_load_sure);
 		sure_load_cancle = (Button) mView.findViewById(R.id.sure_load_cancle);
-	
 		super.setContentView(mView);
 	}
 
@@ -82,12 +78,9 @@ public class SetTimeDialog extends Dialog {
 			@Override
 			public void onClick(View v) {
 				if (listener != null) {
-					String tag = dialog.sure_load_count_value.getText().toString().trim();
 					String group = dialog.sure_load_group_value.getText().toString().trim();
-					if (group.length() == 1) {}
-					ShareUtil.setStringLocalValue(context,Entiy.GROUP_NAME, group);
-					if (!TextUtils.isEmpty(tag)) {
-						v.setTag(tag);
+					if (!TextUtils.isEmpty(group)) {
+						v.setTag(group);
 						listener.onClick(v);
 					}
 				}

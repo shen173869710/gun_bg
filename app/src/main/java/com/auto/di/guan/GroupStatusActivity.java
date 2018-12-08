@@ -169,11 +169,9 @@ public class GroupStatusActivity extends FragmentActivity implements OnStartDrag
         if (size > 0) {
             for (int i = 0; i < size; i++) {
                 if (groupInfos.get(i).getGroupStatus() == Entiy.GROUP_STATUS_OPEN) {
-                    LogUtils.e("------", "-------------------"+size);
                     controlInfos.clear();
                     List<ControlInfo> clist = DBManager.getInstance(this).queryControlList(groupInfos.get(i).getGroupId());
                     controlInfos.addAll(clist);
-                    LogUtils.e("------", "clist-------------------"+clist.size());
                     myGridAdapter.setData(controlInfos);
                 }
             }

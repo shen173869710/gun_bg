@@ -70,5 +70,7 @@ dependencies {
     compile 'com.commit451:PhotoView:1.2.4'
     compile 'com.isseiaoki:simplecropview:1.0.13'
     compile 'com.yongchun:com.yongchun.imageselector:1.1.0'
+
+    compile 'com.facebook.stetho:stetho:1.5.0'
 //    compile 'com.github.yhaolpz:FloatWindow:1.0.9'
 }
