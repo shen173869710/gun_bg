@@ -124,6 +124,7 @@ public class GroupStatusActivity extends FragmentActivity implements OnStartDrag
         gridView = (GridView) findViewById(R.id.group_option_gridview);
         myGridAdapter = new StatusAdapter(this, controlInfos);
         gridView.setNumColumns(Entiy.GRID_COLUMNS);
+        gridView.setAdapter(myGridAdapter);
     }
 
 
@@ -161,14 +162,19 @@ public class GroupStatusActivity extends FragmentActivity implements OnStartDrag
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAdapterUpdate(AdapterEvent event) {
-        LogUtils.e("------", "GroupStatusActivity");
+
         groupInfos = DBManager.getInstance(this).queryGrouplList();
         int size = groupInfos.size();
+        LogUtils.e("------", "GroupStatusActivity"+size);
         if (size > 0) {
             for (int i = 0; i < size; i++) {
                 if (groupInfos.get(i).getGroupStatus() == Entiy.GROUP_STATUS_OPEN) {
+                    LogUtils.e("------", "-------------------"+size);
+                    controlInfos.clear();
                     List<ControlInfo> clist = DBManager.getInstance(this).queryControlList(groupInfos.get(i).getGroupId());
-                    myGridAdapter.setData(clist);
+                    controlInfos.addAll(clist);
+                    LogUtils.e("------", "clist-------------------"+clist.size());
+                    myGridAdapter.setData(controlInfos);
                 }
             }
         }

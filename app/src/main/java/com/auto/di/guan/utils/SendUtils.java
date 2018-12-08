@@ -2,6 +2,7 @@ package com.auto.di.guan.utils;
 
 import android.util.Log;
 
+import com.auto.di.guan.MainActivity;
 import com.auto.di.guan.entity.CmdStatus;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,31 +23,34 @@ public class SendUtils {
     public static int TYPE_RUN = 0;
 
 
-    public static  void sendopen( String desc, int controlId) {
+    public static  void sendopen( String desc, int controlId, String name) {
         CmdStatus cmdStatus = new CmdStatus();
+        cmdStatus.controlName = name;
         cmdStatus.cmd_start =LOG_OPEN_START+desc;
         cmdStatus.control_id = controlId;
         EventBus.getDefault().post(cmdStatus);
-        Log.e(TAG, cmdStatus.cmd_start);
+//        Log.e(TAG, cmdStatus.cmd_start);
     }
 
-    public static  void sendClose( String desc, int controlId) {
+    public static  void sendClose( String desc, int controlId, String name) {
         CmdStatus cmdStatus = new CmdStatus();
         cmdStatus.cmd_start =LOG_CLOSE_START+desc;
+        cmdStatus.controlName = name;
         cmdStatus.control_id = controlId;
         EventBus.getDefault().post(cmdStatus);
-        Log.e(TAG, cmdStatus.cmd_start);
+//        Log.e(TAG, cmdStatus.cmd_start);
     }
 
-    public static  void sendRead( String desc, int controlId) {
+    public static  void sendRead( String desc, int controlId, String name) {
         CmdStatus cmdStatus = new CmdStatus();
+        cmdStatus.controlName = name;
         cmdStatus.cmd_read_start =LOG_READ_START+desc;
         cmdStatus.control_id = controlId;
         EventBus.getDefault().post(cmdStatus);
-        Log.e(TAG, cmdStatus.cmd_read_start);
+//        Log.e(TAG, cmdStatus.cmd_read_start);
     }
 
-    public static  void sendMiddle(String desc, int controlId) {
+    public static  void sendMiddle(String desc, int controlId, String name) {
         CmdStatus cmdStatus = new CmdStatus();
         if (desc.contains("zt")) {
             cmdStatus.cmd_read_middle = LOG_READ_SUC+desc;
@@ -55,20 +59,22 @@ public class SendUtils {
             cmdStatus.cmd_end = LOG_SUC+desc ;
             Log.e(TAG, cmdStatus.cmd_end);
         }
+        cmdStatus.controlName = name;
         cmdStatus.control_id = controlId;
         EventBus.getDefault().post(cmdStatus);
     }
 
 
-    public static  void sendError(String desc, int controlId) {
+    public static  void sendError(String desc, int controlId, String name) {
         CmdStatus cmdStatus = new CmdStatus();
         cmdStatus.cmd_end = LOG_READ_END+desc;
         cmdStatus.control_id = controlId;
+        cmdStatus.controlName = name;
         EventBus.getDefault().post(cmdStatus);
         Log.e(TAG, cmdStatus.cmd_end);
     }
 
-    public static void  sendEnd(int controlId, int type) {
+    public static void  sendEnd(int controlId, int type, String name) {
         CmdStatus cmdStatus = new CmdStatus();
         if (type == TYPE_RUN) {
             cmdStatus.cmd_read_end = LOG_NAME+controlId+"操作正常";
@@ -77,6 +83,8 @@ public class SendUtils {
         }else if (type == TYPE_CONTENT) {
             cmdStatus.cmd_read_end = LOG_NAME+controlId+"通信异常";
         }
+
+        cmdStatus.controlName = name;
         cmdStatus.control_id = controlId;
         EventBus.getDefault().post(cmdStatus);
     }

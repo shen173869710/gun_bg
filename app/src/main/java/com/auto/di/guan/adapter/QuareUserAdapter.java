@@ -48,9 +48,10 @@ public class QuareUserAdapter extends BaseAdapter {
 					R.layout.quare_user_list_item, null);
 
 			vHolder.quare_user_name = (TextView) convertView.findViewById(R.id.quare_user_name);
-			vHolder.quare_user_end = (TextView) convertView.findViewById(R.id.quare_user_desc);
+			vHolder.quare_user_action = (TextView) convertView.findViewById(R.id.quare_user_desc);
 			vHolder.quare_user_end =  (TextView) convertView.findViewById(R.id.quare_user_end);
 			vHolder.quare_user_time = (TextView) convertView.findViewById(R.id.quare_user_time);
+			vHolder.quare_user_type = (TextView) convertView.findViewById(R.id.quare_user_type);
 			convertView.setTag(vHolder);
 		} else {
 			vHolder = (ViewHolder) convertView.getTag();
@@ -66,11 +67,13 @@ public class QuareUserAdapter extends BaseAdapter {
 		vHolder.quare_user_action.setText(action.getActionDesc()+"");
 		vHolder.quare_user_end.setText(action.getActionEnd()+"");
 		vHolder.quare_user_time.setText(DateUtils.times(action.getTime()));
+//		vHolder.quare_user_type.setText(action.);
 	}
 
 	class ViewHolder {
 		TextView quare_user_time;
 		TextView quare_user_name;
+		TextView quare_user_type;
 		TextView quare_user_action;
 		TextView quare_user_end;
 	}

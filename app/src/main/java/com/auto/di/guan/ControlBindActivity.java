@@ -7,7 +7,9 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -111,7 +113,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 
 		bind_deivce_name = findViewById(R.id.bind_deivce_name);
 		bind_deivce_name_edit = (EditText) bind_deivce_name.findViewById(R.id.item_desc);
-
+		((TextView)(bind_deivce_name.findViewById(R.id.item_title))).setText("设备名称");
 		bind_deivce_item = findViewById(R.id.bind_deivce_item);
 		((TextView)(bind_deivce_item.findViewById(R.id.item_title))).setText("项目ID");
 		groupName = ShareUtil.getStringLocalValue(this,Entiy.GROUP_NAME);
@@ -149,6 +151,26 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 		bind_cantrol_save = (Button) findViewById(R.id.bind_cantrol_save);
 		bind_deivce_id = (Button) findViewById(R.id.bind_deivce_id);
 		bind_deivce_group_id = (Button) findViewById(R.id.bind_deivce_control_id);
+
+		bind_deivce_name_edit.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (!TextUtils.isEmpty(s)) {
+					bind_control_name_1.setText(s + "-1");
+					bind_control_name_2.setText(s + "-2");
+				}
+			}
+		});
 	}
 
 
@@ -188,6 +210,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 					showToastLongMsg("组ID未写入");
 					return;
 				}
+				info.setDeviceName(deviceName);
 				if (bind_control_sel_1.isChecked()) {
 					info.controlInfos.get(0).imageId = R.mipmap.lighe_1;
 					info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;

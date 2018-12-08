@@ -1,6 +1,7 @@
 package com.auto.di.guan.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,6 +92,9 @@ public class MyGridAdapter extends BaseAdapter {
         AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(itemWidth/ Entiy.GRID_COLUMNS, itemWidth/ Entiy.GRID_COLUMNS);
         holder.grid_item_layout.setLayoutParams(layoutParams);
         holder.grid_item_device_id.setText(datas.get(position).deviceId+"");
+        if (!TextUtils.isEmpty(datas.get(position).getDeviceName())) {
+            holder.grid_item_device_name.setText(datas.get(position).getDeviceName()+"");
+        }
         final DeviceInfo deviceInfo = datas.get(position);
 
         /******设备未绑定******/

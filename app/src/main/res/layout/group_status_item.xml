@@ -86,6 +86,37 @@
             android:visibility="gone"
             android:textColor="@android:color/holo_red_dark"
             />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/status_set_time"
+                android:text="设置时间"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:padding="10dp"
+                android:layout_centerVertical="true"
+                android:textColor="@android:color/white"
+                android:background="@drawable/bg_red_buttom_rect"
+                />
+
+
+            <TextView
+                android:id="@+id/status_cur_time"
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="10dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:textColor="@android:color/holo_red_dark"/>
+        </RelativeLayout>
     </LinearLayout>
     <View
         android:layout_width="match_parent"

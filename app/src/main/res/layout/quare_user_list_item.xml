@@ -24,6 +24,19 @@
             android:textColor="@color/main_title_color"
             android:textSize="16.0sp" />
 
+
+        <TextView
+            android:text="类型"
+            android:id="@+id/quare_user_type"
+            android:layout_width="0dp"
+            android:layout_height="50dip"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:textColor="@color/main_title_color"
+            android:textSize="16.0sp" />
+
+
         <TextView
             android:text="动作"
             android:id="@+id/quare_user_desc"

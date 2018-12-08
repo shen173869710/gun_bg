@@ -77,6 +77,8 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="2dp"
                 android:paddingLeft="2dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="@dimen/text_size_10"
                 />
@@ -123,6 +125,8 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="2dp"
                 android:paddingLeft="2dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="@dimen/text_size_10"
                 />

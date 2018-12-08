@@ -19,8 +19,8 @@ public class Entiy {
 
     public static String GROUP_NAME = "group_name";
     public static int GEID_ALL_ITEM = 12 * 16;
-    public static int GRID_COLUMNS = 12;
-    public static int GRID_ROW = 16;
+    public static int GRID_COLUMNS = 16;
+    public static int GRID_ROW = 12;
     public static String []TAB_TITLE = {"增减阀控器",
             "绑定阀门",
             "轮灌分组",

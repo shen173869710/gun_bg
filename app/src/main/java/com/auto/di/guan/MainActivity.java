@@ -140,7 +140,7 @@ public class MainActivity extends SerialPortActivity {
         showDialog();
         cur = info;
         final String cmd = Entiy.cmdClose(MyApplication.getProjectId(), info.deviceId, info.name);
-        SendUtils.sendClose(cmd,cur.controId);
+        SendUtils.sendClose(cmd,cur.controId,cur.controlName);
 
         Log.e(TAG, Entiy.LOG_CLOSE_START + cmd);
 		try {
@@ -149,7 +149,6 @@ public class MainActivity extends SerialPortActivity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-//        sendMessage(TYPE_CLOSE);
     }
 
     private void openCmd(ControlInfo info) {
@@ -158,7 +157,7 @@ public class MainActivity extends SerialPortActivity {
         cur = info;
         final String cmd = Entiy.cmdOpen(MyApplication.getProjectId(), info.deviceId, info.name);
 
-        SendUtils.sendopen(cmd,cur.controId);
+        SendUtils.sendopen(cmd,cur.controId,cur.controlName);
 
         Log.e(TAG, Entiy.LOG_OPEN_START + cmd);
 		try {
@@ -167,7 +166,6 @@ public class MainActivity extends SerialPortActivity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-//        sendMessage(TYPE_OPEN);
     }
 
     private void readCmd(ControlInfo info, int type) {
@@ -175,16 +173,15 @@ public class MainActivity extends SerialPortActivity {
         showDialog();
         cur = info;
         final String cmd = Entiy.cmdRead(MyApplication.getProjectId(), info.deviceId, info.name);
-        SendUtils.sendRead(cmd,cur.controId);
+        SendUtils.sendRead(cmd,cur.controId,cur.controlName);
 
         Log.e("-------读取设备", cmd + "       " + System.currentTimeMillis());
-        		try {
+        try {
 			mOutputStream.write(new String(cmd).getBytes());
 			mOutputStream.write('\n');
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-//        sendMessage(TYPE_READ);
     }
 
     public static int windowTop;
@@ -260,7 +257,7 @@ public class MainActivity extends SerialPortActivity {
         textCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageSelectorActivity.start(MainActivity.this, 1, ImageSelectorActivity.MODE_SINGLE, true,true,false);
+//                ImageSelectorActivity.start(MainActivity.this, 1, ImageSelectorActivity.MODE_SINGLE, true,true,false);
             }
         });
     }
@@ -449,11 +446,12 @@ public class MainActivity extends SerialPortActivity {
 
         if (receive.contains("ok") || receive.contains("zt")) {
             OptionStatus status = OptionUtils.receive(receive);
-            SendUtils.sendMiddle(receive, cur.controId);
+            SendUtils.sendMiddle(receive, cur.controId,cur.controlName);
             if (status == null) {
                 showToastLongMsg("未知错误+="+receive);
 //                SendUtils.sendError("未知错误"+receive,cur.controId);
                 LogUtils.e(TAG,"************************"+receive);
+                play();
                 return;
             }
             if (status.type.equals( OptionUtils.ZT)) {
@@ -525,6 +523,7 @@ public class MainActivity extends SerialPortActivity {
                 size = doRun(true, groupInfo);
             }else {
                 PollingUtils.stopPollingService(MainActivity.this);
+                doRun(false, event.groupInfo);
                 showToastLongMsg("轮灌结束， 关闭自动查询");
             }
 
@@ -546,9 +545,6 @@ public class MainActivity extends SerialPortActivity {
                     }
                 });
             }
-
-
-
         }else if (event.flag == Entiy.GROUP_START) {
             GroupInfo groupInfo = null;
             for (int i = 0; i < groupInfos.size(); i++) {
@@ -904,9 +900,9 @@ public class MainActivity extends SerialPortActivity {
             }
 
             if (isSaveDb && controlInfo != null) {
-                ActionUtil.saveAction(controlInfo, CMD_TYPE, type);
-            }
-            SendUtils.sendEnd(controlId, type);
+                ActionUtil.saveAction(cur, CMD_TYPE, type, optionType);
+        }
+            SendUtils.sendEnd(controlId, type, cur.controlName);
             DBManager.getInstance(MainActivity.this).updateDevice(deviceInfo);
             EventBus.getDefault().post(new AdapterEvent());
         } catch (Exception e) {
@@ -922,7 +918,6 @@ public class MainActivity extends SerialPortActivity {
 //            int deviceId = Integer.parseInt(status.deviceId);
 //            DeviceInfo info = DBManager.getInstance(this).queryDeviceById(deviceId);
 //            CmdStatus cmdStatus = new CmdStatus();
-//            if (info != null) {
 //                if ("0".equals(status.name)) {
 //                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
 //                    info.controlInfos.get(0).imageId = R.mipmap.lighe_2;

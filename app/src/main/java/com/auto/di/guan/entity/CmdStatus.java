@@ -6,6 +6,7 @@ package com.auto.di.guan.entity;
 
 public class CmdStatus {
     public int control_id;
+    public String controlName;
     public String cmd_name;
     public String cmd_start;
     public String cmd_end;

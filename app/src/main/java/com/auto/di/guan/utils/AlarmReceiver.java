@@ -35,8 +35,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 
 
-            Log.e("开始查询",intent.getAction()+""+ System.currentTimeMillis());
-            EventBus.getDefault().post(new PollingEvent());
+//            Log.e("开始查询",intent.getAction()+""+ System.currentTimeMillis());
+//            EventBus.getDefault().post(new PollingEvent());
         }
     }
 

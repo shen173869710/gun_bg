@@ -445,7 +445,7 @@ public class DBManager {
         DaoSession daoSession = daoMaster.newSession();
         UserActionDao userDao = daoSession.getUserActionDao();
         QueryBuilder<UserAction> qb = userDao.queryBuilder();
-        qb.where(UserActionDao.Properties.UserAccount.eq(account)).orderAsc(UserActionDao.Properties.Time);
+        qb.orderAsc(UserActionDao.Properties.Time);
         List<UserAction> list = qb.list();
         return list;
     }

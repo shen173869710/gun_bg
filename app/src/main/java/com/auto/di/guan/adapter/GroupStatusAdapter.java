@@ -1,8 +1,10 @@
 package com.auto.di.guan.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -18,6 +20,7 @@ import com.auto.di.guan.MainActivity;
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.GroupInfo;
+import com.auto.di.guan.dialog.SetTimeDialog;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.entity.MessageEvent;
 import com.daimajia.numberprogressbar.NumberProgressBar;
@@ -53,7 +56,7 @@ public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         final GroupInfo info = mItems.get(position);
         holder.status_name.setText("第 "+mItems.get(position).getGroupId()+" 组");
         holder.status_par.setMax(info.getGroupTime());
@@ -79,6 +82,25 @@ public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter
         }else {
             holder.status_status.setVisibility(View.GONE);
         }
+
+
+        holder.status_cur_time.setText("当前设置的时间"+info.getGroupTime() + " 剩余时间"+(info.getGroupTime() - info.getGroupRunTime()));
+        holder.status_set_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SetTimeDialog.ShowDialog((Activity)context, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String tag = v.getTag().toString();
+                        if (!TextUtils.isEmpty(tag)) {
+                            int i = Integer.valueOf(tag);
+                            mItems.get(position).setGroupTime(i*60);
+                            DBManager.getInstance(context).updateGroupList(mItems);
+                        }
+                    }
+                });
+            }
+        });
         holder.status_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +142,8 @@ public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter
         TextView status_stop;
         TextView status_next;
         TextView status_status;
+        TextView status_set_time;
+        TextView status_cur_time;
         public MyViewHolder(View view)
         {
             super(view);
@@ -129,6 +153,8 @@ public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter
             status_stop = (TextView) view.findViewById(R.id.status_stop);
             status_next = (TextView) view.findViewById(R.id.status_next);
             status_status= (TextView) view.findViewById(R.id.status_status);
+            status_set_time = (TextView) view.findViewById(R.id.status_set_time);
+            status_cur_time= (TextView) view.findViewById(R.id.status_cur_time);
         }
     }
 
