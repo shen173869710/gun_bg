@@ -22,7 +22,6 @@ import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.LevelInfo;
-import com.auto.di.guan.db.UserAction;
 import com.auto.di.guan.dialog.SureLoadDialog;
 import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.BindEvent;
@@ -42,7 +41,6 @@ import com.auto.di.guan.utils.OptionUtils;
 import com.auto.di.guan.utils.PollingUtils;
 import com.auto.di.guan.utils.SendUtils;
 import com.auto.di.guan.utils.ShareUtil;
-import com.bumptech.glide.Glide;
 import com.yongchun.library.view.ImageSelectorActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -90,12 +88,17 @@ public class MainActivity extends SerialPortActivity {
     public static final int RXJAVA_TIME = 9;
 
     private ControlInfo cur;
-
     /**是否是自动查询**/
     public boolean isSaveDb;
+    /**当前运行的剩余时间***/
+    public int curRunTime = 0;
 
     /**
      *   操作的页面
+     *
+     *   400  单个手动操作
+     *   310  单个分组操作
+     *   320  自动分组操作
      */
     public int optionType = 0;
     public static int  FRAGMENT_4 = 400;
@@ -115,6 +118,7 @@ public class MainActivity extends SerialPortActivity {
                     groupInfo.setGroupTime(groupInfos.get(0).groupTime);
                 }
                 groupInfo.setGroupRunTime(groupInfo.getGroupRunTime() + 1);
+                curRunTime = groupInfo.getGroupTime() - groupInfo.getGroupRunTime();
                 if (groupInfo.getGroupTime() < groupInfo.getGroupRunTime()) {
                     groupInfo.setGroupTime(0);
                     groupInfo.setGroupRunTime(0);
@@ -428,7 +432,7 @@ public class MainActivity extends SerialPortActivity {
         }
 
 
-        if (receive.contains("failure")) {
+        if (receive.toLowerCase().contains("fail") || receive.toLowerCase().contains("cmd")) {
             showToastLongMsg("错误命令"+receive+ "重新操作");
             if (CMD_TYPE == TYPE_CLOSE) {
                 closeCmd(cur);
@@ -661,6 +665,10 @@ public class MainActivity extends SerialPortActivity {
     private List<ControlInfo> temp;
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPollingEvent(PollingEvent event) {
+        if (curRunTime < 5 * 60) {
+            LogUtils.e(TAG, "剩余时间不够完成轮询");
+            return;
+        }
         if (FloatWindowUtil.getInstance().isShow()) {
             LogUtils.e(TAG, "------"+FloatWindowUtil.getInstance().isShow());
             return;
@@ -813,7 +821,6 @@ public class MainActivity extends SerialPortActivity {
     public void doReadOption(OptionStatus status, String deviceId) {
         try {
             DeviceInfo info = OptionUtils.changeStatus(status);
-
             if (count == 1) {
                 count = 0;
             }

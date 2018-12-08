@@ -33,10 +33,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (TextUtils.equals(intent.getAction(), Entiy.ALERM_ACTION)) {
             Log.e("AlarmReceiver",intent.getAction()+""+ System.currentTimeMillis());
 
-
-
-//            Log.e("开始查询",intent.getAction()+""+ System.currentTimeMillis());
-//            EventBus.getDefault().post(new PollingEvent());
+            Log.e("开始查询",intent.getAction()+""+ System.currentTimeMillis());
+            EventBus.getDefault().post(new PollingEvent());
         }
     }
 
