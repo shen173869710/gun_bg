@@ -5,6 +5,7 @@ import com.auto.di.guan.MyApplication;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.UserAction;
+import com.auto.di.guan.entity.Entiy;
 
 import java.util.List;
 
@@ -21,6 +22,9 @@ public class ActionUtil {
 			action.setActionDesc(name+ "读取");
 		}
 
+
+
+		int actionType =0;
 		String end = "";
 		if (type == SendUtils.TYPE_RUN) {
 			end = "操作正常";
@@ -28,18 +32,22 @@ public class ActionUtil {
 			end = "通信正常, 开关未打开";
 		}else if (type == SendUtils.TYPE_CONTENT) {
 			end = "通信异常";
+			actionType = Entiy.ACTION_TYPE_ERROR;
 		}
 
 		if (optionType == MainActivity.FRAGMENT_4) {
 			action.setUserName(MyApplication.getInstance().user.getName()+"  手动单个操作");
+			actionType = Entiy.ACTION_TYPE_4;
 		}else if (optionType == MainActivity.FRAGMENT_31) {
 			action.setUserName(MyApplication.getInstance().user.getName()+"  手动分组操作");
-		}else {
+			actionType = Entiy.ACTION_TYPE_31;
+		}else if (optionType == MainActivity.FRAGMENT_32){
 			action.setUserName(MyApplication.getInstance().user.getName()+"  自动操作");
+			actionType = Entiy.ACTION_TYPE_32;
 		}
 		action.setActionEnd(end);
 		action.setTime(System.currentTimeMillis());
-
+		action.setActionType(actionType);
 		action.setUserId(MyApplication.getInstance().user.getUserId());
 
 

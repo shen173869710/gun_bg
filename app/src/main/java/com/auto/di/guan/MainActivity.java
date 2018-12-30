@@ -145,7 +145,6 @@ public class MainActivity extends SerialPortActivity {
         cur = info;
         final String cmd = Entiy.cmdClose(MyApplication.getProjectId(), info.deviceId, info.name);
         SendUtils.sendClose(cmd,cur.controId,cur.controlName);
-
         Log.e(TAG, Entiy.LOG_CLOSE_START + cmd);
 		try {
 			mOutputStream.write(new String(cmd).getBytes());
@@ -160,9 +159,7 @@ public class MainActivity extends SerialPortActivity {
         showDialog();
         cur = info;
         final String cmd = Entiy.cmdOpen(MyApplication.getProjectId(), info.deviceId, info.name);
-
         SendUtils.sendopen(cmd,cur.controId,cur.controlName);
-
         Log.e(TAG, Entiy.LOG_OPEN_START + cmd);
 		try {
 			mOutputStream.write(new String(cmd).getBytes());
@@ -178,7 +175,6 @@ public class MainActivity extends SerialPortActivity {
         cur = info;
         final String cmd = Entiy.cmdRead(MyApplication.getProjectId(), info.deviceId, info.name);
         SendUtils.sendRead(cmd,cur.controId,cur.controlName);
-
         Log.e("-------读取设备", cmd + "       " + System.currentTimeMillis());
         try {
 			mOutputStream.write(new String(cmd).getBytes());

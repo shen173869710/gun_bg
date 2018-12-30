@@ -450,6 +450,17 @@ public class DBManager {
         return list;
     }
 
+    public List<UserAction> queryUserActionlListByType(int type) {
+        DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
+        DaoSession daoSession = daoMaster.newSession();
+        UserActionDao userDao = daoSession.getUserActionDao();
+        QueryBuilder<UserAction> qb = userDao.queryBuilder();
+        qb.where(UserActionDao.Properties.ActionType.eq(type)).orderAsc(UserActionDao.Properties.Time);
+        List<UserAction> list = qb.list();
+        return list;
+    }
+
+
     public List<UserAction> queryUserActionlList(long start, long end) {
         DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
         DaoSession daoSession = daoMaster.newSession();

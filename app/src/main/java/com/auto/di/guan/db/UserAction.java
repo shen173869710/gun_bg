@@ -20,10 +20,13 @@ public class UserAction {
     private String actionDesc;
     private String actionEnd;
     private String userName;
-    @Generated(hash = 68402018)
+
+    private int actionType;
+
+    @Generated(hash = 2132010397)
     public UserAction(Long id, String userId, String userAccount, int controlId,
             long time, int actionId, String actionDesc, String actionEnd,
-            String userName) {
+            String userName, int actionType) {
         this.id = id;
         this.userId = userId;
         this.userAccount = userAccount;
@@ -33,64 +36,91 @@ public class UserAction {
         this.actionDesc = actionDesc;
         this.actionEnd = actionEnd;
         this.userName = userName;
+        this.actionType = actionType;
     }
+
     @Generated(hash = 183515749)
     public UserAction() {
     }
+
     public Long getId() {
         return this.id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getUserId() {
         return this.userId;
     }
+
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
     public String getUserAccount() {
         return this.userAccount;
     }
+
     public void setUserAccount(String userAccount) {
         this.userAccount = userAccount;
     }
+
     public int getControlId() {
         return this.controlId;
     }
+
     public void setControlId(int controlId) {
         this.controlId = controlId;
     }
+
     public long getTime() {
         return this.time;
     }
+
     public void setTime(long time) {
         this.time = time;
     }
+
     public int getActionId() {
         return this.actionId;
     }
+
     public void setActionId(int actionId) {
         this.actionId = actionId;
     }
+
     public String getActionDesc() {
         return this.actionDesc;
     }
+
     public void setActionDesc(String actionDesc) {
         this.actionDesc = actionDesc;
     }
+
     public String getActionEnd() {
         return this.actionEnd;
     }
+
     public void setActionEnd(String actionEnd) {
         this.actionEnd = actionEnd;
     }
+
     public String getUserName() {
         return this.userName;
     }
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    public int getActionType() {
+        return this.actionType;
+    }
+
+    public void setActionType(int actionType) {
+        this.actionType = actionType;
+    }
 
 }

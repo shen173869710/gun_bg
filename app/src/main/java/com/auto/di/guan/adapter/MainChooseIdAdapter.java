@@ -52,12 +52,13 @@ public class MainChooseIdAdapter extends BaseAdapter {
 		} else {
 			vHolder = (ViewHolder) convertView.getTag();
 		}
+
 		if (selectedIndex == position) {
 			vHolder.main_choose_check.setBackgroundResource(R.drawable.img_selected);
 		}else {
 			vHolder.main_choose_check.setBackgroundResource(R.drawable.img_unselected);
 		}
-//		vHolder.main_choose_name.setText(users.get(position).getControId()+"");
+		vHolder.main_choose_name.setText(users.get(position).controlName);
 		return convertView;
 	}
 

@@ -202,4 +202,10 @@ public class Entiy {
     public static String LOG_OPEN_END = "开启成功---";
     public static String LOG_CLOSE_END = "关闭成功---";
     public static String LOG_READ_END = "读取成功---";
+
+
+    public static int ACTION_TYPE_4 = 100;
+    public static int ACTION_TYPE_31 = 31;
+    public static int ACTION_TYPE_32 = 32;
+    public static int ACTION_TYPE_ERROR = -1;
 }

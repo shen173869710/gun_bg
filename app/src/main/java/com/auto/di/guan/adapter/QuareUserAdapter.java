@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.UserAction;
+import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.utils.DateUtils;
 
 import java.util.List;
@@ -44,9 +46,8 @@ public class QuareUserAdapter extends BaseAdapter {
 		ViewHolder vHolder = null;
 		if (convertView == null) {
 			vHolder = new ViewHolder();
-			convertView = LayoutInflater.from(ctx).inflate(
-					R.layout.quare_user_list_item, null);
-
+			convertView = LayoutInflater.from(ctx).inflate(R.layout.quare_user_list_item, null);
+			vHolder.quare_user_layout = (LinearLayout) convertView.findViewById(R.id.quare_user_layout);
 			vHolder.quare_user_name = (TextView) convertView.findViewById(R.id.quare_user_name);
 			vHolder.quare_user_action = (TextView) convertView.findViewById(R.id.quare_user_desc);
 			vHolder.quare_user_end =  (TextView) convertView.findViewById(R.id.quare_user_end);
@@ -68,9 +69,22 @@ public class QuareUserAdapter extends BaseAdapter {
 		vHolder.quare_user_end.setText(action.getActionEnd()+"");
 		vHolder.quare_user_time.setText(DateUtils.times(action.getTime()));
 //		vHolder.quare_user_type.setText(action.);
-	}
 
+		int type = action.getActionType();
+		int color = 0;
+		if (type == Entiy.ACTION_TYPE_ERROR) {
+			color = ctx.getResources().getColor(R.color.red);
+		}else if (type == Entiy.ACTION_TYPE_4) {
+			color = ctx.getResources().getColor(R.color.check_btn_sel);
+		}else if (type == Entiy.ACTION_TYPE_31) {
+			color = ctx.getResources().getColor(R.color.check_btn_no);
+		}else if (type == Entiy.ACTION_TYPE_32) {
+			color = ctx.getResources().getColor(R.color.none_transparent);
+		}
+		vHolder.quare_user_layout.setBackgroundColor(color);
+	}
 	class ViewHolder {
+		LinearLayout quare_user_layout;
 		TextView quare_user_time;
 		TextView quare_user_name;
 		TextView quare_user_type;

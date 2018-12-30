@@ -33,6 +33,7 @@ public class UserActionDao extends AbstractDao<UserAction, Long> {
         public final static Property ActionDesc = new Property(6, String.class, "actionDesc", false, "ACTION_DESC");
         public final static Property ActionEnd = new Property(7, String.class, "actionEnd", false, "ACTION_END");
         public final static Property UserName = new Property(8, String.class, "userName", false, "USER_NAME");
+        public final static Property ActionType = new Property(9, int.class, "actionType", false, "ACTION_TYPE");
     }
 
 
@@ -56,7 +57,8 @@ public class UserActionDao extends AbstractDao<UserAction, Long> {
                 "\"ACTION_ID\" INTEGER NOT NULL ," + // 5: actionId
                 "\"ACTION_DESC\" TEXT," + // 6: actionDesc
                 "\"ACTION_END\" TEXT," + // 7: actionEnd
-                "\"USER_NAME\" TEXT);"); // 8: userName
+                "\"USER_NAME\" TEXT," + // 8: userName
+                "\"ACTION_TYPE\" INTEGER NOT NULL );"); // 9: actionType
     }
 
     /** Drops the underlying database table. */
@@ -101,6 +103,7 @@ public class UserActionDao extends AbstractDao<UserAction, Long> {
         if (userName != null) {
             stmt.bindString(9, userName);
         }
+        stmt.bindLong(10, entity.getActionType());
     }
 
     @Override
@@ -139,6 +142,7 @@ public class UserActionDao extends AbstractDao<UserAction, Long> {
         if (userName != null) {
             stmt.bindString(9, userName);
         }
+        stmt.bindLong(10, entity.getActionType());
     }
 
     @Override
@@ -157,7 +161,8 @@ public class UserActionDao extends AbstractDao<UserAction, Long> {
             cursor.getInt(offset + 5), // actionId
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // actionDesc
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // actionEnd
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // userName
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // userName
+            cursor.getInt(offset + 9) // actionType
         );
         return entity;
     }
@@ -173,6 +178,7 @@ public class UserActionDao extends AbstractDao<UserAction, Long> {
         entity.setActionDesc(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setActionEnd(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setUserName(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setActionType(cursor.getInt(offset + 9));
      }
     
     @Override

@@ -8,6 +8,7 @@
     android:orientation="vertical" >
 
     <LinearLayout
+        android:id="@+id/quare_user_layout"
         android:layout_width="fill_parent"
         android:layout_height="50dip"
         android:orientation="horizontal" >
@@ -21,7 +22,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="20dp"
             android:gravity="center"
-            android:textColor="@color/main_title_color"
+            android:textColor="@color/white"
             android:textSize="16.0sp" />
 
 
@@ -33,7 +34,7 @@
             android:layout_weight="1"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:textColor="@color/main_title_color"
+            android:textColor="@color/white"
             android:textSize="16.0sp" />
 
 
@@ -45,7 +46,7 @@
             android:layout_weight="1"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:textColor="@color/main_title_color"
+            android:textColor="@color/white"
             android:textSize="16.0sp" />
         <TextView
             android:text="结果"
@@ -55,7 +56,7 @@
             android:layout_weight="1"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:textColor="@color/main_title_color"
+            android:textColor="@color/white"
             android:textSize="16.0sp" />
 
         <TextView
@@ -66,7 +67,7 @@
             android:layout_weight="1"
             android:layout_gravity="center_horizontal"
             android:gravity="center_vertical"
-            android:textColor="@color/main_title_color"
+            android:textColor="@color/white"
             android:textSize="16.0sp" />
     </LinearLayout>
     <View
