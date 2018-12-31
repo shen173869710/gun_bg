@@ -461,6 +461,47 @@ public class DBManager {
     }
 
 
+    /**
+     * 删除所有
+     *
+     */
+    public void deleteUserActionAll() {
+        DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
+        DaoSession daoSession = daoMaster.newSession();
+        UserActionDao userDao = daoSession.getUserActionDao();
+        userDao.deleteAll();
+    }
+
+    /**
+     * 删除所有
+     *
+     */
+    public void deleteUserActionType() {
+        DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
+        DaoSession daoSession = daoMaster.newSession();
+        UserActionDao userDao = daoSession.getUserActionDao();
+        QueryBuilder<UserAction> qb = userDao.queryBuilder();
+        qb.where(UserActionDao.Properties.ActionEnd.notEq("操作正常")).orderAsc(UserActionDao.Properties.Time);
+        List<UserAction> list = qb.list();
+        if (list != null) {
+            for (int i = 0; i < list.size(); i++) {
+                userDao.delete(list.get(i));
+            }
+        }
+
+    }
+
+    public List<UserAction> queryUserActionlListByEnd(String type) {
+        DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
+        DaoSession daoSession = daoMaster.newSession();
+        UserActionDao userDao = daoSession.getUserActionDao();
+        QueryBuilder<UserAction> qb = userDao.queryBuilder();
+        qb.where(UserActionDao.Properties.ActionEnd.notEq(type)).orderAsc(UserActionDao.Properties.Time);
+        List<UserAction> list = qb.list();
+        return list;
+    }
+
+
     public List<UserAction> queryUserActionlList(long start, long end) {
         DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
         DaoSession daoSession = daoMaster.newSession();

@@ -204,6 +204,16 @@ public class MyGridOpenAdapter extends BaseAdapter {
                 isStart = true;
         }
 
+        if (controlInfo.status == Entiy.CONTROL_STATUS＿ERROR) {
+            MainShowDialog.ShowDialog((Activity) context, "查询状态", "读取阀门异常状态是的修复", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventBus.getDefault().post(new ControlOptionEvent(controlInfo, true));
+                }
+            });
+            return;
+        }
+
         if (!isStart) {
             MainShowDialog.ShowDialog((Activity) context, "手动开启", "是否开启当前阀门", new View.OnClickListener() {
                 @Override

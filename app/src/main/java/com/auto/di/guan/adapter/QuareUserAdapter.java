@@ -68,19 +68,24 @@ public class QuareUserAdapter extends BaseAdapter {
 		vHolder.quare_user_action.setText(action.getActionDesc()+"");
 		vHolder.quare_user_end.setText(action.getActionEnd()+"");
 		vHolder.quare_user_time.setText(DateUtils.times(action.getTime()));
-//		vHolder.quare_user_type.setText(action.);
 
+
+        String desc = "";
 		int type = action.getActionType();
 		int color = 0;
-		if (type == Entiy.ACTION_TYPE_ERROR) {
-			color = ctx.getResources().getColor(R.color.red);
-		}else if (type == Entiy.ACTION_TYPE_4) {
+		 if (type == Entiy.ACTION_TYPE_4) {
 			color = ctx.getResources().getColor(R.color.check_btn_sel);
 		}else if (type == Entiy.ACTION_TYPE_31) {
 			color = ctx.getResources().getColor(R.color.check_btn_no);
 		}else if (type == Entiy.ACTION_TYPE_32) {
 			color = ctx.getResources().getColor(R.color.none_transparent);
 		}
+
+		 if (!action.getActionEnd().contains("操作正常")){
+			 color = ctx.getResources().getColor(R.color.red);
+		 }
+
+        vHolder.quare_user_type.setText(action.getUserAccount());
 		vHolder.quare_user_layout.setBackgroundColor(color);
 	}
 	class ViewHolder {
