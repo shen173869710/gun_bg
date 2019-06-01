@@ -16,4 +16,7 @@ public class OptionStatus {
     public String code;
 
     public String allCmd;
+
+    /**电量**/
+    public String elect;
 }

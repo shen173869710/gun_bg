@@ -181,6 +181,28 @@ public class IFloatWindowImpl extends IFloatWindow {
     }
 
 
+    /**
+     * 判断是否超出范围，根据自己需求设置比例大小，我自己设置的是0.025和0.975
+     * @param x event.getRawX()
+     * @param y event.getRawY()
+     * @return
+     */
+    private boolean isOutOfRange(float x, float y) {
+        boolean b = true;
+        float screenWidth = Util.getScreenWidth(mB.mApplicationContext);
+        float screenHeight = Util.getScreenHeight(mB.mApplicationContext);
+        float widthRate, heightRate;
+        widthRate = (screenWidth - x) / screenWidth;
+        heightRate = (screenHeight - y) / screenHeight;
+        if (widthRate > 0.025 && widthRate < 0.975 && heightRate > 0.025 && heightRate < 0.975) {
+            b = false;
+        } else {
+            b = true;
+        }
+        return b;
+    }
+
+
     private void initTouchEvent() {
         switch (mB.mMoveType) {
             case MoveType.inactive:

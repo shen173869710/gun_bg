@@ -106,7 +106,7 @@ public class MyGridAdapter extends BaseAdapter {
         }else {
             holder.grid_item_device.setVisibility(View.VISIBLE);
             holder.grid_item_device_value.setVisibility(View.VISIBLE);
-            holder.grid_item_device_value.setText("100%");
+            holder.grid_item_device_value.setText(deviceInfo.elect+"%");
             holder.grid_item_left_layout.setVisibility(View.VISIBLE);
             holder.grid_item_left_sel.setVisibility(View.GONE);
             if (deviceInfo.controlInfos.get(0).groupId == 0) {

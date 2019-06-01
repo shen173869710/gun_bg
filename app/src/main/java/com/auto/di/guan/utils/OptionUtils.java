@@ -57,11 +57,12 @@ public class OptionUtils {
         /**读取控制阀**/
         if (msg.contains(ZT)) {
             String[]result = msg.split(" ");
-            if(result != null && result.length == 4) {
+            if(result != null && result.length == 5) {
                 status.type = ZT;
                 status.projectId = result[1];
                 status.deviceId = result[2];
                 status.code = result[3];
+                status.elect =result[4];
             }
         }
 

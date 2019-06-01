@@ -1,12 +1,7 @@
 package com.auto.di.guan;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -20,13 +15,9 @@ import android.widget.Toast;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.DeviceInfo;
-import com.auto.di.guan.dialog.MainShowDialog;
-import com.auto.di.guan.dialog.SureLoadDialog;
 import com.auto.di.guan.dialog.WaitingDialog;
 import com.auto.di.guan.entity.BindEvent;
-import com.auto.di.guan.entity.ControlOptionEvent;
 import com.auto.di.guan.entity.Entiy;
-import com.auto.di.guan.entity.ImageStatus;
 import com.auto.di.guan.entity.ReadEvent;
 import com.auto.di.guan.utils.HttpUtil;
 import com.auto.di.guan.utils.ShareUtil;
@@ -36,11 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.auto.di.guan.R.id.info;
 
 /**
  */

@@ -41,7 +41,6 @@ import com.auto.di.guan.utils.OptionUtils;
 import com.auto.di.guan.utils.PollingUtils;
 import com.auto.di.guan.utils.SendUtils;
 import com.auto.di.guan.utils.ShareUtil;
-import com.yongchun.library.view.ImageSelectorActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -84,8 +83,8 @@ public class MainActivity extends SerialPortActivity {
     public static final int TYPE_READ = 0;
     public static final int TYPE_OPEN = 1;
     public static final int TYPE_CLOSE = 2;
-
-    public static final int RXJAVA_TIME = 9;
+    /** 执行单个命令的时间**/
+    public static final int RXJAVA_TIME = 11;
 
     private ControlInfo cur;
     /**是否是自动查询**/
@@ -257,7 +256,10 @@ public class MainActivity extends SerialPortActivity {
         textCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                ImageSelectorActivity.start(MainActivity.this, 1, ImageSelectorActivity.MODE_SINGLE, true,true,false);
+                if(!MyApplication.isGroupStart()) {
+                    List<ControlInfo> controlInfos = DBManager.getInstance(MainActivity.this).queryControlList();
+                    optionContron(controlInfos, TYPE_READ);
+                }
             }
         });
     }
@@ -695,8 +697,8 @@ public class MainActivity extends SerialPortActivity {
                         }
                     }
                     if(temp.size() > 0) {
-                        optionContron(temp, TYPE_READ);
                         isSaveDb = false;
+                        optionContron(temp, TYPE_READ);
                         return;
                     }
                 }
@@ -830,6 +832,7 @@ public class MainActivity extends SerialPortActivity {
             int controlId = cur.controId;
             int type = -1;
 
+            deviceInfo.elect = status.elect;
             ControlInfo controlInfo = null;
 
             if (info != null && cur!= null && cur.name.contains("0")) {

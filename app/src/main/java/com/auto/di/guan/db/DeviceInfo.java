@@ -23,6 +23,7 @@ public class DeviceInfo implements Serializable{
     public String deviceName;
     public int groupId;
     public int deviceId;
+    public String elect;
     /**
      *   0  未添加
      *   1  已经添加
