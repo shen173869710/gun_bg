@@ -79,9 +79,9 @@ public class SendUtils {
         if (type == TYPE_RUN) {
             cmdStatus.cmd_read_end = LOG_NAME+controlId+"操作正常";
         }else if (type == TYPE_DISCONTENT) {
-            cmdStatus.cmd_read_end = LOG_NAME+controlId+"通信正常, 开关未打开";
+            cmdStatus.cmd_read_end = LOG_NAME+controlId+"通信正常,开关线断开";
         }else if (type == TYPE_CONTENT) {
-            cmdStatus.cmd_read_end = LOG_NAME+controlId+"通信异常";
+            cmdStatus.cmd_read_end = LOG_NAME+controlId+"通信异常,开关未打开";
         }
 
         cmdStatus.controlName = name;

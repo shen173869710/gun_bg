@@ -90,7 +90,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     LoginActivity.this.finish();
                     return;
                 }else {
-                    Toast.makeText(LoginActivity.this, "账号或者密码输入错误, 请重新输入", Toast.LENGTH_LONG).show();
                 }
             }
 

@@ -571,7 +571,7 @@ public class MainActivity extends SerialPortActivity {
      * 分组手动操作
      **/
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onGroupStatusEvent(GroupOptionEvent event) {
+    public void onGroupStatusEvent(final GroupOptionEvent event) {
         isSaveDb = true;
         optionType = FRAGMENT_31;
         LogUtils.e(TAG, "onGroupStatusEvent");
@@ -622,7 +622,11 @@ public class MainActivity extends SerialPortActivity {
 
                 @Override
                 public void onComplete() {
-
+                    event.closeInfo.setGroupTime(0);
+                    event.closeInfo.setGroupRunTime(0);
+                    event.closeInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
+                    DBManager.getInstance(MainActivity.this).updateGroup(event.closeInfo);
+                    EventBus.getDefault().post(new UpdateEvent());
                 }
             });
 
@@ -638,6 +642,11 @@ public class MainActivity extends SerialPortActivity {
         optionType = FRAGMENT_4;
         List<ControlInfo>list = new ArrayList<>();
         list.add(event.controlInfo);
+        if(event.controlInfo.status ==  Entiy.CONTROL_STATUS＿ERROR) {
+            readCmd(event.controlInfo,TYPE_READ);
+            return;
+        }
+
         if (event.isStart) {
             optionContron(list, TYPE_OPEN);
         } else {
@@ -907,7 +916,7 @@ public class MainActivity extends SerialPortActivity {
 
             if (isSaveDb && controlInfo != null) {
                 ActionUtil.saveAction(cur, CMD_TYPE, type, optionType);
-        }
+            }
             SendUtils.sendEnd(controlId, type, cur.controlName);
             DBManager.getInstance(MainActivity.this).updateDevice(deviceInfo);
             EventBus.getDefault().post(new AdapterEvent());

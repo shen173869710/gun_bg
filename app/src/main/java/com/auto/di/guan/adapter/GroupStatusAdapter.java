@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.auto.di.guan.MainActivity;
 import com.auto.di.guan.R;
@@ -100,6 +101,11 @@ public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter
                         String tag = v.getTag().toString();
                         if (!TextUtils.isEmpty(tag)) {
                             int i = Integer.valueOf(tag);
+
+                            if(i * 60 < mItems.get(position).getGroupTime()) {
+                                Toast.makeText(context, "设置的时间不能小于当前剩余时间", Toast.LENGTH_LONG).show();
+                                return;
+                            }
                             mItems.get(position).setGroupTime(i*60);
                             DBManager.getInstance(context).updateGroup(mItems.get(position));
                         }

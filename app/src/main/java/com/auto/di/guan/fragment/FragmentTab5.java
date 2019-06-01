@@ -71,17 +71,38 @@ public class FragmentTab5 extends BaseFragment {
 		return view;
 	}
 
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		showListByType(0);
+	}
+
 	private void showChooseTimeDialog(final TextView tv) {
-		 ChooseTimeDialog.ShowDialog(getActivity(), new View.OnClickListener() {
+		List<ControlInfo>controlInfoList = new ArrayList<>();
+		ControlInfo info1 = new ControlInfo();
+		ControlInfo info2 = new ControlInfo();
+		info1.controlName = "删除全部";
+		info2.controlName = "删除报警";
+		controlInfoList.add(info1);
+		controlInfoList.add(info2);
+		final MainChooseIdDialog chooseDialog = new MainChooseIdDialog(getActivity(), controlInfoList);
+		chooseDialog.setOnPositiveListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String time = v.getTag().toString();
-				if (!TextUtils.isEmpty(time)) {
-					showChooseListByTime(time);
-					tv.setText(time);
-				}
+				showChooseListByTime(chooseDialog.currentItem);
+				chooseDialog.dismiss();
+			}
+
+
+		});
+		chooseDialog.setOnNegativeListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				chooseDialog.dismiss();
 			}
 		});
+		chooseDialog.show();
 	}
 
 	private void showChooseDialog(final TextView tv) {
@@ -180,16 +201,24 @@ public class FragmentTab5 extends BaseFragment {
 		if (type == 0) {
 			action	= DBManager.getInstance(getActivity()).queryUserActionlList(type);
 		}else {
-			action	= DBManager.getInstance(getActivity()).queryUserActionlListByType(type);
+			if (type == Entiy.ACTION_TYPE_ERROR) {
+				action	= DBManager.getInstance(getActivity()).queryUserActionlListByEnd("操作正常");
+			}else {
+				action	= DBManager.getInstance(getActivity()).queryUserActionlListByType(type);
+			}
+
 		}
 		showEnd(action);
 	}
 
-	private void showChooseListByTime(String  time) {
-		String []data = time.split("-");
-		String start = data[0];
-		String end = data[1];
-		List<UserAction>action = DBManager.getInstance(getActivity()).queryUserActionlList(DateUtils.dataForlong(start), DateUtils.dataForlong(end));
+	private void showChooseListByTime(int type) {
+		List<UserAction>action= new ArrayList<>();
+		if (type == 0) {
+			DBManager.getInstance(getActivity()).deleteUserActionAll();
+		}else {
+			DBManager.getInstance(getActivity()).deleteUserActionType();
+		}
+		action	= DBManager.getInstance(getActivity()).queryUserActionlList(0);
 		showEnd(action);
 	}
 
