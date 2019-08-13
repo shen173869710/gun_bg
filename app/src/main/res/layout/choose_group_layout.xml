@@ -22,7 +22,6 @@
         android:id="@+id/choose_gridview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/tab_0_bg"
         android:numColumns="4"
         android:scrollbars="none"
         android:layout_centerHorizontal="true"

@@ -22,6 +22,13 @@ public class ControlInfo implements Serializable {
     public int imageId;
     public String name;
     public String controlName;
+
+    /**
+     * 绑定设备的ID
+     *  显示的名字
+     */
+    public int bindId;
+    public String showName;
     /**
      *   0  未添加
      *   1  已经添加

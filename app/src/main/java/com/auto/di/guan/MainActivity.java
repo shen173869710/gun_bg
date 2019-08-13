@@ -41,6 +41,7 @@ import com.auto.di.guan.utils.OptionUtils;
 import com.auto.di.guan.utils.PollingUtils;
 import com.auto.di.guan.utils.SendUtils;
 import com.auto.di.guan.utils.ShareUtil;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -59,6 +60,10 @@ import io.reactivex.schedulers.Schedulers;
 /**
  */
 public class MainActivity extends SerialPortActivity {
+    /**
+     *  是否执行过一次
+     */
+    private boolean hasRunCmd = false;
 
     private final String TAG = "------" + MainActivity.class.getSimpleName();
     private Button button;
@@ -71,9 +76,10 @@ public class MainActivity extends SerialPortActivity {
     private List<GroupInfo> groupInfos;
     private final String TITLE_NAME = "title_name";
     /**
-     * 定时任务时间
+     * 定时任务时间   你自己在这里修改
+     *  5 分钟
      **/
-    public static final int ALERM_TIME = 1 * 60 * 1000;
+    public static final int ALERM_TIME = 2 * 60 * 1000;
     private static final int HANDLER_WHAT_FALG = 1;
 
     private MediaPlayer mp;
@@ -84,7 +90,7 @@ public class MainActivity extends SerialPortActivity {
     public static final int TYPE_OPEN = 1;
     public static final int TYPE_CLOSE = 2;
     /** 执行单个命令的时间**/
-    public static final int RXJAVA_TIME = 11;
+    public static final int RXJAVA_TIME = 25;
 
     private ControlInfo cur;
     /**是否是自动查询**/
@@ -103,6 +109,7 @@ public class MainActivity extends SerialPortActivity {
     public static int  FRAGMENT_4 = 400;
     public static int  FRAGMENT_31 = 310;
     public static int  FRAGMENT_32 = 320;
+    public static int  FRAGMENT_0 = 1000;
 
     private Handler handler = new Handler() {
         @Override
@@ -143,7 +150,7 @@ public class MainActivity extends SerialPortActivity {
         showDialog();
         cur = info;
         final String cmd = Entiy.cmdClose(MyApplication.getProjectId(), info.deviceId, info.name);
-        SendUtils.sendClose(cmd,cur.controId,cur.controlName);
+        SendUtils.sendClose(cmd,cur);
         Log.e(TAG, Entiy.LOG_CLOSE_START + cmd);
 		try {
 			mOutputStream.write(new String(cmd).getBytes());
@@ -158,7 +165,7 @@ public class MainActivity extends SerialPortActivity {
         showDialog();
         cur = info;
         final String cmd = Entiy.cmdOpen(MyApplication.getProjectId(), info.deviceId, info.name);
-        SendUtils.sendopen(cmd,cur.controId,cur.controlName);
+        SendUtils.sendopen(cmd,cur);
         Log.e(TAG, Entiy.LOG_OPEN_START + cmd);
 		try {
 			mOutputStream.write(new String(cmd).getBytes());
@@ -170,10 +177,10 @@ public class MainActivity extends SerialPortActivity {
 
     private void readCmd(ControlInfo info, int type) {
         CMD_TYPE = type;
-        showDialog();
+         showDialog();
         cur = info;
-        final String cmd = Entiy.cmdRead(MyApplication.getProjectId(), info.deviceId, info.name);
-        SendUtils.sendRead(cmd,cur.controId,cur.controlName);
+        final String cmd = Entiy.cmdRead(MyApplication.getProjectId(), info.deviceId);
+        SendUtils.sendRead(cmd,cur);
         Log.e("-------读取设备", cmd + "       " + System.currentTimeMillis());
         try {
 			mOutputStream.write(new String(cmd).getBytes());
@@ -257,7 +264,8 @@ public class MainActivity extends SerialPortActivity {
             @Override
             public void onClick(View v) {
                 if(!MyApplication.isGroupStart()) {
-                    List<ControlInfo> controlInfos = DBManager.getInstance(MainActivity.this).queryControlList();
+                    List<ControlInfo> controlInfos = DBManager.getInstance(MainActivity.this).queryBindControlList();
+                    optionType = FRAGMENT_0;
                     optionContron(controlInfos, TYPE_READ);
                 }
             }
@@ -397,13 +405,15 @@ public class MainActivity extends SerialPortActivity {
     protected void onDataReceived(byte[] buffer, int size) {
         final String receive = new String(buffer, 0, size);
         show = "";
-        Log.e(TAG, "接收命令 -----"+ receive);
+        int length = receive.trim().length();
+        Log.e(TAG, "接收命令 -------------------"+ receive+"    length = "+length);
 
         if (TextUtils.isEmpty(receive)) {
             showToastLongMsg("错误命令"+receive);
             return;
         }
-        if (receive.contains("gid=") || receive.contains("bid=")){
+        if (receive.toLowerCase().contains("ok") && length == 2){
+            Log.e(TAG, "绑定成功 -----");
             EventBus.getDefault().post(new BindEvent(receive));
             return;
         }
@@ -414,6 +424,7 @@ public class MainActivity extends SerialPortActivity {
             if (isGid == -1) {
                 return;
             }
+
             String cmd = "";
             if (isGid == 0) {
                 cmd = "rgid";
@@ -428,27 +439,38 @@ public class MainActivity extends SerialPortActivity {
             }
             return;
         }
-
-
-        if (receive.toLowerCase().contains("fail") || receive.toLowerCase().contains("cmd")) {
+        if (!receive.toLowerCase().contains("zt")&&
+        !receive.toLowerCase().contains("rs")
+                && !receive.toLowerCase().contains("gf")
+                && !receive.toLowerCase().contains("kf")) {
             showToastLongMsg("错误命令"+receive+ "重新操作");
+
+            LogUtils.e("------hasnRunCmd====",""+hasRunCmd);
+            if (hasRunCmd){
+                hasRunCmd = false;
+                SendUtils.sendError("通讯失败",cur.controId, cur.showName);
+                play();
+                return;
+            }
+            hasRunCmd = true;
             if (CMD_TYPE == TYPE_CLOSE) {
+                LogUtils.e("------TYPE_CLOSE====","第二次执行");
                 closeCmd(cur);
             }else if (CMD_TYPE == TYPE_OPEN) {
+                LogUtils.e("------TYPE_OPEN====","第二次执行");
                 openCmd(cur);
             }else if (CMD_TYPE == TYPE_READ) {
+                LogUtils.e("------TYPE_READ====","第二次执行");
                 readCmd(cur,TYPE_READ);
             }
             return;
         }
-
         if (cur == null) {
             return;
         }
-
         if (receive.contains("ok") || receive.contains("zt")) {
             OptionStatus status = OptionUtils.receive(receive);
-            SendUtils.sendMiddle(receive, cur.controId,cur.controlName);
+            SendUtils.sendMiddle(receive, cur.controId,cur.showName);
             if (status == null) {
                 showToastLongMsg("未知错误+="+receive);
 //                SendUtils.sendError("未知错误"+receive,cur.controId);
@@ -459,9 +481,9 @@ public class MainActivity extends SerialPortActivity {
             if (status.type.equals( OptionUtils.ZT)) {
                 doReadOption(status,cur.deviceId);
             } else if (status.type.equals( OptionUtils.KF) ){
-                doOpenOption(status);
+//                doOpenOption(status);
             } else if (status.type.equals( OptionUtils.GF)) {
-                doCloseOption(status);
+//                doCloseOption(status);
             }
         }
 
@@ -629,7 +651,6 @@ public class MainActivity extends SerialPortActivity {
                     EventBus.getDefault().post(new UpdateEvent());
                 }
             });
-
         }
     }
 
@@ -642,16 +663,24 @@ public class MainActivity extends SerialPortActivity {
         optionType = FRAGMENT_4;
         List<ControlInfo>list = new ArrayList<>();
         list.add(event.controlInfo);
-        if(event.controlInfo.status ==  Entiy.CONTROL_STATUS＿ERROR) {
-            readCmd(event.controlInfo,TYPE_READ);
-            return;
-        }
 
-        if (event.isStart) {
+        if (event.type == 0) {
+            readCmd(event.controlInfo,TYPE_READ);
+        }else if (event.type == 1) {
             optionContron(list, TYPE_OPEN);
-        } else {
+        }else if (event.type == 2) {
             optionContron(list, TYPE_CLOSE);
         }
+//        if(event.controlInfo.status ==  Entiy.CONTROL_STATUS＿ERROR) {
+//            readCmd(event.controlInfo,TYPE_READ);
+//            return;
+//        }
+//
+//        if (event.isStart) {
+//            optionContron(list, TYPE_OPEN);
+//        } else {
+//            optionContron(list, TYPE_CLOSE);
+//        }
     }
 
     private  int isGid = -1;
@@ -674,6 +703,8 @@ public class MainActivity extends SerialPortActivity {
     public void onPollingEvent(PollingEvent event) {
         if (curRunTime < 5 * 60) {
             LogUtils.e(TAG, "剩余时间不够完成轮询");
+            Toast.makeText(MainActivity.this, "剩余时间不够完成查询操作", Toast.LENGTH_LONG).show();
+            PollingUtils.stopPollingService(this);
             return;
         }
         if (FloatWindowUtil.getInstance().isShow()) {
@@ -748,6 +779,10 @@ public class MainActivity extends SerialPortActivity {
                         @Override
                         public void onNext(Long value) {
                             int count = value.intValue();
+                            ControlInfo controlInfo = infos.get(count);
+                            Gson gson = new Gson();
+                            String str = gson.toJson(controlInfo);
+                            Log.e("---TYPE_READ ---", "count = "+count + "controlInfo = "+str);
                             readCmd(infos.get(count),TYPE_READ);
                         }
 
@@ -826,6 +861,8 @@ public class MainActivity extends SerialPortActivity {
      */
     public int count = 0;
     public void doReadOption(OptionStatus status, String deviceId) {
+        Log.e(" ----doReadOption---", "status = "+new Gson().toJson(status));
+        //status = {"allCmd":"zt 102 002 1100 090\n\u0000","code":"1100","deviceId":"002","elect":"090","projectId":"102","type":"zt","status":0}
         try {
             DeviceInfo info = OptionUtils.changeStatus(status);
             if (count == 1) {
@@ -842,8 +879,9 @@ public class MainActivity extends SerialPortActivity {
             int type = -1;
 
             deviceInfo.elect = status.elect;
-            ControlInfo controlInfo = null;
 
+            ControlInfo controlInfo = null;
+            Log.e(" ----开关0---", "cur = "+new Gson().toJson(cur) + "  info = "+new Gson().toJson(info)+ " optionType ="+optionType+"  CMD_TYPE"+CMD_TYPE);
             if (info != null && cur!= null && cur.name.contains("0")) {
                 controlInfo = info.controlInfos.get(0);
                 int code = info.controlInfos.get(0).status;
@@ -865,18 +903,40 @@ public class MainActivity extends SerialPortActivity {
                             deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_3;
                             type = -1;
                             play();
+                            Log.e(" ----887---", "-----------------");
                         }else {
                             deviceInfo.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
                             deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_1;
                             type = 0;
+                            Log.e(" ----892---", "-----------------");
                         }
                         LogUtils.e(TAG, "connect"+code);
                     }
-                }else {
+                }else if (code == Entiy.CONTROL_STATUS＿NOTCLOSE){
                     deviceInfo.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿ERROR;
                     deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_3;
-                    type = -1;
                     play();
+                    type = -2;
+                    Log.e(" ----901---", "-----------------");
+                }else {
+                    if (CMD_TYPE == TYPE_OPEN) {
+                        deviceInfo.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿ERROR;
+                        deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_3;
+                        type = -1;
+                        play();
+                        Log.e(" ----887---", "-----------------");
+                    }else {
+                        deviceInfo.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
+                        deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_1;
+                        type = 0;
+                        Log.e(" ----892---", "-----------------");
+                    }
+
+                    deviceInfo.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿ERROR;
+                    deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_3;
+                    play();
+                    type = -1;
+                    Log.e(" ----907---", "-----------------");
                 }
             }else if (info != null && cur!= null && cur.name.contains("1")) {
                 int code = info.controlInfos.get(1).status;
@@ -892,6 +952,7 @@ public class MainActivity extends SerialPortActivity {
                         deviceInfo.controlInfos.get(1).imageId = R.mipmap.lighe_3;
                         type = -1;
                         play();
+                        Log.e(" ----923---", "-----------------");
                     }else {
                         LogUtils.e(TAG, "CMD_TYPE =="+CMD_TYPE);
                         if (CMD_TYPE == TYPE_OPEN) {
@@ -899,6 +960,7 @@ public class MainActivity extends SerialPortActivity {
                             deviceInfo.controlInfos.get(1).imageId = R.mipmap.lighe_3;
                             type = -1;
                             play();
+                            Log.e(" ----931---", "-----------------");
                         }else {
                             deviceInfo.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
                             deviceInfo.controlInfos.get(1).imageId = R.mipmap.lighe_1;
@@ -906,111 +968,55 @@ public class MainActivity extends SerialPortActivity {
                         }
                     }
 //                    play();
+                }else if (code == Entiy.CONTROL_STATUS＿NOTCLOSE){
+                        deviceInfo.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿ERROR;
+                        deviceInfo.controlInfos.get(1).imageId = R.mipmap.lighe_3;
+                        type = -2;
+                        play();
+                    Log.e(" ----944---", "-----------------");
                 }else {
                     deviceInfo.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿ERROR;
                     deviceInfo.controlInfos.get(1).imageId = R.mipmap.lighe_3;
                     type = -1;
                     play();
+                    Log.e(" ----950---", "-----------------");
                 }
             }
 
             if (isSaveDb && controlInfo != null) {
                 ActionUtil.saveAction(cur, CMD_TYPE, type, optionType);
             }
-            SendUtils.sendEnd(controlId, type, cur.controlName);
+            SendUtils.sendEnd(controlId, type, cur.showName);
             DBManager.getInstance(MainActivity.this).updateDevice(deviceInfo);
-            EventBus.getDefault().post(new AdapterEvent());
+            String str = new Gson().toJson(DBManager.getInstance(this).queryDeviceList());
+            LogUtils.e("------", "main updatte = "+str);
+            EventBus.getDefault().post(new AdapterEvent(cur.groupId));
         } catch (Exception e) {
             LogUtils.e(TAG, e.toString());
         }
     }
 
-    /**
-     * 执行开启
-     */
-    public void doOpenOption(OptionStatus status) {
-//        try {
-//            int deviceId = Integer.parseInt(status.deviceId);
-//            DeviceInfo info = DBManager.getInstance(this).queryDeviceById(deviceId);
-//            CmdStatus cmdStatus = new CmdStatus();
-//                if ("0".equals(status.name)) {
-//                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
-//                    info.controlInfos.get(0).imageId = R.mipmap.lighe_2;
-//                    DBManager.getInstance(this).updateDevice(info);
-//                    LogUtils.e(TAG, Entiy.LOG_OPEN_END + status.allCmd);
-//                    cmdStatus.control_id = info.controlInfos.get(0).controId+"";
-//                    EventBus.getDefault().post(new AdapterEvent());
-//                } else if ("1".equals(status.name)) {
-//                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿RUN;
-//                    info.controlInfos.get(1).imageId = R.mipmap.lighe_2;
-//                    DBManager.getInstance(this).updateDevice(info);
-//                    LogUtils.e(TAG, Entiy.LOG_OPEN_END + status.allCmd);
-//                    EventBus.getDefault().post(new AdapterEvent());
-//                    cmdStatus.control_id = info.controlInfos.get(1).controId+"";
-//                }
-//                cmdStatus.cmd_end = Entiy.LOG_OPEN_END + status.allCmd;
-//                EventBus.getDefault().post(cmdStatus);
-//            }
-//        } catch (Exception e) {
-//            LogUtils.e(TAG, e.toString());
-//        }
-    }
-
-    /**
-     * 执行关闭
-     */
-    public void doCloseOption(OptionStatus status) {
-//        try {
-//            int deviceId = Integer.parseInt(status.deviceId);
-//            DeviceInfo info = DBManager.getInstance(this).queryDeviceById(deviceId);
-//            if (info != null) {
-//                CmdStatus cmdStatus = new CmdStatus();
-//                if ("0".equals(status.name)) {
-//                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
-//                    info.controlInfos.get(0).imageId = R.mipmap.lighe_1;
-//                    DBManager.getInstance(this).updateDevice(info);
-//                    LogUtils.e(TAG, Entiy.LOG_CLOSE_END + status.allCmd);
-//                    cmdStatus.control_id = info.controlInfos.get(0).controId+"";
-//                    EventBus.getDefault().post(new AdapterEvent());
-//                } else if ("1".equals(status.name)) {
-//                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
-//                    info.controlInfos.get(1).imageId = R.mipmap.lighe_1;
-//                    DBManager.getInstance(this).updateDevice(info);
-//                    LogUtils.e(TAG, Entiy.LOG_CLOSE_END + status.allCmd);
-//                    cmdStatus.control_id = info.controlInfos.get(1).controId+"";
-//                    EventBus.getDefault().post(new AdapterEvent());
-//                }
-//                cmdStatus.cmd_end = Entiy.LOG_CLOSE_END + status.allCmd;
-//                EventBus.getDefault().post(cmdStatus);
-//            }
-//        } catch (Exception e) {
-//            LogUtils.e(TAG, e.toString());
-//        }
-    }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onStatsuEvent(CmdStatus event) {
-
         FloatWindowUtil.getInstance().onStatsuEvent(event);
-
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE){
-            ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
-            if (images != null &&images.size() >0) {
-                Log.e("-----------", "image"+images.get(0));
+//        if(resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE){
+//            ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
+//            if (images != null &&images.size() >0) {
+//                Log.e("-----------", "image"+images.get(0));
 
 //                Glide.with(MainActivity.this).load(images.get(0))
 //                        .error(R.drawable.jc_play_normal).into(imageviewvideo);
-                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.right);
-                linearLayout.setBackground(Drawable.createFromPath(images.get(0)));
-            }
+//                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.right);
+//                linearLayout.setBackground(Drawable.createFromPath(images.get(0)));
+//            }
 
-        }
+//        }
     }
 
 }

@@ -6,9 +6,6 @@
     android:background="@drawable/border_line_while"
     android:layout_gravity="center_horizontal"
     >
-
-
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -40,10 +37,26 @@
         android:layout_height="1dp"
         android:background="@color/main_hint_color"
         />
-        <ListView
-            android:id = "@+id/listview"
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <ListView
+                android:id = "@+id/listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="#cccccc"
+                android:dividerHeight="2px"
+                android:scrollbars="vertical"
+                />
+        </LinearLayout>
+    </ScrollView>
+
+
 </LinearLayout>

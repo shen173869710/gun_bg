@@ -3,6 +3,7 @@ package com.auto.di.guan.adapter;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,19 +92,24 @@ public class MyGridAdapter extends BaseAdapter {
         int itemHeight = screenHight - (int)context.getResources().getDimension(R.dimen.main_grid_width)- MainActivity.windowTop;
         AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(itemWidth/ Entiy.GRID_COLUMNS, itemWidth/ Entiy.GRID_COLUMNS);
         holder.grid_item_layout.setLayoutParams(layoutParams);
-        holder.grid_item_device_id.setText(datas.get(position).deviceId+"");
-        if (!TextUtils.isEmpty(datas.get(position).getDeviceName())) {
-            holder.grid_item_device_name.setText(datas.get(position).getDeviceName()+"");
-        }
-        final DeviceInfo deviceInfo = datas.get(position);
 
+        final DeviceInfo deviceInfo = datas.get(position);
+        holder.grid_item_device_id.setText(datas.get(position).deviceId+"");
+        holder.grid_item_device_id.setVisibility(View.VISIBLE);
         /******设备未绑定******/
         if (deviceInfo.status == Entiy.DEVEICE_UNBIND) {
+            holder.grid_item_device_name.setVisibility(View.INVISIBLE);
             holder.grid_item_device.setVisibility(View.INVISIBLE);
             holder.grid_item_device_value.setVisibility(View.INVISIBLE);
             holder.grid_item_left_layout.setVisibility(View.INVISIBLE);
             holder.grid_item_right_layout.setVisibility(View.INVISIBLE);
         }else {
+
+            if (!TextUtils.isEmpty(datas.get(position).getDeviceName())) {
+                holder.grid_item_device_name.setText(datas.get(position).getDeviceName()+"");
+                holder.grid_item_device_name.setVisibility(View.VISIBLE);
+            }
+            holder.grid_item_device_id.setVisibility(View.VISIBLE);
             holder.grid_item_device.setVisibility(View.VISIBLE);
             holder.grid_item_device_value.setVisibility(View.VISIBLE);
             holder.grid_item_device_value.setText(deviceInfo.elect+"%");
@@ -152,7 +158,8 @@ public class MyGridAdapter extends BaseAdapter {
     }
 
     public void setData(List<DeviceInfo> controlInfos) {
-        datas = controlInfos;
+        datas.clear();
+        datas.addAll(controlInfos);
         notifyDataSetChanged();
     }
     class ViewHolder {

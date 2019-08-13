@@ -59,8 +59,8 @@ public class FragmentTab4 extends BaseFragment {
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onAdapterUpdate(AdapterEvent event) {
-			deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
-			adapter.setData(deviceInfos);
+//			deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
+			adapter.setData(DBManager.getInstance(getActivity()).queryDeviceList());
 			LogUtils.e("-------", "FragmentTab4");
 	};
 

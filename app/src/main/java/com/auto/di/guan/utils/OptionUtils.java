@@ -24,46 +24,63 @@ public class OptionUtils {
         if (TextUtils.isEmpty(msg)) {
             return null;
         }
+        //                                             0123456789abcde
+        //        kf 108 003 0    通讯成功 answer_str  kf 108 003 0 ok
+        //        gf 108 003 0    通讯成功 answer_str  gf 108 003 0 ok
+        //        rs 108 003      通讯成功 answer_str  zt 108 003 1100 090
+
         /**开启控制阀**/
         if (msg.contains(KF)) {
-            String[]result = msg.split(" ");
-            if(result != null && result.length == 5) {
-                status.projectId = result[1];
-                status.deviceId = result[2];
-                status.name = result[3];
+//            String[]result = msg.split(" ");
+//            if(result != null && result.length == 5) {
+//                status.projectId = result[1];
+                status.projectId = msg.substring(3,6);
+//                status.deviceId = result[2];
+                status.deviceId = msg.substring(7,10);
+//                status.name = result[3];
+                status.name = msg.substring(11,12);
+                String ok = msg.substring(13,15);
                 status.type = KF;
-                if (OK.contains(result[4])) {
+                if (OK.toLowerCase().contains(ok)) {
                     status.status = Entiy.CONTROL_STATUS＿RUN;
                 }
 
-            }
+//            }
         }
+        //        gf 108 003 1110
         /**关闭控制阀**/
         if (msg.contains(GF)) {
             String[]result = msg.split(" ");
-            if(result != null && result.length == 5) {
+//            if(result != null && result.length == 5) {
+//                status.projectId = result[1];
+//                status.deviceId = result[2];
+//                status.name = result[3];
+                status.projectId = msg.substring(3,6);
+                status.deviceId = msg.substring(7,10);
+                status.name = msg.substring(11,12);
+                String ok = msg.substring(13,15);
                 status.type = GF;
-                status.projectId = result[1];
-                status.deviceId = result[2];
-                status.name = result[3];
-                if (OK.contains(result[4])) {
+                if (OK.toLowerCase().contains(ok)) {
                     status.status = Entiy.CONTROL_STATUS＿CONNECT;
                 }
 
-            }
+//            }
         }
 
-//        zt 108 003 1110
+//        zt 108 003 1110  zt 108 003 1100 090
         /**读取控制阀**/
         if (msg.contains(ZT)) {
-            String[]result = msg.split(" ");
-            if(result != null && result.length == 5) {
+//            String[]result = msg.split(" ");
+//            if(result != null && result.length == 5) {
                 status.type = ZT;
-                status.projectId = result[1];
-                status.deviceId = result[2];
-                status.code = result[3];
-                status.elect =result[4];
-            }
+            status.projectId = msg.substring(3,6);
+            status.deviceId = msg.substring(7,10);
+            status.code = msg.substring(11,15);
+//                status.projectId = result[1];
+//                status.deviceId = result[2];
+//                status.code = result[3];
+                status.elect =msg.substring(16,19);
+//            }
         }
 
         if (TextUtils.isEmpty(status.type)) {
@@ -77,27 +94,30 @@ public class OptionUtils {
     //zt 012 004 xxxx
 
     public static DeviceInfo changeStatus(OptionStatus status) {
+
+
+        //status = {"allCmd":"zt 102 002 1100 090\n\u0000","code":"1100","deviceId":"002","elect":"090","projectId":"102","type":"zt","status":0}
         if (status != null && !TextUtils.isEmpty(status.code)) {
             DeviceInfo info = new DeviceInfo();
             info.controlInfos = new ArrayList<>();
             info.controlInfos.add(new ControlInfo());
             info.controlInfos.add(new ControlInfo());
             String type = status.code;
-            if (type.contains("0000")) {
+             if (type.contains("0000")) {
                 info.controlInfos.get(0).status = 0;
                 info.controlInfos.get(1).status = 0;
             }else if (type.contains("0100")) {
-                info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
-                info.controlInfos.get(1).status = 0;
+                info.controlInfos.get(0).status = 0;
+                info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
             }else if (type.contains("0101")) {
-                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
-                    info.controlInfos.get(1).status = 0;
-            }else if (type.contains("1000")) {
-                    info.controlInfos.get(0).status = 0;
-                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
-            }else if (type.contains("1010")) {
                     info.controlInfos.get(0).status = 0;
                     info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿RUN;
+            }else if (type.contains("1000")) {
+                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
+                    info.controlInfos.get(1).status = 0;
+            }else if (type.contains("1010")) {
+                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
+                    info.controlInfos.get(1).status = 0;
             }else if (type.contains("1100")) {
                     info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
                     info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
@@ -110,57 +130,30 @@ public class OptionUtils {
             }else if (type.contains("1111")) {
                     info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
                     info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿RUN;
-            }else {
-                return null;
-            }
-
-//            switch (Integer.valueOf(status.code)) {
-//                case 0:
-//                    LogUtils.e("0000---------------", " "+status.code);
-//                    info.controlInfos.get(0).status = 0;
-//                    info.controlInfos.get(1).status = 0;
-//                    break;
-//                case 100:
-//                    LogUtils.e("0100---------------", " "+status.code);
-//                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
-//                    info.controlInfos.get(1).status = 0;
-//                    break;
-//                case 101:
-//                    LogUtils.e("0101---------------", " "+status.code);
-//                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
-//                    info.controlInfos.get(1).status = 0;
-//                    break;
-//                case 1000:
-//                    LogUtils.e("1000---------------", " "+status.code);
-//                    info.controlInfos.get(0).status = 0;
-//                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
-//                    break;
-//                case 1010:
-//                    LogUtils.e("1010---------------", " "+status.code);
-//                    info.controlInfos.get(0).status = 0;
-//                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿RUN;
-//                    break;
-//                case 1100:
-//                    LogUtils.e("1100---------------", " "+status.code);
-//                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
-//                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
-//                    break;
-//                case 1110:
-//                    LogUtils.e("1110---------------", " 第一个链接 正常工作， 第二个链接 没有开启");
-//                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
-//                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
-//                    break;
-//                case 1101:
-//                    LogUtils.e("1101---------------", " "+status.code);
-//                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
-//                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿RUN;
-//                    break;
-//                case 1111:
-//                    LogUtils.e("1111---------------", " "+status.code);
-//                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
-//                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿RUN;
-//                    break;
-//            }
+            }else if (type.contains("1103")){
+                 info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
+                 info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
+            }else if (type.contains("1113")) {
+                 info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
+                 info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
+             }else if (type.contains("1130")){
+                 info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
+                 info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
+            }else if (type.contains("1131")) {
+                 info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
+                 info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿RUN;
+            }else if (type.contains("1133")) {
+                 info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
+                 info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
+             }else if (type.contains("0103")) {
+                 info.controlInfos.get(0).status = 0;
+                 info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
+             }else if (type.contains("1030")) {
+                 info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
+                 info.controlInfos.get(1).status = 0;
+             }else {
+                 return null;
+             }
             return info;
         }else {
             return null;

@@ -3,6 +3,9 @@ package com.auto.di.guan.utils;
 import android.util.Log;
 
 import com.auto.di.guan.MainActivity;
+import com.auto.di.guan.MyApplication;
+import com.auto.di.guan.db.ControlInfo;
+import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.entity.CmdStatus;
 
 import org.greenrobot.eventbus.EventBus;
@@ -21,31 +24,31 @@ public class SendUtils {
     public static int TYPE_CONTENT = 1;
     public static int TYPE_DISCONTENT = -1;
     public static int TYPE_RUN = 0;
+    public static int TYPE_NOT_CLOSE = -2;
 
-
-    public static  void sendopen( String desc, int controlId, String name) {
+    public static  void sendopen(String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.controlName = name;
+        cmdStatus.controlName = info.showName;
         cmdStatus.cmd_start =LOG_OPEN_START+desc;
-        cmdStatus.control_id = controlId;
+        cmdStatus.control_id = info.controId;
         EventBus.getDefault().post(cmdStatus);
 //        Log.e(TAG, cmdStatus.cmd_start);
     }
 
-    public static  void sendClose( String desc, int controlId, String name) {
+    public static  void sendClose( String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
         cmdStatus.cmd_start =LOG_CLOSE_START+desc;
-        cmdStatus.controlName = name;
-        cmdStatus.control_id = controlId;
+        cmdStatus.controlName =info.showName;
+        cmdStatus.control_id = info.controId;
         EventBus.getDefault().post(cmdStatus);
 //        Log.e(TAG, cmdStatus.cmd_start);
     }
 
-    public static  void sendRead( String desc, int controlId, String name) {
+    public static  void sendRead( String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.controlName = name;
+        cmdStatus.controlName = info.showName;
         cmdStatus.cmd_read_start =LOG_READ_START+desc;
-        cmdStatus.control_id = controlId;
+        cmdStatus.control_id = info.controId;
         EventBus.getDefault().post(cmdStatus);
 //        Log.e(TAG, cmdStatus.cmd_read_start);
     }
@@ -77,11 +80,13 @@ public class SendUtils {
     public static void  sendEnd(int controlId, int type, String name) {
         CmdStatus cmdStatus = new CmdStatus();
         if (type == TYPE_RUN) {
-            cmdStatus.cmd_read_end = LOG_NAME+controlId+"操作正常";
+            cmdStatus.cmd_read_end = LOG_NAME+name+"操作正常";
         }else if (type == TYPE_DISCONTENT) {
-            cmdStatus.cmd_read_end = LOG_NAME+controlId+"通信正常,开关线断开";
+            cmdStatus.cmd_read_end = LOG_NAME+name+"通信正常,阀门线断开";
         }else if (type == TYPE_CONTENT) {
-            cmdStatus.cmd_read_end = LOG_NAME+controlId+"通信异常,开关未打开";
+            cmdStatus.cmd_read_end = LOG_NAME+name+"通信异常,阀门未打开";
+        }else if (type == TYPE_NOT_CLOSE) {
+            cmdStatus.cmd_read_end = LOG_NAME+name+"通信异常,阀门未关闭";
         }
 
         cmdStatus.controlName = name;

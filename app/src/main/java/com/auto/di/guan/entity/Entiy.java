@@ -88,6 +88,8 @@ public class Entiy {
     public static final int CONTROL_STATUS＿RUN = 200;
     /**设备已经处于错误状态**/
     public static final int CONTROL_STATUS＿ERROR = 300;
+    /**设备无法关闭**/
+    public static final int CONTROL_STATUS＿NOTCLOSE = 400;
 
 
     /****发送相关命令***/
@@ -164,11 +166,10 @@ public class Entiy {
 
      * @param groupId
      * @param deviceId
-     * @param deveiceName
      * @return
      */
-    public static  String cmdRead(String groupId, String deviceId, String deveiceName) {
-        return "rs"+" "+groupId+" "+deviceId+" "+deveiceName;
+    public static  String cmdRead(String groupId, String deviceId) {
+        return "rs"+" "+groupId+" "+deviceId;
     }
 
     /**

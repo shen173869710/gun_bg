@@ -100,7 +100,7 @@ public class FragmentTab2 extends BaseFragment {
 						 DBManager.getInstance(activity).delLevelInfoList();
 						if (DBManager.getInstance(activity).queryLevelInfoList().size() == 0) {
 							List<LevelInfo> levelInfos = new ArrayList<>();
-							for (int i = 1; i < 20; i++) {
+							for (int i = 1; i < 100; i++) {
 								LevelInfo info = new LevelInfo();
 								info.setLevelId(i);
 								info.setIsGroupUse(false);

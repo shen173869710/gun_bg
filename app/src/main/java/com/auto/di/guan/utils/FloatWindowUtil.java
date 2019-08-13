@@ -3,6 +3,8 @@ package com.auto.di.guan.utils;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.auto.di.guan.entity.CmdStatus;
 import com.auto.di.guan.floatWindow.FloatWindow;
 import com.auto.di.guan.floatWindow.MoveType;
 import com.auto.di.guan.floatWindow.Screen;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -52,7 +55,7 @@ public class FloatWindowUtil {
         alist = new ArrayList<>();
         adapter = new DialogListViewAdapter(mContext, alist);
         mListView.setAdapter(adapter);
-
+        setListViewHeightBasedOnChildren(mListView);
 
     }
 
@@ -102,12 +105,13 @@ public class FloatWindowUtil {
     }
 
     public void onStatsuEvent(CmdStatus event) {
+        LogUtils.e("------------------", new Gson().toJson(event));
         if (event != null) {
             int size = alist.size();
             boolean isHas = false;
             for (int i = 0; i < size; i++) {
                 if (alist.get(i).control_id == event.control_id) {
-                    alist.get(i).cmd_name = "控制阀"+ event.control_id+"号";
+                    alist.get(i).cmd_name = "控制阀"+ event.controlName+"号";
                     if (!TextUtils.isEmpty(event.cmd_start)) {
                         alist.get(i).cmd_start = event.cmd_start;
                     }
@@ -129,11 +133,38 @@ public class FloatWindowUtil {
                     isHas = true;
                 }
             }
+
             if (!isHas) {
+                if (alist.size() == 5) {
+                    alist.clear();
+                }
                 alist.add(event);
             }
             adapter.notifyDataSetChanged();
+            setListViewHeightBasedOnChildren(mListView);
         }
     }
+
+    public  void setListViewHeightBasedOnChildren(ListView listView) {
+        //获取ListView对应的Adapter
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+        int totalHeight = 0;
+        for (int i = 0, len = listAdapter.getCount(); i < len; i++) {   //listAdapter.getCount()返回数据项的数目
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);  //计算子项View 的宽高
+            totalHeight += listItem.getMeasuredHeight();  //统计所有子项的总高度
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        //listView.getDividerHeight()获取子项间分隔符占用的高度
+        //params.height最后得到整个ListView完整显示需要的高度
+        listView.setLayoutParams(params);
+    }
+
 
 }

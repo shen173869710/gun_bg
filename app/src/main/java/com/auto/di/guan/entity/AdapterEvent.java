@@ -7,5 +7,11 @@ import com.auto.di.guan.db.GroupInfo;
  */
 
 public class AdapterEvent {
+    public AdapterEvent() {
+    }
+    public AdapterEvent(int groupId) {
+        this.groupId = groupId;
+    }
 
+    public int groupId;
 }

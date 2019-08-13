@@ -204,6 +204,8 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 					info.controlInfos.get(0).controId = Integer.valueOf(info.deviceId)*2-1;
 					info.controlInfos.get(0).deviceId = Entiy.getBid(info.getDeviceId()+"");
 					info.controlInfos.get(0).controlName = controlName1;
+					info.controlInfos.get(0).showName = info.getControl_1();
+					info.controlInfos.get(0).bindId = info.deviceId;
 					DBManager.getInstance(ControlBindActivity.this).updateDevice(info);
 				}else {
 					info.controlInfos.get(0).imageId = 0;
@@ -216,6 +218,8 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 					info.controlInfos.get(1).controId = Integer.valueOf(info.deviceId)*2;
 					info.controlInfos.get(1).deviceId = Entiy.getBid(info.getDeviceId()+"");
 					info.controlInfos.get(1).controlName = controlName2;
+					info.controlInfos.get(1).showName = info.getControl_2();
+					info.controlInfos.get(1).bindId = info.deviceId;
 					DBManager.getInstance(ControlBindActivity.this).updateDevice(info);
 				}else {
 					info.controlInfos.get(1).imageId = 0;
@@ -359,7 +363,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 	public void onControlStatusEvent(BindEvent event) {
 		String receive = event.status;
 		if (receive != null && !TextUtils.isEmpty(receive)) {
-			if (receive.contains("gid") && isGroupClick) {
+			if ( isGroupClick) {
 				isPeroJectId = true;
 				runOnUiThread(new Runnable() {
 					@Override
@@ -367,19 +371,13 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 						showToastLongMsg("写入项目ID成功");
 					}
 				});
-			}else if (receive.contains("bid")) {
+			}else {
 				isGroupId = true;
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						showToastLongMsg("写入组ID成功");;
-					}
-				});
-			}else {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						showToastLongMsg("写入失败");
+						showToastLongMsg("写入组ID成功");
+						;
 					}
 				});
 			}

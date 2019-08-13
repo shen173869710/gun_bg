@@ -32,12 +32,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.helper.ItemTouchHelperAdapter;
 import com.auto.di.guan.adapter.helper.ItemTouchHelperViewHolder;
 import com.auto.di.guan.adapter.helper.OnStartDragListener;
 import com.auto.di.guan.db.GroupInfo;
+import com.auto.di.guan.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,8 +60,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     private  List<GroupInfo> mItems = new ArrayList<>();
 
     private final OnStartDragListener mDragStartListener;
-
+    private Context mContext;
     public RecyclerListAdapter(Context context, OnStartDragListener dragStartListener, List<GroupInfo>groupInfos) {
+        mContext = context;
         mDragStartListener = dragStartListener;
         mItems = groupInfos;
     }
@@ -73,44 +76,76 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, final int position) {
+        holder.setIsRecyclable(false);
         holder.option_name.setText("第 "+mItems.get(position).getGroupId()+" 组");
 //        holder.option_time_second.setText(""+mItems.get(position).groupLevel);
         // Start a drag whenever the handle view it touched
-        holder.option_layout.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                    mDragStartListener.onStartDrag(holder);
-                }
-                return false;
-            }
-        });
+//        holder.option_layout.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+//                    mDragStartListener.onStartDrag(holder);
+//                }
+//                return false;
+//            }
+//        });
 
-        holder.option_level_value.setText(""+mItems.get(position).groupLevel);
-        holder.option_level_value.addTextChangedListener(new TextWatcher() {
+
+        if (holder.option_level_value.getTag() != null && holder.option_level_value.getTag() instanceof TextWatcher) {
+            holder.option_level_value.removeTextChangedListener((TextWatcher) holder.option_level_value.getTag());
+        }
+
+        final TextWatcher level = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
-
             @Override
             public void afterTextChanged(Editable s) {
+
+
                 int time =0;
                 if (!TextUtils.isEmpty(s.toString().trim())) {
                     time = Integer.valueOf(s.toString().trim());
+                    if (time == 0) {
+                        Toast.makeText(mContext, "优先级必须大于0",Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    int size = mItems.size();
+//                        for (int i = 0; i < size; i++) {
+//                            if (mItems.get(i).getGroupLevel() == time) {
+//                                LogUtils.e("----level---", "level =="+mItems.get(i).getGroupLevel() +"     time = "+time);
+//                                Toast.makeText(mContext, "优先级不能相同",Toast.LENGTH_LONG).show();
+//                                holder.option_level_value.setText("");
+//                                return;
+//                            }
+//                        }
                     mItems.get(position).setGroupLevel(time);
+                }
+            }
+        };
+        holder.option_level_value.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    holder.option_level_value.addTextChangedListener(level);
+                }else{
+                    holder.option_level_value.removeTextChangedListener(level);
                 }
             }
         });
 
+        holder.option_level_value.setTag(level);
 
+        if (holder.option_time_second.getTag() != null && holder.option_time_second.getTag() instanceof TextWatcher) {
+            holder.option_time_second.removeTextChangedListener((TextWatcher) holder.option_time_second.getTag());
+        }
 
-        holder.option_time_second.addTextChangedListener(new TextWatcher() {
+        holder.option_time_second.setText(mItems.get(position).groupTime+"");
+        final TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -120,6 +155,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
+
+
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -128,13 +165,28 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 //                    if (!TextUtils.isEmpty(holder.option_time.getText().toString().trim())) {
 //                        time = Integer.valueOf(holder.option_time.getText().toString().trim())*60+Integer.valueOf(holder.option_time_second.getText().toString().trim());
 //                    }else {
-                        time = (int)(Float.valueOf(holder.option_time_second.getText().toString().trim())*60);
+                    time = (int)(Float.valueOf(holder.option_time_second.getText().toString().trim())*60);
 //                    }
                     mItems.get(position).setGroupTime(time);
                 }
             }
+        };
+
+        holder.option_time_second.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    holder.option_time_second.addTextChangedListener(textWatcher);
+                }else{
+                    holder.option_time_second.removeTextChangedListener(textWatcher);
+                }
+            }
         });
+
+        holder.option_time_second.addTextChangedListener(textWatcher);
+//        holder.option_time_second.setTag(textWatcher);
     }
+
 
     @Override
     public void onItemDismiss(int position) {
@@ -144,13 +196,13 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        int level = mItems.get(fromPosition).groupLevel;
-        Log.e("---","fromPosition = "+fromPosition+"toPosition ="+toPosition);
-        mItems.get(fromPosition).groupLevel =  mItems.get(toPosition).groupLevel;
-        mItems.get(toPosition).groupLevel = level;
-        Collections.swap(mItems, fromPosition, toPosition);
-        notifyItemMoved(fromPosition, toPosition);
-        notifyDataSetChanged();
+//        int level = mItems.get(fromPosition).groupLevel;
+//        Log.e("---","fromPosition = "+fromPosition+"toPosition ="+toPosition);
+//        mItems.get(fromPosition).groupLevel =  mItems.get(toPosition).groupLevel;
+//        mItems.get(toPosition).groupLevel = level;
+//        Collections.swap(mItems, fromPosition, toPosition);
+//        notifyItemMoved(fromPosition, toPosition);
+//        notifyDataSetChanged();
         return true;
     }
 
@@ -197,4 +249,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         this.mItems = groupInfos;
         notifyDataSetChanged();
     }
+
+
 }

@@ -20,7 +20,7 @@ import com.auto.di.guan.entity.Entiy;
 
 public class PollingUtils {
     //开启轮询服务
-    
+    public static boolean isStart;
     public static void startPollingService(Context context, int seconds) {
         //获取AlarmManager系统服务
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -31,7 +31,9 @@ public class PollingUtils {
         //触发服务的起始时间
         long triggerAtTime = SystemClock.elapsedRealtime();
         //使用AlarmManger的setRepeating方法设置定期执行的时间间隔（seconds秒）和需要执行的Service
-        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, pendingIntent);
+//        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, pendingIntent);
+        manager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), seconds, pendingIntent);
+        isStart = true;
     }
 
     //停止轮询服务
@@ -42,5 +44,7 @@ public class PollingUtils {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //取消正在执行的服务
         manager.cancel(pendingIntent);
+        isStart = false;
     }
+
 }

@@ -17,6 +17,7 @@ import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.utils.LogUtils;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -66,14 +67,12 @@ public class FragmentTab0 extends BaseFragment {
                             info.controlInfos = new ArrayList<>();
                             info.controlInfos.add(new ControlInfo(0,"0"));
                             info.controlInfos.add(new ControlInfo(0,"1"));
-                            info.setGroupId(position);
                             DBManager.getInstance(getActivity()).updateDeviceList(deviceInfos);
                             deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
                             adapter.setData(deviceInfos);
                         }
                     });
                 }else {
-
                     if (info.controlInfos.get(0).groupId > 0 || info.controlInfos.get(1).groupId > 0) {
                         showToast("该设备已经分组,不可以删除");
                         return;
@@ -81,11 +80,11 @@ public class FragmentTab0 extends BaseFragment {
                     MainShowDialog.ShowDialog(getActivity(), "删除阀控器", "是删除当前区域阀控器", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            LogUtils.e("-----","----------------position ==="+position);
                             info.setStatus(Entiy.DEVEICE_UNBIND);
                             info.controlInfos = new ArrayList<>();
                             info.controlInfos.add(new ControlInfo(0,"0"));
                             info.controlInfos.add(new ControlInfo(0,"1"));
-                            info.setGroupId(position);
                             DBManager.getInstance(getActivity()).updateDeviceList(deviceInfos);
                             deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
                             adapter.setData(deviceInfos);
@@ -100,22 +99,27 @@ public class FragmentTab0 extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
         if (adapter != null)
-        adapter.setData(deviceInfos);
+        adapter.setData( DBManager.getInstance(getActivity()).queryDeviceList());
     }
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
         if (adapter != null)
-        adapter.setData(deviceInfos);
+        adapter.setData(DBManager.getInstance(getActivity()).queryDeviceList());
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAdapterUpdate(AdapterEvent event) {
-        LogUtils.e("------", "Main");
+
+        List<DeviceInfo>infos = DBManager.getInstance(getActivity()).queryDeviceList();
+        String str = new Gson().toJson(deviceInfos);
+        LogUtils.e("------", "FragmentTab0"+str);
+        if (adapter != null){
+            adapter.setData(infos);
+        }
+
     };
 
 

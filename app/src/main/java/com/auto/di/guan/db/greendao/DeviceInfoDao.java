@@ -31,9 +31,10 @@ public class DeviceInfoDao extends AbstractDao<DeviceInfo, Long> {
         public final static Property DeviceName = new Property(1, String.class, "deviceName", false, "DEVICE_NAME");
         public final static Property GroupId = new Property(2, int.class, "groupId", false, "GROUP_ID");
         public final static Property DeviceId = new Property(3, int.class, "deviceId", false, "DEVICE_ID");
-        public final static Property Status = new Property(4, int.class, "status", false, "STATUS");
-        public final static Property PipeType = new Property(5, int.class, "pipeType", false, "PIPE_TYPE");
-        public final static Property ControlInfos = new Property(6, String.class, "controlInfos", false, "CONTROL_INFOS");
+        public final static Property Elect = new Property(4, String.class, "elect", false, "ELECT");
+        public final static Property Status = new Property(5, int.class, "status", false, "STATUS");
+        public final static Property PipeType = new Property(6, int.class, "pipeType", false, "PIPE_TYPE");
+        public final static Property ControlInfos = new Property(7, String.class, "controlInfos", false, "CONTROL_INFOS");
     }
 
     private final ControlConvert controlInfosConverter = new ControlConvert();
@@ -54,9 +55,10 @@ public class DeviceInfoDao extends AbstractDao<DeviceInfo, Long> {
                 "\"DEVICE_NAME\" TEXT," + // 1: deviceName
                 "\"GROUP_ID\" INTEGER NOT NULL ," + // 2: groupId
                 "\"DEVICE_ID\" INTEGER NOT NULL ," + // 3: deviceId
-                "\"STATUS\" INTEGER NOT NULL ," + // 4: status
-                "\"PIPE_TYPE\" INTEGER NOT NULL ," + // 5: pipeType
-                "\"CONTROL_INFOS\" TEXT);"); // 6: controlInfos
+                "\"ELECT\" TEXT," + // 4: elect
+                "\"STATUS\" INTEGER NOT NULL ," + // 5: status
+                "\"PIPE_TYPE\" INTEGER NOT NULL ," + // 6: pipeType
+                "\"CONTROL_INFOS\" TEXT);"); // 7: controlInfos
     }
 
     /** Drops the underlying database table. */
@@ -80,12 +82,17 @@ public class DeviceInfoDao extends AbstractDao<DeviceInfo, Long> {
         }
         stmt.bindLong(3, entity.getGroupId());
         stmt.bindLong(4, entity.getDeviceId());
-        stmt.bindLong(5, entity.getStatus());
-        stmt.bindLong(6, entity.getPipeType());
+ 
+        String elect = entity.getElect();
+        if (elect != null) {
+            stmt.bindString(5, elect);
+        }
+        stmt.bindLong(6, entity.getStatus());
+        stmt.bindLong(7, entity.getPipeType());
  
         ArrayList controlInfos = entity.getControlInfos();
         if (controlInfos != null) {
-            stmt.bindString(7, controlInfosConverter.convertToDatabaseValue(controlInfos));
+            stmt.bindString(8, controlInfosConverter.convertToDatabaseValue(controlInfos));
         }
     }
 
@@ -104,12 +111,17 @@ public class DeviceInfoDao extends AbstractDao<DeviceInfo, Long> {
         }
         stmt.bindLong(3, entity.getGroupId());
         stmt.bindLong(4, entity.getDeviceId());
-        stmt.bindLong(5, entity.getStatus());
-        stmt.bindLong(6, entity.getPipeType());
+ 
+        String elect = entity.getElect();
+        if (elect != null) {
+            stmt.bindString(5, elect);
+        }
+        stmt.bindLong(6, entity.getStatus());
+        stmt.bindLong(7, entity.getPipeType());
  
         ArrayList controlInfos = entity.getControlInfos();
         if (controlInfos != null) {
-            stmt.bindString(7, controlInfosConverter.convertToDatabaseValue(controlInfos));
+            stmt.bindString(8, controlInfosConverter.convertToDatabaseValue(controlInfos));
         }
     }
 
@@ -125,9 +137,10 @@ public class DeviceInfoDao extends AbstractDao<DeviceInfo, Long> {
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // deviceName
             cursor.getInt(offset + 2), // groupId
             cursor.getInt(offset + 3), // deviceId
-            cursor.getInt(offset + 4), // status
-            cursor.getInt(offset + 5), // pipeType
-            cursor.isNull(offset + 6) ? null : controlInfosConverter.convertToEntityProperty(cursor.getString(offset + 6)) // controlInfos
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // elect
+            cursor.getInt(offset + 5), // status
+            cursor.getInt(offset + 6), // pipeType
+            cursor.isNull(offset + 7) ? null : controlInfosConverter.convertToEntityProperty(cursor.getString(offset + 7)) // controlInfos
         );
         return entity;
     }
@@ -138,9 +151,10 @@ public class DeviceInfoDao extends AbstractDao<DeviceInfo, Long> {
         entity.setDeviceName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setGroupId(cursor.getInt(offset + 2));
         entity.setDeviceId(cursor.getInt(offset + 3));
-        entity.setStatus(cursor.getInt(offset + 4));
-        entity.setPipeType(cursor.getInt(offset + 5));
-        entity.setControlInfos(cursor.isNull(offset + 6) ? null : controlInfosConverter.convertToEntityProperty(cursor.getString(offset + 6)));
+        entity.setElect(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setStatus(cursor.getInt(offset + 5));
+        entity.setPipeType(cursor.getInt(offset + 6));
+        entity.setControlInfos(cursor.isNull(offset + 7) ? null : controlInfosConverter.convertToEntityProperty(cursor.getString(offset + 7)));
      }
     
     @Override

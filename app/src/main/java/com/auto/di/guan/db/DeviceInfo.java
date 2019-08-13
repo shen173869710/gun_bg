@@ -38,13 +38,15 @@ public class DeviceInfo implements Serializable{
     @Convert(columnType =String.class, converter = ControlConvert.class)
     public ArrayList<ControlInfo>controlInfos;
 
-    @Generated(hash = 433245674)
+    @Generated(hash = 344141083)
     public DeviceInfo(Long id, String deviceName, int groupId, int deviceId,
-            int status, int pipeType, ArrayList<ControlInfo> controlInfos) {
+            String elect, int status, int pipeType,
+            ArrayList<ControlInfo> controlInfos) {
         this.id = id;
         this.deviceName = deviceName;
         this.groupId = groupId;
         this.deviceId = deviceId;
+        this.elect = elect;
         this.status = status;
         this.pipeType = pipeType;
         this.controlInfos = controlInfos;
@@ -124,5 +126,13 @@ public class DeviceInfo implements Serializable{
 
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
+    }
+
+    public String getElect() {
+        return this.elect;
+    }
+
+    public void setElect(String elect) {
+        this.elect = elect;
     }
 }

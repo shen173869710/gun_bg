@@ -56,7 +56,7 @@ public class DialogListViewAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.cmd_name.setText("控制阀"+ list.get(position).control_id+"号");
+        holder.cmd_name.setText("控制阀"+ list.get(position).controlName+"号");
 
         if (TextUtils.isEmpty(list.get(position).cmd_start)) {
             holder.cmd_start.setText("");

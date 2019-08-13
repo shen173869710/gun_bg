@@ -1,6 +1,7 @@
 package com.auto.di.guan.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -70,6 +71,8 @@ public class ChooseGridAdapter extends BaseAdapter {
             holder.grid_item_layout = (LinearLayout) convertView.findViewById(R.id.grid_item_layout);
             holder.grid_item_device = (ImageView) convertView.findViewById(R.id.grid_item_device);
             holder.grid_item_device_id = (TextView) convertView.findViewById(R.id.grid_item_device_id);
+            holder.grid_item_device_value = (TextView) convertView.findViewById(R.id.grid_item_device_value);
+            holder.grid_item_device_name = (TextView) convertView.findViewById(R.id.grid_item_device_name);
 
             holder.grid_item_left_layout = (RelativeLayout) convertView.findViewById(R.id.grid_item_left_layout);
             holder.grid_item_left_image = (ImageView) convertView.findViewById(R.id.grid_item_left_image);
@@ -109,9 +112,15 @@ public class ChooseGridAdapter extends BaseAdapter {
             holder.grid_item_device.setVisibility(View.INVISIBLE);
             holder.grid_item_left_layout.setVisibility(View.INVISIBLE);
             holder.grid_item_right_layout.setVisibility(View.INVISIBLE);
+            holder.grid_item_device_name.setVisibility(View.INVISIBLE);
+            holder.grid_item_device_value.setVisibility(View.INVISIBLE);
         }else {
             holder.grid_item_device.setVisibility(View.VISIBLE);
-
+            if (!TextUtils.isEmpty(datas.get(position).getDeviceName())) {
+                holder.grid_item_device_name.setText(datas.get(position).getDeviceName()+"");
+                holder.grid_item_device_name.setVisibility(View.VISIBLE);
+            }
+            holder.grid_item_device_value.setText(deviceInfo.elect+"%");
             ControlInfo info1 = deviceInfo.controlInfos.get(0);
             if (info1.imageId == 0) {
                 holder.grid_item_left_layout.setVisibility(View.INVISIBLE);
@@ -192,6 +201,9 @@ public class ChooseGridAdapter extends BaseAdapter {
         public LinearLayout grid_item_layout;
         public ImageView grid_item_device;
         public TextView grid_item_device_id;
+        public TextView grid_item_device_name;
+        public TextView grid_item_device_value;
+
         public RelativeLayout grid_item_left_layout;
         public ImageView grid_item_left_image;
         public TextView grid_item_left_group;

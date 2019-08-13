@@ -86,7 +86,9 @@ public class StatusAdapter extends BaseAdapter {
     }
 
     public void setData(List<ControlInfo> controlInfos) {
-        datas = controlInfos;
+        datas.clear();
+        datas.addAll(controlInfos);
+//        datas = controlInfos;
         notifyDataSetChanged();
     }
     class ViewHolder {

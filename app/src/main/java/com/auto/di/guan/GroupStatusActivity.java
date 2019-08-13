@@ -41,6 +41,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -64,6 +65,7 @@ public class GroupStatusActivity extends FragmentActivity implements OnStartDrag
     private GridView gridView;
     private List<ControlInfo> controlInfos = new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +73,13 @@ public class GroupStatusActivity extends FragmentActivity implements OnStartDrag
         view = findViewById(R.id.title_bar);
         EventBus.getDefault().register(this);
         groupInfos = DBManager.getInstance(this).queryGrouplList();
+        Iterator<GroupInfo> iterator = groupInfos.iterator();
+        while (iterator.hasNext()) {
+            GroupInfo info = iterator.next();
+            if (info.getGroupTime() == 0) {
+                iterator.remove();
+            }
+        }
 
         textView = (TextView) view.findViewById(R.id.title_bar_title);
         textView.setText("自动轮灌");
@@ -83,11 +92,26 @@ public class GroupStatusActivity extends FragmentActivity implements OnStartDrag
             }
         });
 
-        findViewById(R.id.title_bar_pull).setVisibility(View.VISIBLE);
-        findViewById(R.id.title_bar_pull).setOnClickListener(new View.OnClickListener() {
+        final TextView title_bar_pull = (TextView) findViewById(R.id.title_bar_pull);
+        title_bar_pull.setVisibility(View.VISIBLE);
+        if (PollingUtils.isStart) {
+            title_bar_pull.setText("关闭自动查询");
+        }else {
+            title_bar_pull.setText("开启自动查询");
+        }
+        title_bar_pull.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PollingUtils.startPollingService(GroupStatusActivity.this, MainActivity.ALERM_TIME);
+                if(PollingUtils.isStart) {
+                    PollingUtils.stopPollingService(GroupStatusActivity.this);
+                }else {
+                    PollingUtils.startPollingService(GroupStatusActivity.this, MainActivity.ALERM_TIME);
+                }
+                if (PollingUtils.isStart) {
+                    title_bar_pull.setText("关闭自动查询");
+                }else {
+                    title_bar_pull.setText("开启自动查询");
+                }
             }
         });
 
@@ -137,13 +161,22 @@ public class GroupStatusActivity extends FragmentActivity implements OnStartDrag
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdateEvent event) {
         if (adapter != null) {
-//			Log.e("onMessageEvent", "UpdateEvent");
-            groupInfos = DBManager.getInstance(this).queryGrouplList();
+            List<GroupInfo> infos = DBManager.getInstance(this).queryGrouplList();
+            int size = infos.size();
+            for (int i = 0; i < size; i++) {
+                int gSize = groupInfos.size();
+                for (int m =  0; m < gSize; m++) {
+                    if (infos.get(i).groupId == groupInfos.get(m).groupId) {
+                        groupInfos.get(m).groupRunTime = infos.get(i).groupRunTime;
+                        groupInfos.get(m).groupStatus = infos.get(i).groupStatus;
+                        groupInfos.get(m).groupLevel = infos.get(i).groupLevel;
+                        groupInfos.get(m).groupTime = infos.get(i).groupTime;
+                    }
+                }
+            }
             adapter.setData(groupInfos);
         }
     }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -162,17 +195,18 @@ public class GroupStatusActivity extends FragmentActivity implements OnStartDrag
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAdapterUpdate(AdapterEvent event) {
-
-        groupInfos = DBManager.getInstance(this).queryGrouplList();
-        int size = groupInfos.size();
+        List<GroupInfo> datas = DBManager.getInstance(this).queryGrouplList();
+        int size = datas.size();
         LogUtils.e("------", "GroupStatusActivity"+size);
         if (size > 0) {
             for (int i = 0; i < size; i++) {
-                if (groupInfos.get(i).getGroupStatus() == Entiy.GROUP_STATUS_OPEN) {
-                    controlInfos.clear();
-                    List<ControlInfo> clist = DBManager.getInstance(this).queryControlList(groupInfos.get(i).getGroupId());
-                    controlInfos.addAll(clist);
-                    myGridAdapter.setData(controlInfos);
+                if (datas.get(i).groupId == event.groupId ) {
+                    List<ControlInfo> clist = DBManager.getInstance(this).queryControlList(datas.get(i).getGroupId());
+                    if (clist != null && clist.size() > 0) {
+                        ArrayList<ControlInfo> infos = new ArrayList<>();
+                        infos.addAll(DBManager.getInstance(this).queryControlList(datas.get(i).getGroupId()));
+                        myGridAdapter.setData(infos);
+                    }
                 }
             }
         }

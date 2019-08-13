@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.auto.di.guan.adapter.RecyclerListAdapter;
 import com.auto.di.guan.adapter.helper.OnStartDragListener;
-import com.auto.di.guan.adapter.helper.SimpleItemTouchHelperCallback;
 import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.GroupInfo;
 
@@ -39,13 +38,15 @@ public class GroupOptionActivity extends Activity implements OnStartDragListener
 		title_bar_status  = (TextView)view.findViewById(R.id.title_bar_status);
 		title_bar_status.setVisibility(View.VISIBLE);
 		title_bar_status.setText("保存设置");
-
+//		for (int i = 0; i < groupInfos.size(); i++) {
+//			groupInfos.get(i).setGroupRunTime(0);
+//			groupInfos.get(i).setGroupTime(0);
+//			groupInfos.get(i).setGroupLevel(0);
+//		}
+		DBManager.getInstance(GroupOptionActivity.this).updateGroupList(groupInfos);
 		title_bar_status.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				for (int i = 0; i < groupInfos.size(); i ++) {
-					groupInfos.get(i).setGroupRunTime(0);
-				}
 				DBManager.getInstance(GroupOptionActivity.this).updateGroupList(groupInfos);
 				GroupOptionActivity.this.finish();
 			}

@@ -74,7 +74,7 @@ public class GroupExpandableListViewaAdapter extends BaseExpandableListAdapter {
 
     private void bindChildView(final ChildHolder holder, final int groupPosition, int childPosition) {
         ControlInfo controlInfo = groupLists.get(groupPosition).controlInfos.get(childPosition);
-        holder.group_item_name.setText(controlInfo.controId+" 号控制阀");
+        holder.group_item_name.setText(controlInfo.showName+" 号控制阀");
         holder.group_item_icon.setImageResource(controlInfo.imageId);
     }
 
@@ -130,7 +130,7 @@ public class GroupExpandableListViewaAdapter extends BaseExpandableListAdapter {
         holder.expand_list_group_num.setText("第 "+groupLists.get(groupPosition).groupInfo.groupName+"组");
 
         String txt = "    轮灌优先级第"+groupLists.get(groupPosition).groupInfo.getGroupLevel()+
-                     "    轮灌时长"+groupLists.get(groupPosition).groupInfo.getGroupTime()+"分钟";
+                     "    轮灌时长"+(groupLists.get(groupPosition).groupInfo.getGroupTime()/60)+"分钟";
         holder.expand_list_group_time.setText(txt);
 
         if (groupLists.get(groupPosition).groupInfo.getGroupStatus() == 0) {

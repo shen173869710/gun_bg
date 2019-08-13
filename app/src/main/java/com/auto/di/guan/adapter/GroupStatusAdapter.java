@@ -30,6 +30,7 @@ import com.daimajia.numberprogressbar.NumberProgressBar;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -40,12 +41,16 @@ import java.util.List;
 public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter.MyViewHolder>{
     private Context context;
     private List<GroupInfo> mItems = new ArrayList<>();
-
+    private HashMap<Integer, Integer>hashMap = new HashMap<>();
 
 
     public GroupStatusAdapter(Context context, List<GroupInfo> mItems) {
         this.context = context;
         this.mItems = mItems;
+        int size = mItems.size();
+        for (int i = 0; i < size; i++) {
+            hashMap.put(mItems.get(i).groupId, mItems.get(i).groupTime/60);
+        }
     }
 
     @Override
@@ -77,10 +82,19 @@ public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter
             holder.status_cur_time.setVisibility(View.VISIBLE);
             holder.status_set_time.setVisibility(View.VISIBLE);
         }
+
+        if (info.getGroupRunTime() >0) {
+            hashMap.put(info.groupId, info.groupTime/60);
+        }
         if (info.getGroupRunTime() == info.getGroupTime()) {
             holder.status_par.setMax(100);
             holder.status_par.setProgress(100);
             holder.status_status.setVisibility(View.VISIBLE);
+            int time = 0;
+            if (hashMap.containsKey(info.getGroupId())) {
+                time = hashMap.get(info.getGroupId());
+            }
+            holder.status_status.setText("轮灌完成   灌溉时长" + time+ "分钟");
             holder.status_start.setVisibility(View.GONE);
             holder.status_stop.setVisibility(View.GONE);
             holder.status_next.setVisibility(View.GONE);
@@ -90,20 +104,19 @@ public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter
             holder.status_status.setVisibility(View.GONE);
         }
 
-
-        holder.status_cur_time.setText("总时间 "+info.getGroupTime() + " 剩余时间 "+(info.getGroupTime() - info.getGroupRunTime()));
+        holder.status_cur_time.setText("总时间 "+info.getGroupTime() + " 剩余时间 "+(info.getGroupTime() - info.getGroupRunTime())+"秒");
         holder.status_set_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SetTimeDialog.ShowDialog((Activity)context, new View.OnClickListener() {
+                SetTimeDialog.ShowDialog((Activity)context,
+                        new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String tag = v.getTag().toString();
                         if (!TextUtils.isEmpty(tag)) {
                             int i = Integer.valueOf(tag);
-
-                            if(i * 60 < mItems.get(position).getGroupTime()) {
-                                Toast.makeText(context, "设置的时间不能小于当前剩余时间", Toast.LENGTH_LONG).show();
+                            if(i * 60 < mItems.get(position).getGroupRunTime()) {
+                                Toast.makeText(context, "设置的时间不能小于已经灌溉时间", Toast.LENGTH_LONG).show();
                                 return;
                             }
                             mItems.get(position).setGroupTime(i*60);
@@ -113,13 +126,14 @@ public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter
                 });
             }
         });
+        holder.status_start.setVisibility(View.GONE);
         holder.status_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EventBus.getDefault().post(new MessageEvent(Entiy.GROUP_START, info));
             }
         });
-
+        holder.status_stop.setVisibility(View.GONE);
         holder.status_stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +152,9 @@ public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter
                 EventBus.getDefault().post(new MessageEvent(Entiy.GROUP_NEXT,info));
             }
         });
+        if (mItems.size() == position +1 || info.getGroupStatus() == 0) {
+            holder.status_next.setVisibility(View.GONE);
+        }
     }
 
     @Override

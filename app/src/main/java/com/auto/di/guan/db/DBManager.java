@@ -1,6 +1,7 @@
 package com.auto.di.guan.db;
 
 import android.content.Context;
+import android.content.Entity;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.auto.di.guan.MyApplication;
@@ -11,6 +12,7 @@ import com.auto.di.guan.db.greendao.GroupInfoDao;
 import com.auto.di.guan.db.greendao.LevelInfoDao;
 import com.auto.di.guan.db.greendao.UserActionDao;
 import com.auto.di.guan.db.greendao.UserDao;
+import com.auto.di.guan.entity.Entiy;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.query.QueryBuilder;
@@ -322,7 +324,6 @@ public class DBManager {
         return list;
     }
 
-
     /**
      * 查询分组列表
      */
@@ -352,6 +353,22 @@ public class DBManager {
             controlInfos.add(deviceInfos.get(i).controlInfos.get(0));
             controlInfos.add(deviceInfos.get(i).controlInfos.get(1));
 
+        }
+        return controlInfos;
+    }
+
+
+    /**
+     * 查询分组列表
+     */
+    public List<ControlInfo> queryBindControlList() {
+        ArrayList<ControlInfo>controlInfos = new ArrayList<>();
+        List<DeviceInfo>deviceInfos = queryDeviceList();
+        for (int i = 0; i < deviceInfos.size(); i++) {
+            if (deviceInfos.get(i).status == Entiy.DEVEICE_BIND) {
+                controlInfos.add(deviceInfos.get(i).controlInfos.get(0));
+                controlInfos.add(deviceInfos.get(i).controlInfos.get(1));
+            }
         }
         return controlInfos;
     }

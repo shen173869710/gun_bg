@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
+    android:layout_height="@dimen/float_item_heigt"
     android:orientation="horizontal"
     >
     <TextView
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="@dimen/float_item_heigt"
         android:layout_weight="3"
         android:id="@+id/cmd_name"
         android:text="name"
         android:gravity="center"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/text_size_14"
         android:textColor="@color/black"
         />
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="@dimen/float_item_heigt"
         android:layout_weight="3"
         android:id="@+id/cmd_start"
         android:text="start"
         android:gravity="center"
+        android:textSize="@dimen/text_size_14"
+        android:layout_gravity="center_vertical"
         android:textColor="@color/black"
         />
     <View
@@ -34,12 +38,13 @@
         />
     <TextView
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="@dimen/float_item_heigt"
         android:layout_weight="3"
         android:id="@+id/cmd_end"
         android:text="end"
         android:gravity="center"
-        android:textSize="@dimen/text_size_16"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/text_size_14"
         android:textColor="@color/black"
         />
     <View
@@ -53,12 +58,13 @@
         />
     <TextView
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="@dimen/float_item_heigt"
         android:layout_weight="3"
         android:id="@+id/cmd_read_start"
         android:text="end"
         android:gravity="center"
-        android:textSize="@dimen/text_size_16"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/text_size_14"
         android:textColor="@color/black"
         />
     <View
@@ -72,11 +78,12 @@
         />
     <TextView
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="@dimen/float_item_heigt"
         android:layout_weight="3"
         android:id="@+id/cmd_read_middle"
         android:gravity="center"
-        android:textSize="@dimen/text_size_16"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/text_size_14"
         android:textColor="@color/black"
         />
     <View
@@ -90,11 +97,12 @@
         />
     <TextView
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="@dimen/float_item_heigt"
         android:layout_weight="3"
         android:id="@+id/cmd_read_end"
         android:gravity="center"
-        android:textSize="@dimen/text_size_16"
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/text_size_14"
         android:textColor="@color/black"
         />
 </LinearLayout>

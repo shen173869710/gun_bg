@@ -11,6 +11,7 @@ import android.widget.ExpandableListView;
 
 import com.auto.di.guan.GroupOptionActivity;
 import com.auto.di.guan.GroupStatusActivity;
+import com.auto.di.guan.MyApplication;
 import com.auto.di.guan.OptionSettingActivity;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.GroupExpandableListViewaAdapter;
@@ -75,6 +76,9 @@ public class FragmentTab32 extends BaseFragment {
 		fragment_3_2_edit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+//				if (MyApplication.getInstance().isGroupStart()) {
+//					return;
+//				}
 				activity.startActivity(new Intent(activity, GroupOptionActivity.class));
 
 			}
