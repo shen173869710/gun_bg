@@ -38,13 +38,19 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 
 	private View bind_deivce_item;
 	private View bind_group_item;
+
+
 	private View bind_control_title_1;
 	private View bind_control_id_1;
+	private View bind_control_alias_1;
+	private EditText bind_control_nick_1;
 	private EditText bind_control_name_1;
 	private CheckBox bind_control_sel_1;
 
 	private View bind_control_title_2;
 	private View bind_control_id_2;
+	private View bind_control_alias_2;
+	private EditText bind_control_nick_2;
 	private EditText bind_control_name_2;
 	private CheckBox bind_control_sel_2;
 
@@ -110,6 +116,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 		((TextView)(bind_group_item.findViewById(R.id.item_title))).setText("阀控器ID");
 		((TextView)(bind_group_item.findViewById(R.id.item_desc))).setText(info.getDeviceId()+"");
 
+
 		bind_control_title_1 = findViewById(R.id.bind_control_title_1);
 		bind_control_id_1 = findViewById(R.id.bind_control_id_1);
 		((TextView)(bind_control_title_1.findViewById(R.id.item_title))).setText("阀门");
@@ -119,6 +126,14 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 		bind_control_name_1 = ((EditText)bind_control_id_1.findViewById(R.id.item_desc));
 		bind_control_sel_1 = (CheckBox) findViewById(R.id.bind_control_sel_1);
 
+		bind_control_alias_1 = findViewById(R.id.bind_control_alias_1);
+		((TextView)(bind_control_alias_1.findViewById(R.id.item_title))).setText("阀门简称");
+		bind_control_nick_1 = bind_control_alias_1.findViewById(R.id.item_desc);
+		bind_control_alias_2 = findViewById(R.id.bind_control_alias_2);
+		((TextView)(bind_control_alias_2.findViewById(R.id.item_title))).setText("阀门简称");
+		bind_control_nick_2 = bind_control_alias_2.findViewById(R.id.item_desc);
+
+
 		bind_control_title_2 = findViewById(R.id.bind_control_title_2);
 		bind_control_id_2 = findViewById(R.id.bind_control_id_2);
 		((TextView)(bind_control_title_2.findViewById(R.id.item_title))).setText("阀门");
@@ -127,13 +142,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 		bind_control_name_2 = ((EditText)(bind_control_id_2.findViewById(R.id.item_desc)));
 		bind_control_sel_2 = (CheckBox) findViewById(R.id.bind_control_sel_2);
 
-//
-//		if (info.controlInfos.get(0).controId != 0) {
-//			editText1.setText(""+info.controlInfos.get(0).controId);
-//		}
-//		if (info.controlInfos.get(1).controId != 0) {
-//			editText2.setText(""+info.controlInfos.get(1).controId);
-//		}
+
 
 		bind_cantrol_save = (Button) findViewById(R.id.bind_cantrol_save);
 		bind_deivce_id = (Button) findViewById(R.id.bind_deivce_id);
@@ -175,28 +184,40 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 				String controlName2 =bind_control_name_2.getText().toString().trim();
 				String deviceName = bind_deivce_name_edit.getText().toString().trim();
 
+				String nick1 = bind_control_nick_1.getText().toString().trim();
+				String nick2 = bind_control_nick_2.getText().toString().trim();
+
 				if (TextUtils.isEmpty(deviceName)) {
 					showToastLongMsg("请输入设备的名称");
 					return;
 				}
 
-				if (TextUtils.isEmpty(controlName1)) {
+				if (TextUtils.isEmpty(controlName1) && bind_control_sel_1.isChecked()) {
 					showToastLongMsg("请输入控制阀 1 的名称");
 					return;
 				}
-				if (TextUtils.isEmpty(controlName2)) {
+				if (TextUtils.isEmpty(controlName2) && bind_control_sel_2.isChecked()) {
 					showToastLongMsg("请输入控制阀 2 的名称");
 					return;
 				}
 
-				if (!isPeroJectId) {
-					showToastLongMsg("项目ID未写入");
+				if (TextUtils.isEmpty(nick1) && bind_control_sel_1.isChecked()) {
+					showToastLongMsg("请输入控制阀 1 的别名");
 					return;
 				}
-				if (!isGroupId) {
-					showToastLongMsg("组ID未写入");
+				if (TextUtils.isEmpty(nick2) && bind_control_sel_2.isChecked()) {
+					showToastLongMsg("请输入控制阀 2 的别名");
 					return;
 				}
+
+//				if (!isPeroJectId) {
+//					showToastLongMsg("项目ID未写入");
+//					return;
+//				}
+//				if (!isGroupId) {
+//					showToastLongMsg("组ID未写入");
+//					return;
+//				}
 				info.setDeviceName(deviceName);
 				if (bind_control_sel_1.isChecked()) {
 					info.controlInfos.get(0).imageId = R.mipmap.lighe_1;
@@ -205,6 +226,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 					info.controlInfos.get(0).deviceId = Entiy.getBid(info.getDeviceId()+"");
 					info.controlInfos.get(0).controlName = controlName1;
 					info.controlInfos.get(0).showName = info.getControl_1();
+					info.controlInfos.get(0).nickName = nick1;
 					info.controlInfos.get(0).bindId = info.deviceId;
 					DBManager.getInstance(ControlBindActivity.this).updateDevice(info);
 				}else {
@@ -219,6 +241,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 					info.controlInfos.get(1).deviceId = Entiy.getBid(info.getDeviceId()+"");
 					info.controlInfos.get(1).controlName = controlName2;
 					info.controlInfos.get(1).showName = info.getControl_2();
+					info.controlInfos.get(1).nickName = nick2;
 					info.controlInfos.get(1).bindId = info.deviceId;
 					DBManager.getInstance(ControlBindActivity.this).updateDevice(info);
 				}else {
@@ -229,30 +252,19 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 				finish();
 			    break;
 			case R.id.bind_deivce_id:
-//				try {
 					isGroupClick = true;
-//					mOutputStream.write(new String(Entiy.writeGid(groupName)).getBytes());
-//					mOutputStream.write('\n');
 					EventBus.getDefault().post(new ReadEvent(Entiy.writeGid(groupName),0));
 					if(dialog != null && !dialog.isShowing()) {
 						dialog.show();
 					}
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
 				break;
 			case R.id.bind_deivce_control_id:
-//				try {
 					isGroupClick = false;
-//					mOutputStream.write(new String(Entiy.writeBid(info.getDeviceId()+"")).getBytes());
-//					mOutputStream.write('\n');
 				EventBus.getDefault().post(new ReadEvent(Entiy.writeBid(info.getDeviceId()+""),1));
 					if(dialog != null && !dialog.isShowing()) {
 						dialog.show();
 					}
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
+
 				break;
 		}
 	}
@@ -275,12 +287,6 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 			}
 		}
 		return false;
-	}
-
-	public void doTask(int id) {
-		Task task = new Task();
-        task.setId(id);
-        HttpUtil.getInstance().doHttpTask(this,task,this);
 	}
 
 	@Override
@@ -312,52 +318,6 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 	public void urlRequestException(Task result) {
 
 	}
-
-//	@Override
-//	protected void onDataReceived(byte[] buffer, int size) {
-//		final String receive = new String(buffer, 0, size);
-//		if (receive != null && !TextUtils.isEmpty(receive)) {
-//			if (receive.contains("ok") && isGroupClick) {
-//				isPeroJectId = true;
-//				runOnUiThread(new Runnable() {
-//					@Override
-//					public void run() {
-//						showToastLongMsg("写入项目ID成功");
-//					}
-//				});
-//
-//
-//
-//			}else if (receive.contains("ok")) {
-//				isGroupId = true;
-//				runOnUiThread(new Runnable() {
-//					@Override
-//					public void run() {
-//						showToastLongMsg("写入组ID成功");;
-//					}
-//				});
-//			}else {
-//				runOnUiThread(new Runnable() {
-//					@Override
-//					public void run() {
-//						showToastLongMsg("写入失败");
-//					}
-//				});
-//			}
-//		}else {
-//			runOnUiThread(new Runnable() {
-//				@Override
-//				public void run() {
-//					showToastLongMsg("写入失败");
-//				}
-//			});
-//
-//		}
-//		if(dialog != null) {
-//			dialog.dismiss();
-//		}
-//	}
-
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onControlStatusEvent(BindEvent event) {

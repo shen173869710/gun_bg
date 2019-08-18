@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
+import com.auto.di.guan.MyApplication;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.MyGridAdapter;
 import com.auto.di.guan.db.ControlInfo;
@@ -58,6 +60,12 @@ public class FragmentTab0 extends BaseFragment {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
+
+                if (MyApplication.user.getLevel() != 9999) {
+                    Toast.makeText(getContext(), "权限不足无法操作",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 final DeviceInfo info = deviceInfos.get(position);
                 if (info.getStatus() == Entiy.DEVEICE_UNBIND) {
                     MainShowDialog.ShowDialog(getActivity(), "添加阀控器", "添加阀控器到当前区域", new View.OnClickListener() {

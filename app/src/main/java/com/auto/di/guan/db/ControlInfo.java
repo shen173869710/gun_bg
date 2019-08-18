@@ -29,6 +29,7 @@ public class ControlInfo implements Serializable {
      */
     public int bindId;
     public String showName;
+    public String nickName;
     /**
      *   0  未添加
      *   1  已经添加

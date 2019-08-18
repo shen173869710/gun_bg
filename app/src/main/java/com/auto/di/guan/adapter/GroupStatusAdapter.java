@@ -2,23 +2,15 @@ package com.auto.di.guan.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.ViewGroup;
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.auto.di.guan.MainActivity;
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.GroupInfo;

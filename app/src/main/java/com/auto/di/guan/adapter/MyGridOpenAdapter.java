@@ -214,17 +214,18 @@ public class MyGridOpenAdapter extends BaseAdapter {
     }
 
     private void openDevice(final ControlInfo controlInfo) {
-        boolean isStart = false;
 
-        MainoptionDialog.ShowDialog((Activity) context, "手动操作", new MainoptionDialog.ItemClick() {
+        String status = "关闭";
+        if (controlInfo.status == Entiy.CONTROL_STATUS＿RUN) {
+            status = "开启";
+        }
+        MainoptionDialog.ShowDialog((Activity) context,controlInfo , "手动操作",status,new MainoptionDialog.ItemClick() {
             @Override
             public void onItemClick(int index) {
                 EventBus.getDefault().post(new ControlOptionEvent(index,controlInfo, true));
             }
         });
-//        if (controlInfo.status == Entiy.CONTROL_STATUS＿RUN) {
-//                isStart = true;
-//        }
+
 //
 //        if (controlInfo.status == Entiy.CONTROL_STATUS＿ERROR) {
 //            MainShowDialog.ShowDialog((Activity) context, "查询状态", "读取阀门异常状态是的修复", new View.OnClickListener() {

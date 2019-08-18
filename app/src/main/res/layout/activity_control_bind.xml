@@ -74,6 +74,9 @@
             <include
                 android:id="@+id/bind_control_id_1"
                 layout="@layout/input_item_layout"></include>
+            <include
+                android:id="@+id/bind_control_alias_1"
+                layout="@layout/input_item_layout"></include>
             <CheckBox
                 android:id="@+id/bind_control_sel_1"
                 android:layout_width="50dp"
@@ -92,6 +95,9 @@
                 layout="@layout/input_desc_item_layout"></include>
             <include
                 android:id="@+id/bind_control_id_2"
+                layout="@layout/input_item_layout"></include>
+            <include
+                android:id="@+id/bind_control_alias_2"
                 layout="@layout/input_item_layout"></include>
             <CheckBox
                 android:id="@+id/bind_control_sel_2"

@@ -14,6 +14,7 @@ import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.GroupList;
+import com.auto.di.guan.dialog.Main31Dialog;
 import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.Entiy;
@@ -45,31 +46,36 @@ public class FragmentTab31 extends BaseFragment {
 		adapter = new GroupExpandableListViewaAdapter31(getActivity(), groupLists, this);
 		expandableListView.setAdapter(adapter);
 		expandableListView.setGroupIndicator(null);
-//		expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-//			@Override
-//			public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-//
-//				return false;
-//			}
-//		});
-
 		EventBus.getDefault().register(this);
 		return view;
 	}
 
 
 
-	public void startWork(GroupInfo groupInfo) {
-		if (groupInfo.getGroupStatus() == 0) {
-			if (MyApplication.getInstance().isGroupInfoStart() == null) {
-				showStartDialog(groupInfo, null);
-			}else {
-				showStartDialog(groupInfo, MyApplication.getInstance().isGroupInfoStart());
-			}
+	public void startWork(final GroupInfo groupInfo) {
 
+		String title;
+		if (groupInfo.getGroupStatus() == 0) {
+			title = "当前分组处于关闭状态";
 		}else {
-			showStoptDialog(groupInfo);
+			title = "当前分组处于运行状态";
 		}
+
+		Main31Dialog.ShowDialog(getActivity(),title, new Main31Dialog.ItemClick(){
+
+			@Override
+			public void onItemClick(int index) {
+				if (index == 1) {
+					groupInfo.setGroupStatus(1);
+					DBManager.getInstance(activity).updateGroup(groupInfo);
+					EventBus.getDefault().post(new GroupOptionEvent(groupInfo,true));
+				}else if (index == 2) {
+					groupInfo.setGroupStatus(0);
+					DBManager.getInstance(activity).updateGroup(groupInfo);
+					EventBus.getDefault().post(new GroupOptionEvent(groupInfo, false));
+				}
+			}
+		});
 	}
 
 	private void showStoptDialog(final GroupInfo groupInfo) {

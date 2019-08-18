@@ -1,6 +1,7 @@
 package com.auto.di.guan.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
@@ -12,13 +13,15 @@ import com.auto.di.guan.MainActivity;
 
 public class BaseFragment extends Fragment implements AdapterListener{
 
-    public MainActivity activity;
+    public Activity activity;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.activity = (MainActivity) activity;
+        this.activity =  activity;
     }
+
+
 
     @Override
     public void onResume() {

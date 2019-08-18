@@ -28,7 +28,7 @@ public class SendUtils {
 
     public static  void sendopen(String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.controlName = info.showName;
+        cmdStatus.controlName = info.nickName;
         cmdStatus.cmd_start =LOG_OPEN_START+desc;
         cmdStatus.control_id = info.controId;
         EventBus.getDefault().post(cmdStatus);
@@ -38,7 +38,7 @@ public class SendUtils {
     public static  void sendClose( String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
         cmdStatus.cmd_start =LOG_CLOSE_START+desc;
-        cmdStatus.controlName =info.showName;
+        cmdStatus.controlName =info.nickName;
         cmdStatus.control_id = info.controId;
         EventBus.getDefault().post(cmdStatus);
 //        Log.e(TAG, cmdStatus.cmd_start);
@@ -46,7 +46,7 @@ public class SendUtils {
 
     public static  void sendRead( String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.controlName = info.showName;
+        cmdStatus.controlName = info.nickName;
         cmdStatus.cmd_read_start =LOG_READ_START+desc;
         cmdStatus.control_id = info.controId;
         EventBus.getDefault().post(cmdStatus);

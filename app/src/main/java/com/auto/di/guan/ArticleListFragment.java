@@ -7,8 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.auto.di.guan.fragment.FragmentTab0;
 import com.auto.di.guan.fragment.FragmentTab1;
 import com.auto.di.guan.fragment.FragmentTab10;
@@ -66,8 +69,15 @@ public class ArticleListFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		activity.setTitle(Entiy.TAB_TITLE[position]);
 
+		Log.e("------", "----"+position);
+		if (MyApplication.user.getLevel() != 9999){
+			if (position != 0 && position != 3 && position != 4 && position != 5) {
+				Toast.makeText(getContext(), "权限不足无法操作",Toast.LENGTH_SHORT).show();
+				return;
+			}
+		}
+		activity.setTitle(Entiy.TAB_TITLE[position]);
 		super.onListItemClick(l, v, position, id);
 		adapter.setSelectedPosition(position);
 		String str = (String) adapter.getItem(position);

@@ -17,48 +17,36 @@ import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.utils.ShareUtil;
 
 
-public class MainoptionDialog extends Dialog {
+public class Main31Dialog extends Dialog {
 
-	public Button main_option_status;
 	public Button main_option_open;
 	public Button main_option_close;
 	public TextView main_option_title;
 
-	public TextView main_option_1;
-	public TextView main_option_2;
-	public TextView main_option_3;
-	public TextView main_option_4;
-	public TextView main_option_5;
 
-	public MainoptionDialog(Context context) {
+
+	public Main31Dialog(Context context) {
 		super(context, R.style.UpdateDialog);
 		setCustomView();
 	}
 
-	public MainoptionDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+	public Main31Dialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
 		super(context, R.style.UpdateDialog);
 		this.setCancelable(cancelable);
 		this.setOnCancelListener(cancelListener);
 		setCustomView();
 	}
 
-	public MainoptionDialog(Context context, int theme) {
+	public Main31Dialog(Context context, int theme) {
 		super(context, R.style.UpdateDialog);
 		setCustomView();
 	}
 
 	private void setCustomView() {
-		View mView = LayoutInflater.from(getContext()).inflate(R.layout.main_option_dialog, null);
-		main_option_status = (Button) mView.findViewById(R.id.main_option_status);
+		View mView = LayoutInflater.from(getContext()).inflate(R.layout.main_32_dialog, null);
 		main_option_open = (Button) mView.findViewById(R.id.main_option_open);
 		main_option_close = (Button) mView.findViewById(R.id.main_option_close);
 		main_option_title = (TextView) mView.findViewById(R.id.main_option_title);
-
-		main_option_1 = mView.findViewById(R.id.main_option_1);
-		main_option_2 = mView.findViewById(R.id.main_option_2);
-		main_option_3 = mView.findViewById(R.id.main_option_3);
-		main_option_4 = mView.findViewById(R.id.main_option_4);
-		main_option_5 = mView.findViewById(R.id.main_option_5);
 		mView.setBackgroundResource(R.drawable.bg_d_rect_border);
 		super.setContentView(mView);
 	}
@@ -75,16 +63,9 @@ public class MainoptionDialog extends Dialog {
 
 
 
-	public static void ShowDialog(final Activity context, ControlInfo info, String title, String status,final ItemClick listener) {
-		final MainoptionDialog dialog = new MainoptionDialog(context);
+	public static void ShowDialog(final Activity context,String title,final ItemClick listener) {
+		final Main31Dialog dialog = new Main31Dialog(context);
 		dialog.main_option_title.setText(title);
-		dialog.main_option_status.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				listener.onItemClick(0);
-				dialog.dismiss();
-			}
-		});
 		dialog.main_option_open.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -100,11 +81,7 @@ public class MainoptionDialog extends Dialog {
 			}
 		});
 
-		dialog.main_option_1.setText(info.showName);
-		dialog.main_option_2.setText(info.nickName);
-		dialog.main_option_3.setText(info.controId+"");
-		dialog.main_option_4.setText(""+ShareUtil.getStringLocalValue(context, Entiy.GROUP_NAME));
-		dialog.main_option_5.setText(status);
+
 		LayoutParams lay = dialog.getWindow().getAttributes();
 		DisplayMetrics dm = new DisplayMetrics();// 获取屏幕分辨率
 		context.getWindowManager().getDefaultDisplay().getMetrics(dm);//

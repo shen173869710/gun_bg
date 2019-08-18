@@ -1,7 +1,6 @@
 package com.auto.di.guan.fragment;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +14,9 @@ import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.User;
 import com.auto.di.guan.db.UserAction;
-import com.auto.di.guan.dialog.ChooseTimeDialog;
 import com.auto.di.guan.dialog.MainChooseDialog;
 import com.auto.di.guan.dialog.MainChooseIdDialog;
 import com.auto.di.guan.entity.Entiy;
-import com.auto.di.guan.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;

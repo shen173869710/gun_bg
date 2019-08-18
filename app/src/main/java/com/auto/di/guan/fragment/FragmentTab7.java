@@ -17,7 +17,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.auto.di.guan.MainActivity;
 import com.auto.di.guan.R;
+import com.auto.di.guan.entity.ElecEvent;
+import com.auto.di.guan.utils.PollingUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -35,6 +40,7 @@ public class FragmentTab7 extends BaseFragment {
 	private TextView db_desc;
 	private Button db_load;
 	private Button db_unload;
+	private TextView title_bar_code;
 //	private AsyncQueryHandler mHandler = new AsyncQueryHandler() {
 //		@Override
 //		protected Handler createHandler(Looper looper) {
@@ -118,6 +124,14 @@ public class FragmentTab7 extends BaseFragment {
 			}
 		});
 
+		title_bar_code = view.findViewById(R.id.title_bar_code);
+		title_bar_code.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+//				PollingUtils.startPollingService(activity, MainActivity.ALERM_TIME);
+				EventBus.getDefault().post(new ElecEvent());
+			}
+		});
 		return view;
 	}
 

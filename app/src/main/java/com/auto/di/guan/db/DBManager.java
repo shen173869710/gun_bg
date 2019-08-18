@@ -462,7 +462,7 @@ public class DBManager {
         DaoSession daoSession = daoMaster.newSession();
         UserActionDao userDao = daoSession.getUserActionDao();
         QueryBuilder<UserAction> qb = userDao.queryBuilder();
-        qb.orderAsc(UserActionDao.Properties.Time);
+        qb.orderDesc(UserActionDao.Properties.Time);
         List<UserAction> list = qb.list();
         return list;
     }
@@ -472,7 +472,7 @@ public class DBManager {
         DaoSession daoSession = daoMaster.newSession();
         UserActionDao userDao = daoSession.getUserActionDao();
         QueryBuilder<UserAction> qb = userDao.queryBuilder();
-        qb.where(UserActionDao.Properties.ActionType.eq(type)).orderAsc(UserActionDao.Properties.Time);
+        qb.where(UserActionDao.Properties.ActionType.eq(type)).orderDesc(UserActionDao.Properties.Time);
         List<UserAction> list = qb.list();
         return list;
     }

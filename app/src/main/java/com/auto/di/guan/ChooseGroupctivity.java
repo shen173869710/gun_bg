@@ -77,15 +77,15 @@ public class ChooseGroupctivity extends Activity {
 
 				List<LevelInfo>levelInfos = DBManager.getInstance(ChooseGroupctivity.this).queryUserLevelInfoListByGroup(false);
 				if (levelInfos != null && levelInfos.size() > 0) {
-
 					if (groupId == 0) {
 						groupId = levelInfos.get(0).getLevelId();
+						groupInfo.setGroupId(groupId);
+						groupInfo.setGroupLevel(groupId);
+						groupInfo.setGroupName(levelInfos.get(0).getLevelId()+"");
+						levelInfos.get(0).setIsGroupUse(true);
+						DBManager.getInstance(ChooseGroupctivity.this).insertGroup(groupInfo);
+						DBManager.getInstance(ChooseGroupctivity.this).updateLevelInfo(levelInfos.get(0));
 					}
-					groupInfo.setGroupId(groupId);
-					groupInfo.setGroupLevel(groupId);
-					groupInfo.setGroupName(levelInfos.get(0).getLevelId()+"");
-					levelInfos.get(0).setIsGroupUse(true);
-					DBManager.getInstance(ChooseGroupctivity.this).insertGroup(groupInfo);
 					int size = deviceInfos.size();
 					for (int i = 0; i < size; i++) {
 						if (deviceInfos.get(i).controlInfos.get(0).isSelect) {
@@ -96,7 +96,6 @@ public class ChooseGroupctivity extends Activity {
 						}
 					}
 					DBManager.getInstance(ChooseGroupctivity.this).updateDeviceList(deviceInfos);
-					DBManager.getInstance(ChooseGroupctivity.this).updateLevelInfo(levelInfos.get(0));
 					finish();
 				}else  {
 					Toast.makeText(ChooseGroupctivity.this, "没有可用的分组",Toast.LENGTH_LONG).show();

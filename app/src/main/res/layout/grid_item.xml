@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/grid_item_layout"
     android:layout_width="@dimen/main_grid_width"
     android:layout_height="@dimen/main_grid_width"
-    android:orientation="vertical"
-    android:id="@+id/grid_item_layout"
     android:background="@drawable/mian_item_bg"
-    >
+    android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        >
+        android:layout_weight="1">
 
 
         <TextView
@@ -18,146 +17,135 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:visibility="gone"
             android:textColor="@color/green_70"
             android:textSize="@dimen/text_size_10"
-            />
+            android:visibility="gone" />
 
 
         <TextView
             android:id="@+id/grid_item_device_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_12"
-            />
+            android:textSize="@dimen/text_size_12" />
 
 
         <ImageView
             android:id="@+id/grid_item_device"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@mipmap/lighe_bg"
-            android:layout_gravity="center_horizontal"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="-10dp"
-            />
+            android:background="@mipmap/lighe_bg" />
 
         <TextView
             android:id="@+id/grid_item_device_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:gravity="center"
             android:text="1"
-            android:layout_alignParentRight="true"
             android:textColor="@android:color/holo_red_light"
-            android:textSize="@dimen/text_size_12"
-            />
+            android:textSize="@dimen/text_size_12" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
+
         <RelativeLayout
             android:id="@+id/grid_item_left_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            >
+            android:layout_weight="1">
 
             <TextView
                 android:id="@+id/grid_item_left_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="2dp"
-                android:paddingLeft="2dp"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:paddingLeft="2dp"
+                android:paddingTop="2dp"
                 android:textColor="@android:color/holo_red_dark"
-                android:textSize="@dimen/text_size_10"
-                />
+                android:textSize="@dimen/text_size_10" />
 
             <ImageView
                 android:id="@+id/grid_item_left_image"
-                android:gravity="center"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="@mipmap/lighe_0"
                 android:layout_centerHorizontal="true"
-                />
+                android:background="@mipmap/lighe_0"
+                android:gravity="center" />
+
             <TextView
                 android:id="@+id/grid_item_left_group"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:gravity="end"
-                android:paddingTop="3dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:textColor="@android:color/white"
                 android:background="@mipmap/red_icon"
-                android:textSize="@dimen/text_size_10"
-                />
+                android:gravity="end"
+                android:paddingTop="3dp"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_10" />
 
             <TextView
                 android:id="@+id/grid_item_left_sel"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/img_unselected"
-                />
+                android:background="@drawable/img_unselected" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/grid_item_right_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            >
+            android:layout_weight="1">
+
             <TextView
                 android:id="@+id/grid_item_right_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="2dp"
-                android:paddingLeft="2dp"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:paddingLeft="2dp"
+                android:paddingTop="2dp"
                 android:textColor="@android:color/holo_red_dark"
-                android:textSize="@dimen/text_size_10"
-                />
+                android:textSize="@dimen/text_size_10" />
+
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="#ee0000"
-                ></View>
+                android:background="#ee0000"></View>
+
             <ImageView
                 android:id="@+id/grid_item_right_image"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="@mipmap/lighe_0"
                 android:layout_centerHorizontal="true"
-                />
-
+                android:background="@mipmap/lighe_0" />
 
 
             <TextView
                 android:id="@+id/grid_item_right_group"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:gravity="end"
-                android:paddingTop="3dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:textColor="@android:color/white"
                 android:background="@mipmap/red_icon"
-                android:textSize="@dimen/text_size_10"
+                android:gravity="end"
+                android:paddingTop="3dp"
                 android:text="1"
-                />
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_10" />
 
 
             <TextView
@@ -165,8 +153,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/img_unselected"
-                />
+                android:background="@drawable/img_unselected" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

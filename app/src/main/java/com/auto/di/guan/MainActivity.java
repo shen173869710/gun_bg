@@ -2,7 +2,6 @@ package com.auto.di.guan;
 
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +12,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +25,7 @@ import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.BindEvent;
 import com.auto.di.guan.entity.CmdStatus;
 import com.auto.di.guan.entity.ControlOptionEvent;
+import com.auto.di.guan.entity.ElecEvent;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.entity.GroupOptionEvent;
 import com.auto.di.guan.entity.MessageEvent;
@@ -70,8 +69,6 @@ public class MainActivity extends SerialPortActivity {
     private FragmentManager manager;
     private FragmentTransaction transaction;
     private TextView textView;
-    private TextView textCode;
-    private TextView textStatus;
 
     private List<GroupInfo> groupInfos;
     private final String TITLE_NAME = "title_name";
@@ -199,8 +196,7 @@ public class MainActivity extends SerialPortActivity {
 //		PollingUtils.startPollingService(this, ALERM_TIME);
         EventBus.getDefault().register(this);
         textView = (TextView) findViewById(R.id.title_bar_title);
-        textCode = (TextView) findViewById(R.id.title_bar_code);
-        textStatus = (TextView) findViewById(R.id.title_bar_status);
+//        textCode = (TextView) findViewById(R.id.title_bar_code);
 
         String mainTitle = ShareUtil.getStringLocalValue(this, TITLE_NAME);
         if (mainTitle == null && TextUtils.isEmpty(mainTitle)) {
@@ -248,28 +244,28 @@ public class MainActivity extends SerialPortActivity {
             DBManager.getInstance(this).insertLevelInfoList(levelInfos);
         }
 
-        textStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                articleListFragment.showPosition();
-//                FloatWindowUtil.getInstance().distory();
-                PollingUtils.startPollingService(MainActivity.this, ALERM_TIME);
-                showToastLongMsg("开启自动查询");
-            }
-        });
+//        textStatus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                articleListFragment.showPosition();
+////                FloatWindowUtil.getInstance().distory();
+//                PollingUtils.startPollingService(MainActivity.this, ALERM_TIME);
+//                showToastLongMsg("开启自动查询");
+//            }
+//        });
 
 
-        textCode = (TextView) findViewById(R.id.title_bar_code);
-        textCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!MyApplication.isGroupStart()) {
-                    List<ControlInfo> controlInfos = DBManager.getInstance(MainActivity.this).queryBindControlList();
-                    optionType = FRAGMENT_0;
-                    optionContron(controlInfos, TYPE_READ);
-                }
-            }
-        });
+//        textCode = (TextView) findViewById(R.id.title_bar_code);
+//        textCode.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(!MyApplication.isGroupStart()) {
+//                    List<ControlInfo> controlInfos = DBManager.getInstance(MainActivity.this).queryBindControlList();
+//                    optionType = FRAGMENT_0;
+//                    optionContron(controlInfos, TYPE_READ);
+//                }
+//            }
+//        });
     }
 
 
@@ -448,7 +444,7 @@ public class MainActivity extends SerialPortActivity {
             LogUtils.e("------hasnRunCmd====",""+hasRunCmd);
             if (hasRunCmd){
                 hasRunCmd = false;
-                SendUtils.sendError("通讯失败",cur.controId, cur.showName);
+                SendUtils.sendError("通讯失败",cur.controId, cur.nickName);
                 play();
                 return;
             }
@@ -470,7 +466,7 @@ public class MainActivity extends SerialPortActivity {
         }
         if (receive.contains("ok") || receive.contains("zt")) {
             OptionStatus status = OptionUtils.receive(receive);
-            SendUtils.sendMiddle(receive, cur.controId,cur.showName);
+            SendUtils.sendMiddle(receive, cur.controId,cur.nickName);
             if (status == null) {
                 showToastLongMsg("未知错误+="+receive);
 //                SendUtils.sendError("未知错误"+receive,cur.controId);
@@ -986,7 +982,7 @@ public class MainActivity extends SerialPortActivity {
             if (isSaveDb && controlInfo != null) {
                 ActionUtil.saveAction(cur, CMD_TYPE, type, optionType);
             }
-            SendUtils.sendEnd(controlId, type, cur.showName);
+            SendUtils.sendEnd(controlId, type, cur.nickName);
             DBManager.getInstance(MainActivity.this).updateDevice(deviceInfo);
             String str = new Gson().toJson(DBManager.getInstance(this).queryDeviceList());
             LogUtils.e("------", "main updatte = "+str);
@@ -1002,6 +998,19 @@ public class MainActivity extends SerialPortActivity {
         FloatWindowUtil.getInstance().onStatsuEvent(event);
     }
 
+
+    /**
+     *        查询电量
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onElecEvent(ElecEvent event) {
+        if(!MyApplication.isGroupStart()) {
+            List<ControlInfo> controlInfos = DBManager.getInstance(MainActivity.this).queryBindControlList();
+            optionType = FRAGMENT_0;
+            optionContron(controlInfos, TYPE_READ);
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
