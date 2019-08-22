@@ -1,32 +1,22 @@
 package com.auto.di.guan;
 
-import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.auto.di.guan.adapter.GroupStatusAdapter;
-import com.auto.di.guan.adapter.MyGridAdapter;
-import com.auto.di.guan.adapter.RecyclerListAdapter;
 import com.auto.di.guan.adapter.StatusAdapter;
 import com.auto.di.guan.adapter.helper.OnStartDragListener;
-import com.auto.di.guan.adapter.helper.SimpleItemTouchHelperCallback;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DBManager;
-import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.GroupInfo;
-import com.auto.di.guan.db.GroupList;
 import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.entity.MessageEvent;
@@ -39,15 +29,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 /**
 
@@ -82,7 +66,22 @@ public class GroupStatusActivity extends FragmentActivity implements OnStartDrag
         }
 
         textView = (TextView) view.findViewById(R.id.title_bar_title);
-        textView.setText("自动轮灌");
+        textView.setText("关闭轮灌");
+        textView.setTextColor(Color.parseColor("#FF0000"));
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                groupInfos = DBManager.getInstance(GroupStatusActivity.this).queryGrouplList();
+                for (int i = 0; i < groupInfos.size(); i++) {
+                    groupInfos.get(i).setGroupRunTime(0);
+                    groupInfos.get(i).setGroupTime(0);
+                    groupInfos.get(i).setGroupLevel(0);
+                    groupInfos.get(i).setGroupStatus(Entiy.GROUP_STATUS_COLSE);
+                }
+                DBManager.getInstance(GroupStatusActivity.this).updateGroupList(groupInfos);
+            }
+        });
+
 
         findViewById(R.id.title_bar_close).setVisibility(View.VISIBLE);
         findViewById(R.id.title_bar_close).setOnClickListener(new View.OnClickListener() {

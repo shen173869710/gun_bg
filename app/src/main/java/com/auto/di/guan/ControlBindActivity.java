@@ -221,7 +221,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 				info.setDeviceName(deviceName);
 				if (bind_control_sel_1.isChecked()) {
 					info.controlInfos.get(0).imageId = R.mipmap.lighe_1;
-					info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
+					info.controlInfos.get(0).status = Entiy.DEVEICE_BIND;
 					info.controlInfos.get(0).controId = Integer.valueOf(info.deviceId)*2-1;
 					info.controlInfos.get(0).deviceId = Entiy.getBid(info.getDeviceId()+"");
 					info.controlInfos.get(0).controlName = controlName1;
@@ -236,7 +236,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 				}
 				if (bind_control_sel_2.isChecked()) {
 					info.controlInfos.get(1).imageId = R.mipmap.lighe_1;
-					info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
+					info.controlInfos.get(1).status = Entiy.DEVEICE_BIND;
 					info.controlInfos.get(1).controId = Integer.valueOf(info.deviceId)*2;
 					info.controlInfos.get(1).deviceId = Entiy.getBid(info.getDeviceId()+"");
 					info.controlInfos.get(1).controlName = controlName2;

@@ -18,18 +18,15 @@ package com.auto.di.guan.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,8 +39,6 @@ import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.utils.LogUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -54,8 +49,7 @@ import java.util.List;
  *
  * @author Paul Burke (ipaulpro)
  */
-public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder>
-        implements ItemTouchHelperAdapter {
+public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder> implements ItemTouchHelperAdapter {
 
     private  List<GroupInfo> mItems = new ArrayList<>();
 
@@ -77,22 +71,82 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, final int position) {
         holder.setIsRecyclable(false);
-        holder.option_name.setText("第 "+mItems.get(position).getGroupId()+" 组");
-//        holder.option_time_second.setText(""+mItems.get(position).groupLevel);
-        // Start a drag whenever the handle view it touched
-//        holder.option_layout.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-//                    mDragStartListener.onStartDrag(holder);
-//                }
-//                return false;
-//            }
-//        });
+
+        final GroupInfo info = mItems.get(position);
+        holder.option_name.setText("第 "+info.getGroupId()+" 组");
+        holder.option_time.setText("");
+        holder.option_level.setText("");
+        holder.option_time_value.setText("");
+        if (info.getGroupTime() > 0) {
+            String time = new StringBuilder()
+                    .append("当前设置时间  ")
+                    .append("<font color=\"#FF5757\">")
+                    .append(info.getGroupTime()/60 )
+                    .append("</font>")
+                    .append(" 分钟").toString();
+
+            holder.option_time_value.setText(Html.fromHtml(time));
+        }
+
+        holder.option_level_value.setText("");
+        if (info.getGroupLevel() > 0) {
+            String lv = new StringBuilder()
+                    .append("当前设置优先级  ")
+                    .append("<font color=\"#FF5757\">")
+                    .append(info.getGroupLevel())
+                    .append(" </font>")
+                    .toString();
+            holder.option_level_value.setText(Html.fromHtml(lv));
+        }
 
 
-        if (holder.option_level_value.getTag() != null && holder.option_level_value.getTag() instanceof TextWatcher) {
-            holder.option_level_value.removeTextChangedListener((TextWatcher) holder.option_level_value.getTag());
+        if (holder.option_time.getTag() != null && holder.option_time.getTag() instanceof TextWatcher) {
+            holder.option_time.removeTextChangedListener((TextWatcher) holder.option_time.getTag());
+        }
+
+        final TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                int time =0;
+                String editTime = s.toString().trim();
+                if (TextUtils.isEmpty(editTime) || editTime.equals("0")) {
+                    Toast.makeText(mContext, "时间必须大于0",Toast.LENGTH_LONG).show();
+                    holder.option_time.setText("");
+                    return;
+                }
+                time = Integer.valueOf(holder.option_time.getText().toString().trim())*60;
+                info.setGroupTime(time);
+                if (info.getGroupTime() > 0) {
+                    String desc = new StringBuilder()
+                            .append("当前设置时间  ")
+                            .append("<font color=\"#FF5757\">")
+                            .append(info.getGroupTime()/60 )
+                            .append("</font>")
+                            .append(" 分钟").toString();
+
+                    holder.option_time_value.setText(Html.fromHtml(desc));
+                }else {
+                    holder.option_time_value.setText("");
+                }
+
+
+            }
+        };
+
+        holder.option_time.addTextChangedListener(textWatcher);
+        holder.option_time.setTag(textWatcher);
+
+        if (holder.option_level.getTag() != null && holder.option_level.getTag() instanceof TextWatcher) {
+            holder.option_level.removeTextChangedListener((TextWatcher) holder.option_level.getTag());
         }
 
         final TextWatcher level = new TextWatcher() {
@@ -105,86 +159,31 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
             }
             @Override
             public void afterTextChanged(Editable s) {
+                String editTime = s.toString().trim();
+                if (TextUtils.isEmpty(editTime) || editTime.equals("0")) {
+                    Toast.makeText(mContext, "优先级必须大于0",Toast.LENGTH_LONG).show();
+                    holder.option_level.setText("");
+                    return;
+                }
 
-
-                int time =0;
-                if (!TextUtils.isEmpty(s.toString().trim())) {
-                    time = Integer.valueOf(s.toString().trim());
-                    if (time == 0) {
-                        Toast.makeText(mContext, "优先级必须大于0",Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    int size = mItems.size();
-//                        for (int i = 0; i < size; i++) {
-//                            if (mItems.get(i).getGroupLevel() == time) {
-//                                LogUtils.e("----level---", "level =="+mItems.get(i).getGroupLevel() +"     time = "+time);
-//                                Toast.makeText(mContext, "优先级不能相同",Toast.LENGTH_LONG).show();
-//                                holder.option_level_value.setText("");
-//                                return;
-//                            }
-//                        }
-                    mItems.get(position).setGroupLevel(time);
+                info.setGroupLevel(Integer.valueOf(editTime));
+                if (info.getGroupLevel() > 0) {
+                    String lv = new StringBuilder()
+                            .append("当前设置优先级  ")
+                            .append("<font color=\"#FF5757\">")
+                            .append(info.getGroupLevel())
+                            .append(" </font>")
+                            .toString();
+                    holder.option_level_value.setText(Html.fromHtml(lv));
+                }else {
+                    holder.option_level_value.setText("");
                 }
             }
         };
-        holder.option_level_value.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    holder.option_level_value.addTextChangedListener(level);
-                }else{
-                    holder.option_level_value.removeTextChangedListener(level);
-                }
-            }
-        });
-
-        holder.option_level_value.setTag(level);
-
-        if (holder.option_time_second.getTag() != null && holder.option_time_second.getTag() instanceof TextWatcher) {
-            holder.option_time_second.removeTextChangedListener((TextWatcher) holder.option_time_second.getTag());
-        }
-
-        holder.option_time_second.setText(mItems.get(position).groupTime+"");
-        final TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
+        holder.option_level.addTextChangedListener(level);
+        holder.option_level.setTag(level);
 
 
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                int time =0;
-                if (!TextUtils.isEmpty(s.toString().trim())) {
-//                    if (!TextUtils.isEmpty(holder.option_time.getText().toString().trim())) {
-//                        time = Integer.valueOf(holder.option_time.getText().toString().trim())*60+Integer.valueOf(holder.option_time_second.getText().toString().trim());
-//                    }else {
-                    time = (int)(Float.valueOf(holder.option_time_second.getText().toString().trim())*60);
-//                    }
-                    mItems.get(position).setGroupTime(time);
-                }
-            }
-        };
-
-        holder.option_time_second.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    holder.option_time_second.addTextChangedListener(textWatcher);
-                }else{
-                    holder.option_time_second.removeTextChangedListener(textWatcher);
-                }
-            }
-        });
-
-        holder.option_time_second.addTextChangedListener(textWatcher);
-//        holder.option_time_second.setTag(textWatcher);
     }
 
 
@@ -217,20 +216,19 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
      */
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements
             ItemTouchHelperViewHolder {
-
-        public LinearLayout option_layout;
         public TextView option_name;
-        public EditText option_level_value;
-        public EditText option_time_second;
-        public TextView option_level;
+        public EditText option_time;
+        public EditText option_level;
+        public TextView option_time_value;
+        public TextView option_level_value;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            option_layout = (LinearLayout) itemView.findViewById(R.id.option_layout);
             option_name = (TextView) itemView.findViewById(R.id.option_name);
-            option_level_value = (EditText) itemView.findViewById(R.id.option_level_value);
-            option_time_second= (EditText) itemView.findViewById(R.id.option_time_second);
-            option_level = (TextView) itemView.findViewById(R.id.option_level);
+            option_time = (EditText) itemView.findViewById(R.id.option_time);
+            option_level= (EditText) itemView.findViewById(R.id.option_level);
+            option_time_value = (TextView) itemView.findViewById(R.id.option_time_value);
+            option_level_value = (TextView) itemView.findViewById(R.id.option_level_value);
         }
 
         @Override

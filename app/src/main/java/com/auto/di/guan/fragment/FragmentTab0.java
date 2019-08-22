@@ -46,6 +46,7 @@ public class FragmentTab0 extends BaseFragment {
             for (int i = 0; i < Entiy.GEID_ALL_ITEM; i++) {
                 DeviceInfo deviceInfo = new DeviceInfo();
                 deviceInfo.setDeviceId(i+1);
+                deviceInfo.setDeviceName(""+deviceInfo.getDeviceId());
                 deviceInfo.controlInfos = new ArrayList<>();
                 deviceInfo.controlInfos.add(new ControlInfo(0,"0"));
                 deviceInfo.controlInfos.add(new ControlInfo(0,"1"));
@@ -75,7 +76,7 @@ public class FragmentTab0 extends BaseFragment {
                             info.controlInfos = new ArrayList<>();
                             info.controlInfos.add(new ControlInfo(0,"0"));
                             info.controlInfos.add(new ControlInfo(0,"1"));
-                            DBManager.getInstance(getActivity()).updateDeviceList(deviceInfos);
+                            DBManager.getInstance(getActivity()).updateDevice(info);
                             deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
                             adapter.setData(deviceInfos);
                         }
@@ -93,7 +94,7 @@ public class FragmentTab0 extends BaseFragment {
                             info.controlInfos = new ArrayList<>();
                             info.controlInfos.add(new ControlInfo(0,"0"));
                             info.controlInfos.add(new ControlInfo(0,"1"));
-                            DBManager.getInstance(getActivity()).updateDeviceList(deviceInfos);
+                            DBManager.getInstance(getActivity()).updateDevice(info);
                             deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
                             adapter.setData(deviceInfos);
                         }

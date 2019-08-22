@@ -234,7 +234,7 @@ public class MainActivity extends SerialPortActivity {
 
         if (DBManager.getInstance(this).queryLevelInfoList().size() == 0) {
             List<LevelInfo> levelInfos = new ArrayList<>();
-            for (int i = 1; i < Entiy.GEID_ALL_ITEM; i++) {
+            for (int i = 1; i < 2000; i++) {
                 LevelInfo info = new LevelInfo();
                 info.setLevelId(i);
                 info.setIsGroupUse(false);
@@ -516,16 +516,14 @@ public class MainActivity extends SerialPortActivity {
         groupInfos = DBManager.getInstance(this).queryGrouplList();
         if (event.flag == Entiy.GROUP_STOP) {
             handler.removeMessages(HANDLER_WHAT_FALG);
-            doRun(false, event.groupInfo);
+//            doRun(false, event.groupInfo);
         }else if (event.flag == Entiy.GROUP_NEXT) {
             handler.removeMessages(HANDLER_WHAT_FALG);
-
             event.groupInfo.setGroupTime(0);
             event.groupInfo.setGroupRunTime(0);
             event.groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
             DBManager.getInstance(MainActivity.this).updateGroup(event.groupInfo);
             EventBus.getDefault().post(new UpdateEvent());
-
             GroupInfo groupInfo = null;
             for (int i = 0; i < groupInfos.size(); i++) {
                 if (groupInfos.get(i).getGroupTime() > 0) {

@@ -107,11 +107,12 @@ public class GroupStatusAdapter extends RecyclerView.Adapter <GroupStatusAdapter
                         String tag = v.getTag().toString();
                         if (!TextUtils.isEmpty(tag)) {
                             int i = Integer.valueOf(tag);
-                            if(i * 60 < mItems.get(position).getGroupRunTime()) {
-                                Toast.makeText(context, "设置的时间不能小于已经灌溉时间", Toast.LENGTH_LONG).show();
+                            if(i  < 20) {
+
+                                Toast.makeText(context, "设置的时间不能小于20分钟", Toast.LENGTH_LONG).show();
                                 return;
                             }
-                            mItems.get(position).setGroupTime(i*60);
+                            mItems.get(position).setGroupTime(i*60+mItems.get(position).getGroupRunTime());
                             DBManager.getInstance(context).updateGroup(mItems.get(position));
                         }
                     }
