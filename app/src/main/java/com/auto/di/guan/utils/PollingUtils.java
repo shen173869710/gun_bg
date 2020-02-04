@@ -2,16 +2,10 @@ package com.auto.di.guan.utils;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
-import android.provider.SyncStateContract;
 
-import com.auto.di.guan.MyApplication;
-import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.DeviceInfo;
-import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.entity.Entiy;
 
 /**

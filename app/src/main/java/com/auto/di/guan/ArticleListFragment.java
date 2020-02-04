@@ -73,7 +73,7 @@ public class ArticleListFragment extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 
 		Log.e("------", "----"+position);
-		if (MyApplication.user.getLevel() != 9999){
+		if (BaseApp.user.getLevel() != 9999){
 			if (position != 0 && position != 3 && position != 4 && position != 5) {
 				Toast.makeText(getContext(), "权限不足无法操作",Toast.LENGTH_SHORT).show();
 				return;

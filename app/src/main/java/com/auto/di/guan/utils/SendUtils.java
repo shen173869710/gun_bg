@@ -2,10 +2,7 @@ package com.auto.di.guan.utils;
 
 import android.util.Log;
 
-import com.auto.di.guan.MainActivity;
-import com.auto.di.guan.MyApplication;
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.entity.CmdStatus;
 
 import org.greenrobot.eventbus.EventBus;

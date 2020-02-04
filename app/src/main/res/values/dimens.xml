@@ -63,4 +63,34 @@
     <dimen name="main_button_height">50dp</dimen>
 
     <dimen name="float_item_heigt">50dp</dimen>
+
+
+
+    <dimen name="main_login_btn_width">340dp</dimen>
+    <dimen name="main_login_btn_height">60dp</dimen>
+
+
+    <dimen name="size_6">6sp</dimen>
+    <dimen name="size_8">8sp</dimen>
+    <dimen name="size_9">9sp</dimen>
+    <dimen name="size_10">10sp</dimen>
+    <dimen name="size_11">11sp</dimen>
+    <dimen name="size_12">12sp</dimen>
+    <dimen name="size_14">14sp</dimen>
+    <dimen name="size_17">17sp</dimen>
+    <dimen name="size_16">16sp</dimen>
+    <dimen name="size_18">18sp</dimen>
+    <dimen name="size_20">20sp</dimen>
+    <dimen name="size_21">21sp</dimen>
+    <dimen name="size_22">22sp</dimen>
+    <dimen name="size_24">24sp</dimen>
+    <dimen name="size_26">26sp</dimen>
+    <dimen name="size_28">28sp</dimen>
+    <dimen name="size_30">30sp</dimen>
+    <dimen name="size_32">32sp</dimen>
+    <dimen name="size_36">36sp</dimen>
+    <dimen name="size_40">40sp</dimen>
+    <dimen name="size_48">48sp</dimen>
+    <dimen name="size_50">50sp</dimen>
+
 </resources>

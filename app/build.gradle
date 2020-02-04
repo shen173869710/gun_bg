@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
+apply from: 'url.gradle'
+
 android {
     compileSdkVersion 29
     buildToolsVersion '29.0.2'
@@ -22,18 +24,13 @@ android {
             }
         }
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+
     sourceSets {
         main {
             //jni.srcDirs = ['src/main/jni', 'src/main/jni/']
-            //jniLibs.srcDirs = ['libs']
+//            jniLibs.srcDirs = ['libs']
             jni.srcDirs = ['src/main/jni', 'src/main/jni/']//disable automatic ndk-build call
-            jniLibs.srcDir "src/main/libs"
+            jniLibs.srcDir 'src/main/libs'
         }
     }
     externalNativeBuild {
@@ -45,6 +42,91 @@ android {
         schemaVersion 1
         daoPackage 'com.auto.di.guan.db.greendao'
         targetGenDir 'src/main/java'
+    }
+
+    /**
+     *  编译不同版本的包
+     */
+    flavorDimensions "guan"
+    productFlavors {
+        pro {
+            versionName "1.0.0"
+            dimension "guan"
+            manifestPlaceholders = [
+                    PACKAGE_NAME: "com.auto.di.guan",
+                    APP_NAME    : "guan_release",
+            ]
+        }
+
+        uat {
+            versionName "1.0.0"
+            dimension "guan"
+            manifestPlaceholders = [
+                    PACKAGE_NAME: "com.auto.di.guan",
+                    APP_NAME    : "guan_uat",
+            ]
+        }
+    }
+
+
+    signingConfigs {
+        release {
+            storeFile file('guan.jks')
+            storePassword "guan123456"
+            keyAlias "key0"
+            keyPassword "guan123456"
+        }
+        debug {
+            storeFile file("guan.jks")
+            storePassword "guan123456"
+            keyAlias "key0"
+            keyPassword "guan123456"
+        }
+    }
+
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            //Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    android.applicationVariants.all {
+        variant ->
+            //打包生成apk
+            variant.outputs.all {
+                output -> outputFileName = "guan_v" + variant.versionName + "_" + buildType.name + ".apk"
+            }
+            androidUrl.get(variant.flavorName).each {
+                urlBean ->
+                    buildConfigField "String", urlBean.key, urlBean.value
+            }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    dexOptions {
+        javaMaxHeapSize "8g"
+        preDexLibraries = false
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -90,4 +172,9 @@ dependencies {
     implementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
 
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.0-beta11'
+    //Toast组件
+    implementation 'me.drakeet.support:toastcompat:1.1.0'
+    //引入ButterKnife
+    implementation "com.jakewharton:butterknife:10.0.0"
+    annotationProcessor "com.jakewharton:butterknife-compiler:10.0.0"
 }

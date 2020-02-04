@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import com.auto.di.guan.MyApplication;
+import com.auto.di.guan.BaseApp;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.MyGridAdapter;
 import com.auto.di.guan.db.ControlInfo;
@@ -62,7 +62,7 @@ public class FragmentTab0 extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
 
-                if (MyApplication.user.getLevel() != 9999) {
+                if (BaseApp.user.getLevel() != 9999) {
                     Toast.makeText(getContext(), "权限不足无法操作",Toast.LENGTH_SHORT).show();
                     return;
                 }

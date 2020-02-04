@@ -147,7 +147,7 @@ public class MainActivity extends SerialPortActivity {
         CMD_TYPE = TYPE_CLOSE;
         showDialog();
         cur = info;
-        final String cmd = Entiy.cmdClose(MyApplication.getProjectId(), info.deviceId, info.name);
+        final String cmd = Entiy.cmdClose(BaseApp.getProjectId(), info.deviceId, info.name);
         SendUtils.sendClose(cmd,cur);
         Log.e(TAG, Entiy.LOG_CLOSE_START + cmd);
 		try {
@@ -162,7 +162,7 @@ public class MainActivity extends SerialPortActivity {
         CMD_TYPE = TYPE_OPEN;
         showDialog();
         cur = info;
-        final String cmd = Entiy.cmdOpen(MyApplication.getProjectId(), info.deviceId, info.name);
+        final String cmd = Entiy.cmdOpen(BaseApp.getProjectId(), info.deviceId, info.name);
         SendUtils.sendopen(cmd,cur);
         Log.e(TAG, Entiy.LOG_OPEN_START + cmd);
 		try {
@@ -177,7 +177,7 @@ public class MainActivity extends SerialPortActivity {
         CMD_TYPE = type;
          showDialog();
         cur = info;
-        final String cmd = Entiy.cmdRead(MyApplication.getProjectId(), info.deviceId);
+        final String cmd = Entiy.cmdRead(BaseApp.getProjectId(), info.deviceId);
         SendUtils.sendRead(cmd,cur);
         Log.e("-------读取设备", cmd + "       " + System.currentTimeMillis());
         try {
@@ -1004,7 +1004,7 @@ public class MainActivity extends SerialPortActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onElecEvent(ElecEvent event) {
-        if(!MyApplication.isGroupStart()) {
+        if(!BaseApp.isGroupStart()) {
             List<ControlInfo> controlInfos = DBManager.getInstance(MainActivity.this).queryBindControlList();
             optionType = FRAGMENT_0;
             optionContron(controlInfos, TYPE_READ);

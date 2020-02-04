@@ -1,66 +1,77 @@
 package com.auto.di.guan;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Window;
-import android.widget.Toast;
 
-public abstract class IBaseActivity extends Activity implements IUrlRequestCallBack{
+import com.auto.di.guan.basemodel.presenter.BasePresenter;
+import com.auto.di.guan.basemodel.view.BaseView;
+import com.auto.di.guan.dialog.LoadingDialog;
+import com.auto.di.guan.utils.LogUtils;
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
+
+import org.greenrobot.eventbus.EventBus;
+
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
+public abstract class IBaseActivity <T extends BasePresenter> extends RxAppCompatActivity implements BaseView {
+
+	private LoadingDialog mLoadingDailog;
+	protected T mPresenter;
+	private Unbinder unbinder;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(setLayout());
+
 		ActivityStackUtil.add(this);
+		EventBus.getDefault().register(this);
+		unbinder = ButterKnife.bind(this);
+		mPresenter = createPresenter();
+		if (mPresenter != null) {
+			mPresenter.attachView(this);
+		}
 
 		init();
 		setListener();
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-	}
 
 	@Override
-	protected void onPause() {
-		super.onPause();
-
-	}
-
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		return ActivityHelper.createLoadingDialog(this);
+	public void showDialog() {
+		if (null == mLoadingDailog) {
+			showWaitingDialog("");
+		}
+		if (!mLoadingDailog.isShowing()) {
+			mLoadingDailog.show();
+		}
 	}
 
 	/**
-	 * 显示整形数据
-	 * 
-	 * @param msg
+	 * 显示等待提示框
 	 */
-	protected void showToastMsg(int msg) {
-		showToastMsg(getString(msg));
+	public Dialog showWaitingDialog(String tip) {
+		mLoadingDailog = new LoadingDialog(this, R.style.CustomDialog);
+		return mLoadingDailog;
+	}
+
+	@Override
+	public void dismissDialog() {
+		hideWaitingDialog();
 	}
 
 	/**
-	 * 显示整形数据
-	 * 
-	 * @param msg
+	 * 隐藏等待提示框
 	 */
-	protected void showToastLongMsg(String msg) {
-		Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-	}
-
-	/**
-	 * 显示字符串类型数据
-	 * 
-	 * @param msg
-	 */
-	protected void showToastMsg(String msg) {
-		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+	public void hideWaitingDialog() {
+		if (mLoadingDailog != null && mLoadingDailog.isShowing()) {
+			mLoadingDailog.dismiss();
+			mLoadingDailog = null;
+		}
 	}
 
 	/**
@@ -79,5 +90,22 @@ public abstract class IBaseActivity extends Activity implements IUrlRequestCallB
 	 * 设置监听
 	 */
 	protected abstract void setListener();
+	protected abstract T createPresenter();
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		try{
+			if (mPresenter != null) {
+				mPresenter.detachView();
+			}
+			ActivityStackUtil.remove(this);
+			EventBus.getDefault().unregister(this);
+			if(null !=unbinder){
+				unbinder.unbind();//解绑
+			}
+		}catch (Exception e){
+			LogUtils.e("BaseActivity",e.getMessage());
+		}
+	}
 }

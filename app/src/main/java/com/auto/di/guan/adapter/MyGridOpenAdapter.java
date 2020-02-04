@@ -14,16 +14,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.auto.di.guan.MainActivity;
-import com.auto.di.guan.MyApplication;
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.DeviceInfo;
-import com.auto.di.guan.db.GroupInfo;
-import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.dialog.MainoptionDialog;
 import com.auto.di.guan.entity.ControlOptionEvent;
 import com.auto.di.guan.entity.Entiy;

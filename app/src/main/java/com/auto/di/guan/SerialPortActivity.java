@@ -34,7 +34,7 @@ import java.security.InvalidParameterException;
 
 public abstract class SerialPortActivity extends FragmentActivity {
 
-	protected MyApplication mApplication;
+	protected BaseApp mApplication;
 	protected SerialPort mSerialPort;
 	protected OutputStream mOutputStream;
 	private InputStream mInputStream;
@@ -81,7 +81,7 @@ public abstract class SerialPortActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mApplication = (MyApplication) getApplication();
+		mApplication = (BaseApp) getApplication();
 		try {
 			mSerialPort = mApplication.getSerialPort();
 			mOutputStream = mSerialPort.getOutputStream();

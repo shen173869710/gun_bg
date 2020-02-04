@@ -8,9 +8,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.auto.di.guan.BaseApp;
 import com.auto.di.guan.GroupStatusActivity;
 import com.auto.di.guan.MainActivity;
-import com.auto.di.guan.MyApplication;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.DialogListViewAdapter;
 import com.auto.di.guan.entity.CmdStatus;
@@ -43,7 +43,7 @@ public class FloatWindowUtil {
 
     private final String TAG = "FloatWindowUtil";
     public void initFloatWindow(Context mContext) {
-        view = View.inflate(MyApplication.getInstance(), R.layout.dialog_listview, null);
+        view = View.inflate(BaseApp.getInstance(), R.layout.dialog_listview, null);
         mListView = (ListView) view.findViewById(R.id.listview);
         view.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +69,7 @@ public class FloatWindowUtil {
 
     public void show (){
         if (FloatWindow.get(TAG) == null) {
-            FloatWindow.with(MyApplication.getInstance())
+            FloatWindow.with(BaseApp.getInstance())
                     .setView(view)
                     .setWidth(Screen.width,0.3f)
                     .setHeight(Screen.height,0.3f)

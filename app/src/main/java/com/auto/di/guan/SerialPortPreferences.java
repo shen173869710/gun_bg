@@ -24,14 +24,14 @@ import android.preference.PreferenceActivity;
 
 public class SerialPortPreferences extends PreferenceActivity {
 
-	private MyApplication mApplication;
+	private BaseApp mApplication;
 	private SerialPortFinder mSerialPortFinder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		mApplication = (MyApplication) getApplication();
+		mApplication = (BaseApp) getApplication();
 		mSerialPortFinder = mApplication.mSerialPortFinder;
 
 		addPreferencesFromResource(R.xml.serial_port_preferences);

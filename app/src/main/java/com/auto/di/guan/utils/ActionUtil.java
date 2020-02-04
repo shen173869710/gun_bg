@@ -1,7 +1,7 @@
 package com.auto.di.guan.utils;
 
+import com.auto.di.guan.BaseApp;
 import com.auto.di.guan.MainActivity;
-import com.auto.di.guan.MyApplication;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.UserAction;
@@ -28,17 +28,17 @@ public class ActionUtil {
 		int operateType=0;
 		int actionType =0;
 		if (optionType == MainActivity.FRAGMENT_4) {
-			action.setUserName(MyApplication.getInstance().user.getName());
+			action.setUserName(BaseApp.getInstance().user.getName());
 			actionType = Entiy.ACTION_TYPE_4;
 			action.setUserAccount("手动单个操作");
 			operateType = 2;
 		}else if (optionType == MainActivity.FRAGMENT_31) {
-			action.setUserName(MyApplication.getInstance().user.getName());
+			action.setUserName(BaseApp.getInstance().user.getName());
 			actionType = Entiy.ACTION_TYPE_31;
 			action.setUserAccount("手动分组操作");
 			operateType = 1;
 		}else if (optionType == MainActivity.FRAGMENT_32){
-			action.setUserName(MyApplication.getInstance().user.getName());
+			action.setUserName(BaseApp.getInstance().user.getName());
 			actionType = Entiy.ACTION_TYPE_32;
 			action.setUserAccount("自动轮灌操作");
 			operateType = 0;
@@ -70,8 +70,8 @@ public class ActionUtil {
 
 
 		LogUtils.e("------------","插入数据");
-		DBManager.getInstance(MyApplication.getInstance()).insertUserAction(action);
-		List<UserAction> actions = DBManager.getInstance(MyApplication.getInstance()).queryUserActionlList("");
+		DBManager.getInstance(BaseApp.getInstance()).insertUserAction(action);
+		List<UserAction> actions = DBManager.getInstance(BaseApp.getInstance()).queryUserActionlList("");
 		if (actions != null ) {
 			LogUtils.e("------------","插入数据"+actions.size());
 		}
@@ -83,10 +83,10 @@ public class ActionUtil {
 		data.operateResult = operateResult;
 		data.operateType = operateType;
 		data.operateName = action.getUserAccount();
-		data.projectName = ShareUtil.getStringLocalValue(MyApplication.getInstance(), "title_name");
+		data.projectName = ShareUtil.getStringLocalValue(BaseApp.getInstance(), "title_name");
 		data.valveCode = info.deviceId;
 		data.valveName = info.controlName;
-		data.projectId = ShareUtil.getStringLocalValue(MyApplication.getInstance(),"group_name");
+		data.projectId = ShareUtil.getStringLocalValue(BaseApp.getInstance(),"group_name");
 		PostUtil.post(data);
 	}
 }

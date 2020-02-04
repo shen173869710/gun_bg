@@ -11,7 +11,6 @@ import android.widget.ExpandableListView;
 
 import com.auto.di.guan.GroupOptionActivity;
 import com.auto.di.guan.GroupStatusActivity;
-import com.auto.di.guan.MyApplication;
 import com.auto.di.guan.OptionSettingActivity;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.GroupExpandableListViewaAdapter;

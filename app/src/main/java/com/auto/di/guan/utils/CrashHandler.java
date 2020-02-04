@@ -9,7 +9,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.auto.di.guan.MyApplication;
+import com.auto.di.guan.BaseApp;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -78,7 +78,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             } catch (InterruptedException e) {
                 Log.e(TAG, "error : ", e);
             }
-            MyApplication.getInstance().exit();
+            BaseApp.getInstance().exit();
             System.exit(0);
         }
     }
@@ -122,7 +122,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             sb.append(result);
 
             ErrorUtil logUtil = new ErrorUtil();
-            logUtil.queueMessage(MyApplication.getInstance(),sb.toString());
+            logUtil.queueMessage(BaseApp.getInstance(),sb.toString());
 
             Log.e("CrashHandler","ErrorInfo = "+sb.toString());
         } catch (Exception e) {

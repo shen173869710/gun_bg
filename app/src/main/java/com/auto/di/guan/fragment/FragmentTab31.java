@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
-import com.auto.di.guan.MyApplication;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.GroupExpandableListViewaAdapter31;
 import com.auto.di.guan.db.ControlInfo;

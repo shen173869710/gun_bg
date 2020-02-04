@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Entity;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.auto.di.guan.MyApplication;
+import com.auto.di.guan.BaseApp;
 import com.auto.di.guan.db.greendao.DaoMaster;
 import com.auto.di.guan.db.greendao.DaoSession;
 import com.auto.di.guan.db.greendao.DeviceInfoDao;
@@ -31,7 +31,7 @@ public class DBManager {
 
     public DBManager(Context context) {
         this.context = context;
-        openHelper = new DaoMaster.DevOpenHelper(context, MyApplication.DB_NAME, null);
+        openHelper = new DaoMaster.DevOpenHelper(context, BaseApp.DB_NAME, null);
     }
 
     /**
@@ -119,7 +119,7 @@ public class DBManager {
      */
     private SQLiteDatabase getReadableDatabase() {
         if (openHelper == null) {
-            openHelper = new DaoMaster.DevOpenHelper(context, MyApplication.DB_NAME, null);
+            openHelper = new DaoMaster.DevOpenHelper(context, BaseApp.DB_NAME, null);
         }
         SQLiteDatabase db = openHelper.getReadableDatabase();
         return db;
@@ -130,7 +130,7 @@ public class DBManager {
      */
     private SQLiteDatabase getWritableDatabase() {
         if (openHelper == null) {
-            openHelper = new DaoMaster.DevOpenHelper(context, MyApplication.DB_NAME, null);
+            openHelper = new DaoMaster.DevOpenHelper(context, BaseApp.DB_NAME, null);
         }
         SQLiteDatabase db = openHelper.getWritableDatabase();
         return db;

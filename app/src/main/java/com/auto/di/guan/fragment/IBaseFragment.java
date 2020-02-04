@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import com.auto.di.guan.MyApplication;
+import com.auto.di.guan.BaseApp;
 import com.auto.di.guan.R;
 import com.auto.di.guan.SerialPort;
 
@@ -20,7 +20,7 @@ import io.reactivex.annotations.Nullable;
  */
 
 public abstract class IBaseFragment extends BaseFragment {
-    protected MyApplication mApplication;
+    protected BaseApp mApplication;
     protected SerialPort mSerialPort;
     protected OutputStream mOutputStream;
     private InputStream mInputStream;
@@ -52,7 +52,7 @@ public abstract class IBaseFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mApplication = (MyApplication) activity.getApplication();
+        mApplication = (BaseApp) activity.getApplication();
         try {
             mSerialPort = mApplication.getSerialPort();
             mOutputStream = mSerialPort.getOutputStream();

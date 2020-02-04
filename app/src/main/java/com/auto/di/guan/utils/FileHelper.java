@@ -3,24 +3,18 @@ package com.auto.di.guan.utils;
 
 import android.content.Context;
 import android.os.storage.StorageManager;
-import android.text.TextUtils;
 
-import com.auto.di.guan.MyApplication;
-
+import com.auto.di.guan.BaseApp;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Locale;
 
 
 public class FileHelper {
@@ -29,7 +23,7 @@ public class FileHelper {
 	private static final String dirName = "com.1111111111";
 
 	public static void saveToSDCard(String filename, String content)throws Exception {
-		File dir = createDir(getStoragePath(MyApplication.getInstance(), false)+File.separator+dirName);
+		File dir = createDir(getStoragePath(BaseApp.getInstance(), false)+File.separator+dirName);
 		File file = createFile(dir +File.separator +filename);
 		FileOutputStream outStream = new FileOutputStream(file, true);
 		outStream.write(content.getBytes());

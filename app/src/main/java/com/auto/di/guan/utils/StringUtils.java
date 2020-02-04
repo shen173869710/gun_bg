@@ -3,7 +3,8 @@ package com.auto.di.guan.utils;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.auto.di.guan.MyApplication;
+
+import com.auto.di.guan.BaseApp;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +20,7 @@ public class StringUtils {
      * @return
      */
     public static String getString(int id) {
-        final Context context = MyApplication.getInstance().getApplicationContext();
+        final Context context = BaseApp.getInstance().getApplicationContext();
         return getString(context, id);
     }
     
