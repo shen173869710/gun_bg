@@ -2,18 +2,18 @@ package com.auto.di.guan;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.auto.di.guan.adapter.GroupStatusAdapter;
 import com.auto.di.guan.adapter.StatusAdapter;
-import com.auto.di.guan.adapter.helper.OnStartDragListener;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.GroupInfo;
@@ -36,11 +36,10 @@ import java.util.List;
 /**
 
  */
-public class GroupStatusActivity extends FragmentActivity implements OnStartDragListener {
+public class GroupStatusActivity extends FragmentActivity  {
     private View view;
     private TextView textView;
     private TextView title_bar_status;
-    private ItemTouchHelper mItemTouchHelper;
     private RecyclerView recyclerView;
     private List<GroupInfo> groupInfos = new ArrayList<>();
     private GroupStatusAdapter adapter;
@@ -138,7 +137,7 @@ public class GroupStatusActivity extends FragmentActivity implements OnStartDrag
             }
         });
         recyclerView = (RecyclerView) findViewById(R.id.group_option_view);
-        adapter = new GroupStatusAdapter(this, groupInfos);
+        adapter = new GroupStatusAdapter(groupInfos);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -150,11 +149,6 @@ public class GroupStatusActivity extends FragmentActivity implements OnStartDrag
         gridView.setAdapter(myGridAdapter);
     }
 
-
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
-    }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)

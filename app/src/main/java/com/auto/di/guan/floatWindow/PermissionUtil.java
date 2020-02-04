@@ -5,9 +5,10 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.view.WindowManager;
+
+import androidx.annotation.RequiresApi;
 
 /**
  * Created by yhao on 2017/12/29.
@@ -40,6 +41,7 @@ class PermissionUtil {
      * 理论上6.0以上才需处理权限，但有的国内rom在6.0以下就添加了权限
      * 其实此方式也可以用于判断6.0以上版本，只不过有更简单的canDrawOverlays代替
      */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     static boolean hasPermissionBelowMarshmallow(Context context) {
         try {
             AppOpsManager manager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);

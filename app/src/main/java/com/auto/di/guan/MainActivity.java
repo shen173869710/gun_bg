@@ -6,14 +6,15 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DBManager;
@@ -1008,22 +1009,6 @@ public class MainActivity extends SerialPortActivity {
             optionType = FRAGMENT_0;
             optionContron(controlInfos, TYPE_READ);
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if(resultCode == RESULT_OK && requestCode == ImageSelectorActivity.REQUEST_IMAGE){
-//            ArrayList<String> images = (ArrayList<String>) data.getSerializableExtra(ImageSelectorActivity.REQUEST_OUTPUT);
-//            if (images != null &&images.size() >0) {
-//                Log.e("-----------", "image"+images.get(0));
-
-//                Glide.with(MainActivity.this).load(images.get(0))
-//                        .error(R.drawable.jc_play_normal).into(imageviewvideo);
-//                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.right);
-//                linearLayout.setBackground(Drawable.createFromPath(images.get(0)));
-//            }
-
-//        }
     }
 
 }

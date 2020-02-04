@@ -2,16 +2,18 @@ package com.auto.di.guan.floatWindow;
 
 import android.animation.TimeInterpolator;
 import android.content.Context;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import io.reactivex.annotations.Nullable;
 
 /**
  * Created by yhao on 2017/12/22.

@@ -1,9 +1,9 @@
 package com.auto.di.guan.fragment;
 
 import android.app.Activity;
-import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.auto.di.guan.MainActivity;
 

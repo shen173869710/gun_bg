@@ -3,7 +3,6 @@ package com.auto.di.guan.fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import com.auto.di.guan.MyApplication;
 import com.auto.di.guan.R;
@@ -13,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
+
+import io.reactivex.annotations.Nullable;
 
 /**
  * Created by Administrator on 2017/7/16.
