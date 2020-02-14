@@ -1,29 +1,23 @@
 package com.auto.di.guan;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.User;
-import com.auto.di.guan.dialog.CustomDialog;
-import com.auto.di.guan.dialog.SureLoadDialog;
 import com.auto.di.guan.entity.Entiy;
-import com.auto.di.guan.utils.ShareUtil;
 
 import java.util.List;
 
 /**
-
+ *
  */
 public class AddUserActivity extends Activity implements View.OnClickListener{
 
@@ -47,9 +41,6 @@ public class AddUserActivity extends Activity implements View.OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_user);
-
-
-
 
 		view = findViewById(R.id.title_bar);
 		view.findViewById(R.id.title_bar_back_layout).setOnClickListener(new View.OnClickListener() {
