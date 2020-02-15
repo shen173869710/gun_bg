@@ -15,7 +15,8 @@ android {
 
         ndk {
             moduleName "serial_port"
-            abiFilters "armeabi-v7a"
+
+            abiFilters 'armeabi','armeabi-v7a','arm64-v8a'
         }
 
         externalNativeBuild {
@@ -177,4 +178,9 @@ dependencies {
     //引入ButterKnife
     implementation "com.jakewharton:butterknife:10.0.0"
     annotationProcessor "com.jakewharton:butterknife-compiler:10.0.0"
+
+
+    //mqtt
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }

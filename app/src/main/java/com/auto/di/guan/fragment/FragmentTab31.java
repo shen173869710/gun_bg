@@ -9,10 +9,12 @@ import android.widget.ExpandableListView;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.GroupExpandableListViewaAdapter31;
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.GroupList;
+import com.auto.di.guan.db.sql.ControlInfoSql;
+import com.auto.di.guan.db.sql.DeviceInfoSql;
+import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.dialog.Main31Dialog;
 import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.AdapterEvent;
@@ -66,11 +68,11 @@ public class FragmentTab31 extends BaseFragment {
 			public void onItemClick(int index) {
 				if (index == 1) {
 					groupInfo.setGroupStatus(1);
-					DBManager.getInstance(activity).updateGroup(groupInfo);
+					GroupInfoSql.updateGroup(groupInfo);
 					EventBus.getDefault().post(new GroupOptionEvent(groupInfo,true));
 				}else if (index == 2) {
 					groupInfo.setGroupStatus(0);
-					DBManager.getInstance(activity).updateGroup(groupInfo);
+					GroupInfoSql.updateGroup(groupInfo);
 					EventBus.getDefault().post(new GroupOptionEvent(groupInfo, false));
 				}
 			}
@@ -82,14 +84,14 @@ public class FragmentTab31 extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				groupInfo.setGroupStatus(0);
-				DBManager.getInstance(activity).updateGroup(groupInfo);
+				GroupInfoSql.updateGroup(groupInfo);
 				EventBus.getDefault().post(new GroupOptionEvent(groupInfo, false));
 			}
 		});
 	}
 
 	private void doRun(boolean isSatrt, GroupInfo groupInfo) {
-		List<DeviceInfo>deveiceInfo = DBManager.getInstance(activity).queryDeviceList();
+		List<DeviceInfo>deveiceInfo = DeviceInfoSql.queryDeviceList();
 		int size = deveiceInfo.size();
 		int imageId;
 		int status;
@@ -110,7 +112,7 @@ public class FragmentTab31 extends BaseFragment {
 				deveiceInfo.get(i).controlInfos.get(1).imageId = imageId;
 			}
 		}
-		DBManager.getInstance(activity).updateDeviceList(deveiceInfo);
+		DeviceInfoSql.updateDeviceList(deveiceInfo);
 		initData();
 	}
 
@@ -119,7 +121,7 @@ public class FragmentTab31 extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				groupInfo.setGroupStatus(1);
-				DBManager.getInstance(activity).updateGroup(groupInfo);
+				GroupInfoSql.updateGroup(groupInfo);
 				EventBus.getDefault().post(new GroupOptionEvent(groupInfo,closeInfo,true));
 			}
 		});
@@ -140,11 +142,11 @@ public class FragmentTab31 extends BaseFragment {
 	private void initData() {
 		groupInfos.clear();
 		groupLists.clear();
-		groupInfos = DBManager.getInstance(getActivity()).queryGrouplList();
+		groupInfos = GroupInfoSql.queryGrouplList();
 		int size = groupInfos.size();
 		if (size > 0) {
 			for (int i = 0; i < size; i++) {
-				List<ControlInfo>clist = DBManager.getInstance(getActivity()).queryControlList(groupInfos.get(i).getGroupId());
+				List<ControlInfo>clist = ControlInfoSql.queryControlList(groupInfos.get(i).getGroupId());
 				if (clist.size() > 0) {
 					GroupList list = new GroupList();
 					list.groupInfo = groupInfos.get(i);

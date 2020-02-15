@@ -1,7 +1,6 @@
 package com.auto.di.guan;
 
 
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,10 +16,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.LevelInfo;
+import com.auto.di.guan.db.sql.ControlInfoSql;
+import com.auto.di.guan.db.sql.DeviceInfoSql;
+import com.auto.di.guan.db.sql.GroupInfoSql;
+import com.auto.di.guan.db.sql.LevelInfoSql;
 import com.auto.di.guan.dialog.SureLoadDialog;
 import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.BindEvent;
@@ -117,7 +119,7 @@ public class MainActivity extends SerialPortActivity {
 
             if (msg.obj != null) {
                 groupInfo = (GroupInfo) msg.obj;
-                List<GroupInfo> groupInfos = DBManager.getInstance(MainActivity.this).queryGroupInfoById(groupInfo.getGroupId());
+                List<GroupInfo> groupInfos = GroupInfoSql.queryGroupInfoById(groupInfo.getGroupId());
                 if (groupInfos != null && groupInfos.size() > 0) {
                     groupInfo.setGroupTime(groupInfos.get(0).groupTime);
                 }
@@ -127,7 +129,7 @@ public class MainActivity extends SerialPortActivity {
                     groupInfo.setGroupTime(0);
                     groupInfo.setGroupRunTime(0);
                     groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
-                    DBManager.getInstance(MainActivity.this).updateGroup(groupInfo);
+                    GroupInfoSql.updateGroup(groupInfo);
                     EventBus.getDefault().post(new UpdateEvent());
                     EventBus.getDefault().post(new MessageEvent(Entiy.GROUP_NEXT, groupInfo));
                 } else {
@@ -136,7 +138,7 @@ public class MainActivity extends SerialPortActivity {
                     message.what = 1;
                     sendMessageDelayed(message, 1000);
                     groupInfo.setGroupStatus(Entiy.GROUP_STATUS_OPEN);
-                    DBManager.getInstance(MainActivity.this).updateGroup(groupInfo);
+                    GroupInfoSql.updateGroup(groupInfo);
                     EventBus.getDefault().post(new UpdateEvent());
                 }
             }
@@ -233,7 +235,7 @@ public class MainActivity extends SerialPortActivity {
         });
         windowTop = getStatusBarHeight();
 
-        if (DBManager.getInstance(this).queryLevelInfoList().size() == 0) {
+        if (LevelInfoSql.queryLevelInfoList().size() == 0) {
             List<LevelInfo> levelInfos = new ArrayList<>();
             for (int i = 1; i < 2000; i++) {
                 LevelInfo info = new LevelInfo();
@@ -242,7 +244,7 @@ public class MainActivity extends SerialPortActivity {
                 info.setIsLevelUse(false);
                 levelInfos.add(info);
             }
-            DBManager.getInstance(this).insertLevelInfoList(levelInfos);
+            LevelInfoSql.insertLevelInfoList(levelInfos);
         }
 
 //        textStatus.setOnClickListener(new View.OnClickListener() {
@@ -302,7 +304,7 @@ public class MainActivity extends SerialPortActivity {
 
     public void doNext(GroupInfo groupInfo) {
         final List<ControlInfo> infos = new ArrayList<>();
-        List<DeviceInfo> deveiceInfo = DBManager.getInstance(this).queryDeviceList();
+        List<DeviceInfo> deveiceInfo = DeviceInfoSql.queryDeviceList();
         int size = deveiceInfo.size();
 
         for (int i = 0; i < size; i++) {
@@ -314,7 +316,7 @@ public class MainActivity extends SerialPortActivity {
             }
         }
         groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
-        DBManager.getInstance(this).updateGroup(groupInfo);
+        GroupInfoSql.updateGroup(groupInfo);
 
         Observable.interval(0, RXJAVA_TIME, TimeUnit.SECONDS)
                 .take(infos.size())
@@ -372,7 +374,7 @@ public class MainActivity extends SerialPortActivity {
      **/
     private int doRun(boolean isSatrt, GroupInfo groupInfo) {
         List<ControlInfo> infos = new ArrayList<>();
-        List<DeviceInfo> deveiceInfo = DBManager.getInstance(this).queryDeviceList();
+        List<DeviceInfo> deveiceInfo = DeviceInfoSql.queryDeviceList();
         int size = deveiceInfo.size();
 
         for (int i = 0; i < size; i++) {
@@ -392,7 +394,7 @@ public class MainActivity extends SerialPortActivity {
             optionContron(infos, TYPE_CLOSE);
         }
         groupInfo.setGroupStatus(groupStatus);
-        DBManager.getInstance(this).updateGroup(groupInfo);
+        GroupInfoSql.updateGroup(groupInfo);
         return infos.size();
     }
 
@@ -514,7 +516,7 @@ public class MainActivity extends SerialPortActivity {
     public void onMessageEvent(final MessageEvent event) {
         isSaveDb = true;
         optionType = FRAGMENT_32;
-        groupInfos = DBManager.getInstance(this).queryGrouplList();
+        groupInfos = GroupInfoSql.queryGrouplList();
         if (event.flag == Entiy.GROUP_STOP) {
             handler.removeMessages(HANDLER_WHAT_FALG);
 //            doRun(false, event.groupInfo);
@@ -523,7 +525,7 @@ public class MainActivity extends SerialPortActivity {
             event.groupInfo.setGroupTime(0);
             event.groupInfo.setGroupRunTime(0);
             event.groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
-            DBManager.getInstance(MainActivity.this).updateGroup(event.groupInfo);
+            GroupInfoSql.updateGroup(event.groupInfo);
             EventBus.getDefault().post(new UpdateEvent());
             GroupInfo groupInfo = null;
             for (int i = 0; i < groupInfos.size(); i++) {
@@ -593,7 +595,7 @@ public class MainActivity extends SerialPortActivity {
         optionType = FRAGMENT_31;
         LogUtils.e(TAG, "onGroupStatusEvent");
         ArrayList<ControlInfo> controlInfos = new ArrayList<>();
-        List<DeviceInfo> deveiceInfos = DBManager.getInstance(this).queryDeviceList();
+        List<DeviceInfo> deveiceInfos = DeviceInfoSql.queryDeviceList();
         GroupInfo groupInfo = event.groupInfo;
         int groupId = groupInfo.groupId;
         int size = deveiceInfos.size();
@@ -642,7 +644,7 @@ public class MainActivity extends SerialPortActivity {
                     event.closeInfo.setGroupTime(0);
                     event.closeInfo.setGroupRunTime(0);
                     event.closeInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
-                    DBManager.getInstance(MainActivity.this).updateGroup(event.closeInfo);
+                    GroupInfoSql.updateGroup(event.closeInfo);
                     EventBus.getDefault().post(new UpdateEvent());
                 }
             });
@@ -707,7 +709,7 @@ public class MainActivity extends SerialPortActivity {
             return;
         }
         optionType = 0;
-        List<GroupInfo> infos = DBManager.getInstance(this).queryGrouplList();
+        List<GroupInfo> infos = GroupInfoSql.queryGrouplList();
         GroupInfo groupInfo = null;
         if(infos.size() > 0) {
             for (int i = 0; i < infos.size(); i++) {
@@ -717,7 +719,7 @@ public class MainActivity extends SerialPortActivity {
                 }
             }
         }
-        List<ControlInfo> controlInfos = DBManager.getInstance(this).queryControlList();
+        List<ControlInfo> controlInfos = ControlInfoSql.queryControlList();
         int size = controlInfos.size();
         if (groupInfo == null) {
             LogUtils.e(TAG, "没有在运行的任务");
@@ -869,7 +871,7 @@ public class MainActivity extends SerialPortActivity {
                 showToastLongMsg("无法解析的命令，重发命令");
                 return;
             }
-            final DeviceInfo deviceInfo = DBManager.getInstance(this).queryDeviceById(Integer.valueOf(deviceId));
+            final DeviceInfo deviceInfo = DeviceInfoSql.queryDeviceById(Integer.valueOf(deviceId));
             int controlId = cur.controId;
             int type = -1;
 
@@ -982,8 +984,8 @@ public class MainActivity extends SerialPortActivity {
                 ActionUtil.saveAction(cur, CMD_TYPE, type, optionType);
             }
             SendUtils.sendEnd(controlId, type, cur.nickName);
-            DBManager.getInstance(MainActivity.this).updateDevice(deviceInfo);
-            String str = new Gson().toJson(DBManager.getInstance(this).queryDeviceList());
+            DeviceInfoSql.updateDevice(deviceInfo);
+            String str = new Gson().toJson(DeviceInfoSql.queryDeviceList());
             LogUtils.e("------", "main updatte = "+str);
             EventBus.getDefault().post(new AdapterEvent(cur.groupId));
         } catch (Exception e) {
@@ -1005,7 +1007,7 @@ public class MainActivity extends SerialPortActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onElecEvent(ElecEvent event) {
         if(!BaseApp.isGroupStart()) {
-            List<ControlInfo> controlInfos = DBManager.getInstance(MainActivity.this).queryBindControlList();
+            List<ControlInfo> controlInfos = ControlInfoSql.queryBindControlList();
             optionType = FRAGMENT_0;
             optionContron(controlInfos, TYPE_READ);
         }

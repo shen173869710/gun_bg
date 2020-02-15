@@ -1,11 +1,31 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
+        <!--将Activity的Theme设置成透明-->
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <!-- animation 样式 -->
+    <!--Activity进场。出场动画-->
+    <style name="AnimationActivity" parent="@android:style/Animation.Activity">
+        <!--用于设置打开新的Activity并进入新的Activity展示的动画-->
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <!--用于设置打开新的Activity并销毁之前的Activity展示的动画-->
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <!--用于设置关闭当前Activity进入上一个Activity展示的动画-->
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <!--用于设置关闭当前Activity时展示的动画-->
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
     <!-- textView -->
@@ -232,5 +252,42 @@
         <!-- 模糊 -->
         <item name="android:windowFullscreen">true</item>
         <!-- 全屏 -->
+    </style>
+
+
+    <!--所有弹出dialog button 样式-->
+    <style name="DialogBtnCancle">
+        <item name="android:layout_width">154dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/main_cancle_bg</item>
+        <item name="android:textColor">#FF999999</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="DialogBtnOK">
+        <item name="android:layout_width">154dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/main_ok_bg</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/button_yellow</item>
+        <item name="colorControlActivated">@color/button_yellow</item>
+    </style>
+
+
+    <!--圆角Dialog-->
+    <style name="MyDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
     </style>
 </resources>

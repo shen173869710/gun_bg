@@ -12,11 +12,13 @@ import com.auto.di.guan.ChooseGroupctivity;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.GroupExpandableListViewaAdapter2;
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.GroupList;
 import com.auto.di.guan.db.LevelInfo;
+import com.auto.di.guan.db.sql.DeviceInfoSql;
+import com.auto.di.guan.db.sql.GroupInfoSql;
+import com.auto.di.guan.db.sql.LevelInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
 
 import java.util.ArrayList;
@@ -81,7 +83,7 @@ public class FragmentTab2 extends BaseFragment {
 				MainShowDialog.ShowDialog(getActivity(), "删所有分组除", "当前操作会删除所有的分组", new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						List<DeviceInfo> deviceInfos = DBManager.getInstance(activity).queryDeviceList();
+						List<DeviceInfo> deviceInfos = DeviceInfoSql.queryDeviceList();
 						int size = deviceInfos.size();
 						for (int i = 0; i < size; i++) {
 							deviceInfos.get(i).controlInfos.get(0).groupId = 0;
@@ -89,16 +91,16 @@ public class FragmentTab2 extends BaseFragment {
 							deviceInfos.get(i).controlInfos.get(1).groupId = 0;
 							deviceInfos.get(i).controlInfos.get(1).isSelect = false;
 						}
-						DBManager.getInstance(activity).updateDeviceList(deviceInfos);
-						groupInfos = DBManager.getInstance(activity).queryGrouplList();
+						DeviceInfoSql.updateDeviceList(deviceInfos);
+						groupInfos = GroupInfoSql.queryGrouplList();
 						int count = groupInfos.size();
 						for (int i = 0; i < count; i++) {
-							DBManager.getInstance(activity).deleteGroup(groupInfos.get(i));
+							GroupInfoSql.deleteGroup(groupInfos.get(i));
 						}
 						groupInfos.clear();
 						adapter.notifyDataSetChanged();
-						 DBManager.getInstance(activity).delLevelInfoList();
-						if (DBManager.getInstance(activity).queryLevelInfoList().size() == 0) {
+						LevelInfoSql.delLevelInfoList();
+						if (LevelInfoSql.queryLevelInfoList().size() == 0) {
 							List<LevelInfo> levelInfos = new ArrayList<>();
 							for (int i = 1; i < 100; i++) {
 								LevelInfo info = new LevelInfo();
@@ -107,7 +109,7 @@ public class FragmentTab2 extends BaseFragment {
 								info.setIsLevelUse(false);
 								levelInfos.add(info);
 							}
-							DBManager.getInstance(activity).insertLevelInfoList(levelInfos);
+							LevelInfoSql.insertLevelInfoList(levelInfos);
 						}
 					}
 				});
@@ -124,8 +126,8 @@ public class FragmentTab2 extends BaseFragment {
 
 	private void initData() {
 		groupLists.clear();
-		groupInfos = DBManager.getInstance(getActivity()).queryGrouplList();
-		deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
+		groupInfos = GroupInfoSql.queryGrouplList();
+		deviceInfos = DeviceInfoSql.queryDeviceList();
 		int size = deviceInfos.size();
 		controlInfos.clear();
 		for (int i = 0; i < size; i++) {

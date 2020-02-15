@@ -11,9 +11,10 @@ import android.widget.Toast;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.QuareUserAdapter;
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.User;
 import com.auto.di.guan.db.UserAction;
+import com.auto.di.guan.db.sql.UserActionSql;
+import com.auto.di.guan.db.sql.UserSql;
 import com.auto.di.guan.dialog.MainChooseDialog;
 import com.auto.di.guan.dialog.MainChooseIdDialog;
 import com.auto.di.guan.entity.Entiy;
@@ -103,7 +104,7 @@ public class FragmentTab5 extends BaseFragment {
 	}
 
 	private void showChooseDialog(final TextView tv) {
-		users = DBManager.getInstance(getActivity()).queryUserList();
+		users = UserSql.queryUserList();
 		if (users == null && users.size() == 0) {
 			Toast.makeText(getActivity(), "暂无可以查询的用户", Toast.LENGTH_LONG).show();
 			return;
@@ -113,7 +114,7 @@ public class FragmentTab5 extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				if (chooseDialog.currentItem >= 0) {
-					String name = users.get(chooseDialog.currentItem).getName();
+					String name = users.get(chooseDialog.currentItem).getUserName();
 					tv.setText(name);
 					showChooseListByName(chooseDialog.currentItem);
 				}else {
@@ -189,19 +190,19 @@ public class FragmentTab5 extends BaseFragment {
 	}
 
 	private void showChooseListByName(int postion) {
-		List<UserAction>action = DBManager.getInstance(getActivity()).queryUserActionlList(users.get(postion).getAccount());
+		List<UserAction>action = UserActionSql.queryUserActionlList(users.get(postion).getLoginName());
 		showEnd(action);
 	}
 
 	private void showListByType(int type) {
 		List<UserAction>action= new ArrayList<>();
 		if (type == 0) {
-			action	= DBManager.getInstance(getActivity()).queryUserActionlList(type);
+			action	= UserActionSql.queryUserActionlList(type);
 		}else {
 			if (type == Entiy.ACTION_TYPE_ERROR) {
-				action	= DBManager.getInstance(getActivity()).queryUserActionlListByEnd("操作正常");
+				action	= UserActionSql.queryUserActionlListByEnd("操作正常");
 			}else {
-				action	= DBManager.getInstance(getActivity()).queryUserActionlListByType(type);
+				action	= UserActionSql.queryUserActionlListByType(type);
 			}
 
 		}
@@ -211,11 +212,11 @@ public class FragmentTab5 extends BaseFragment {
 	private void showChooseListByTime(int type) {
 		List<UserAction>action= new ArrayList<>();
 		if (type == 0) {
-			DBManager.getInstance(getActivity()).deleteUserActionAll();
+			UserActionSql.deleteUserActionAll();
 		}else {
-			DBManager.getInstance(getActivity()).deleteUserActionType();
+			UserActionSql.deleteUserActionType();
 		}
-		action	= DBManager.getInstance(getActivity()).queryUserActionlList(0);
+		action	= UserActionSql.queryUserActionlList(0);
 		showEnd(action);
 	}
 
@@ -232,7 +233,7 @@ public class FragmentTab5 extends BaseFragment {
 	}
 
 	private void showChooseListById(int id) {
-		List<UserAction>action = DBManager.getInstance(getActivity()).queryUserActionlList(id);
+		List<UserAction>action = UserActionSql.queryUserActionlList(id);
 		showEnd(action);
 	}
 

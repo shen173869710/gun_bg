@@ -11,11 +11,10 @@ import android.widget.Toast;
 
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.DBManager;
+import com.auto.di.guan.db.sql.ControlInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.Entiy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,7 +80,7 @@ public class GroupEditListAdapter extends BaseAdapter {
                             controlInfo.groupId = 0;
                             datas.remove(position);
                             notifyDataSetChanged();
-                            DBManager.getInstance(context).updateControl(controlInfo);
+                            ControlInfoSql.updateControl(controlInfo);
                         }
                     });
                 } else {

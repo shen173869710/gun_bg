@@ -3,8 +3,8 @@ package com.auto.di.guan.utils;
 import com.auto.di.guan.BaseApp;
 import com.auto.di.guan.MainActivity;
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.UserAction;
+import com.auto.di.guan.db.sql.UserActionSql;
 import com.auto.di.guan.entity.Entiy;
 
 import java.util.List;
@@ -28,17 +28,17 @@ public class ActionUtil {
 		int operateType=0;
 		int actionType =0;
 		if (optionType == MainActivity.FRAGMENT_4) {
-			action.setUserName(BaseApp.getInstance().user.getName());
+			action.setUserName(BaseApp.getInstance().user.getUserName());
 			actionType = Entiy.ACTION_TYPE_4;
 			action.setUserAccount("手动单个操作");
 			operateType = 2;
 		}else if (optionType == MainActivity.FRAGMENT_31) {
-			action.setUserName(BaseApp.getInstance().user.getName());
+			action.setUserName(BaseApp.getInstance().user.getUserName());
 			actionType = Entiy.ACTION_TYPE_31;
 			action.setUserAccount("手动分组操作");
 			operateType = 1;
 		}else if (optionType == MainActivity.FRAGMENT_32){
-			action.setUserName(BaseApp.getInstance().user.getName());
+			action.setUserName(BaseApp.getInstance().user.getUserName());
 			actionType = Entiy.ACTION_TYPE_32;
 			action.setUserAccount("自动轮灌操作");
 			operateType = 0;
@@ -70,8 +70,8 @@ public class ActionUtil {
 
 
 		LogUtils.e("------------","插入数据");
-		DBManager.getInstance(BaseApp.getInstance()).insertUserAction(action);
-		List<UserAction> actions = DBManager.getInstance(BaseApp.getInstance()).queryUserActionlList("");
+		UserActionSql.insertUserAction(action);
+		List<UserAction> actions = UserActionSql.queryUserActionlList("");
 		if (actions != null ) {
 			LogUtils.e("------------","插入数据"+actions.size());
 		}

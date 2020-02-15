@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.User;
+import com.auto.di.guan.db.sql.UserSql;
 import com.auto.di.guan.entity.Entiy;
 
 import java.util.List;
@@ -55,8 +55,8 @@ public class AddUserActivity extends Activity implements View.OnClickListener{
 
 		user = (User) getIntent().getSerializableExtra("user");
 		if (user != null) {
-			add_user_name.setText(user.getName());
-			add_user_account.setText(user.getAccount());
+			add_user_name.setText(user.getUserName());
+			add_user_account.setText(user.getLoginName());
 			add_user_pwd.setText(user.getPassword());
 		}
 
@@ -157,16 +157,13 @@ public class AddUserActivity extends Activity implements View.OnClickListener{
 		if (item_2 && item_3 && item_1) {
 			level = Entiy.LEVEL_2_3_4;
 		}
-		user.setName(name);
-		user.setPassword(pwd);
-		user.setLevel(level);
-		user.setAccount(account);
-		List<User>users = DBManager.getInstance(this).queryUserList(account);
+
+		List<User>users = UserSql.queryUserList(account);
 		if (users != null && users.size() != 0) {
 			Toast.makeText(this, "用户账号已经存在",Toast.LENGTH_LONG).show();
 			return;
 		}
-		DBManager.getInstance(this).insertUser(user);
+		UserSql.insertUser(user);
 		finish();
 	}
 

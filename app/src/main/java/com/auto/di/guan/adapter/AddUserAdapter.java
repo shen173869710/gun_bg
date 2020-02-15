@@ -12,11 +12,10 @@ import android.widget.TextView;
 
 import com.auto.di.guan.AddUserActivity;
 import com.auto.di.guan.R;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.User;
+import com.auto.di.guan.db.sql.UserSql;
 import com.auto.di.guan.dialog.MainShowDialog;
 
-import java.io.Serializable;
 import java.util.List;
 
 
@@ -66,14 +65,14 @@ public class AddUserAdapter extends BaseAdapter {
 
 	private void bindView(final int position, final ViewHolder viewHolder) {
 		final User user = users.get(position);
-		viewHolder.user_name.setText(user.getName());
+		viewHolder.user_name.setText(user.getUserName());
 		viewHolder.user_del.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				MainShowDialog.ShowDialog((Activity) ctx, "删除用户","是否删除当前用户", new View.OnClickListener(){
 					@Override
 					public void onClick(View v) {
-						DBManager.getInstance(ctx).deleteUser(user);
+						UserSql.deleteUser(user);
 						users.remove(position);
 						notifyDataSetChanged();
 					}

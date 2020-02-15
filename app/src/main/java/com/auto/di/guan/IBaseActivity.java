@@ -1,6 +1,8 @@
 package com.auto.di.guan;
 
 import android.app.Dialog;
+import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Window;
 
@@ -24,8 +26,11 @@ public abstract class IBaseActivity <T extends BasePresenter> extends RxAppCompa
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		}
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		super.onCreate(savedInstanceState);
 		setContentView(setLayout());
 
 		ActivityStackUtil.add(this);

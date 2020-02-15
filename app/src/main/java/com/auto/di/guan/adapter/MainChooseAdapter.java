@@ -60,7 +60,7 @@ public class MainChooseAdapter extends BaseAdapter {
 		}else {
 			vHolder.main_choose_check.setBackgroundResource(R.drawable.img_unselected);
 		}
-		vHolder.main_choose_name.setText(users.get(position).getName());
+		vHolder.main_choose_name.setText(users.get(position).getUserName());
 		return convertView;
 	}
 

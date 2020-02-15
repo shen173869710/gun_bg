@@ -18,31 +18,30 @@ import java.util.TreeMap;
 
 public class LoginPresenter extends BasePresenter<ILoginView>{
 
-//    /**
-//     *  设备激活
-//     * **/
-//    public void doDeviceActivation(String deviceCode,String deviceIdValue) {
-//       TreeMap<String, Object> treeMap = new TreeMap<>();
-//       treeMap.put("code",deviceCode);
-//       treeMap.put("deviceIdValue", deviceIdValue);
-//       doHttpTask(getApiService().deviceActivation(BaseRequest.toMerchantDeviceTreeMap(treeMap)),
-//               new HttpManager.OnResultListener() {
-//            @Override
-//            public void onSuccess(BaseRespone respone) {
-//                if (respone != null && respone.isOk() && null !=respone.getData()) {
-//                    getBaseView().loginSuccess(respone);
-//                    SharedPreferencesUtils.getInstance().putString(SharedPreferencesUtils.DEVICE_ID_VALUE,deviceIdValue);
-//                }else{
-//                    getBaseView().loginFail(null,-1, "设备码不存在,请重新输入!");
-//                }
-//            }
-//
-//            @Override
-//            public void onError(Throwable error, Integer code,String msg) {
-//                getBaseView().loginFail(error,code, msg);
-//            }
-//       });
-//    }
+    /**
+     *  设备激活
+     * **/
+    public void doDeviceActivation(String deviceCode,String deviceIdValue) {
+       TreeMap<String, Object> treeMap = new TreeMap<>();
+       treeMap.put("code",deviceCode);
+       treeMap.put("deviceIdValue", deviceIdValue);
+       doHttpTask(getApiService().deviceActivation(BaseRequest.toMerchantDeviceTreeMap(treeMap)),
+               new HttpManager.OnResultListener() {
+            @Override
+            public void onSuccess(BaseRespone respone) {
+                if (respone != null && respone.isOk() && null !=respone.getData()) {
+                    getBaseView().activationSuccess(respone);
+                }else{
+                    getBaseView().activationFail(null,-1, "设备码不存在,请重新输入!");
+                }
+            }
+
+            @Override
+            public void onError(Throwable error, Integer code,String msg) {
+                getBaseView().loginFail(error,code, msg);
+            }
+       });
+    }
 
     /**
      *

@@ -4,12 +4,11 @@ import android.text.TextUtils;
 
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Transient;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * Created by czl on 2017/11/28.

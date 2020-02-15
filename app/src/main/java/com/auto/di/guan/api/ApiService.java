@@ -19,6 +19,15 @@ public interface ApiService {
 
 
     /**
+     *  设备激活
+     * @param map
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/open/device/login")
+    Observable<BaseRespone<LoginRespone>> deviceActivation(@FieldMap Map<String, Object> map);
+
+    /**
      *  用户登录接口
      * @param map
      * @return

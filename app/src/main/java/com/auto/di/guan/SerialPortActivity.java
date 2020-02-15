@@ -21,11 +21,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.SystemClock;
-
 import androidx.fragment.app.FragmentActivity;
-
 import com.auto.di.guan.dialog.CustomListViewDialog;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

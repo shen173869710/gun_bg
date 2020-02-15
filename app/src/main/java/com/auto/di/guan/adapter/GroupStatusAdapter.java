@@ -2,20 +2,16 @@ package com.auto.di.guan.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.auto.di.guan.R;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.GroupInfo;
+import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.dialog.SetTimeDialog;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.entity.MessageEvent;
@@ -122,7 +118,7 @@ public class GroupStatusAdapter extends BaseQuickAdapter<GroupInfo, BaseViewHold
                                         return;
                                     }
                                     info.setGroupTime(i*60+info.getGroupRunTime());
-                                    DBManager.getInstance(context).updateGroup(info);
+                                    GroupInfoSql.updateGroup(info);
                                 }
                             }
                         });
@@ -149,7 +145,7 @@ public class GroupStatusAdapter extends BaseQuickAdapter<GroupInfo, BaseViewHold
                 info.setGroupTime(0);
                 info.setGroupRunTime(0);
                 info.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
-                DBManager.getInstance(context).updateGroup(info);
+                GroupInfoSql.updateGroup(info);
                 notifyDataSetChanged();
                 EventBus.getDefault().post(new MessageEvent(Entiy.GROUP_NEXT,info));
             }

@@ -14,13 +14,13 @@ import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
 
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.DeviceInfo;
+import com.auto.di.guan.db.sql.ControlInfoSql;
+import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.dialog.WaitingDialog;
 import com.auto.di.guan.entity.BindEvent;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.entity.ReadEvent;
-import com.auto.di.guan.utils.HttpUtil;
 import com.auto.di.guan.utils.ShareUtil;
 import com.auto.di.guan.utils.Task;
 
@@ -92,7 +92,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 
 	protected void init() {
         EventBus.getDefault().register(this);
-		controlInfos = DBManager.getInstance(this).queryControlList();
+		controlInfos = ControlInfoSql.queryControlList();
 		view = findViewById(R.id.title_bar);
 		textView = (TextView)view.findViewById(R.id.title_bar_title);
 		textView.setText("绑定阀门");
@@ -229,7 +229,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 					info.controlInfos.get(0).showName = info.getControl_1();
 					info.controlInfos.get(0).nickName = nick1;
 					info.controlInfos.get(0).bindId = info.deviceId;
-					DBManager.getInstance(ControlBindActivity.this).updateDevice(info);
+					DeviceInfoSql.updateDevice(info);
 				}else {
 					info.controlInfos.get(0).imageId = 0;
 					info.controlInfos.get(0).status = 0;
@@ -244,7 +244,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 					info.controlInfos.get(1).showName = info.getControl_2();
 					info.controlInfos.get(1).nickName = nick2;
 					info.controlInfos.get(1).bindId = info.deviceId;
-					DBManager.getInstance(ControlBindActivity.this).updateDevice(info);
+					DeviceInfoSql.updateDevice(info);
 				}else {
 					info.controlInfos.get(1).imageId = 0;
 					info.controlInfos.get(1).status = 0;
@@ -280,7 +280,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 	}
 
 	private boolean checkId(int id) {
-		controlInfos = DBManager.getInstance(this).queryControlList();
+		controlInfos = ControlInfoSql.queryControlList();
 		int size = controlInfos.size();
 		for (int i = 0; i < size; i++) {
 			if (controlInfos.get(i).controId == id) {
@@ -303,14 +303,14 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 			info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
 			info.controlInfos.get(0).controId = Integer.valueOf(text1);
 			info.controlInfos.get(0).deviceId = Entiy.getBid(info.getDeviceId()+"");
-			DBManager.getInstance(ControlBindActivity.this).updateDevice(info);
+			DeviceInfoSql.updateDevice(info);
 			showToastLongMsg("写入成功");
 		}else if (result.getId() == 2) {
 			info.controlInfos.get(1).imageId = R.mipmap.lighe_1;
 			info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
 			info.controlInfos.get(1).controId = Integer.valueOf(text2);
 			info.controlInfos.get(1).deviceId = Entiy.getBid(info.getDeviceId()+"");
-			DBManager.getInstance(ControlBindActivity.this).updateDevice(info);
+			DeviceInfoSql.updateDevice(info);
 			showToastLongMsg("写入成功");
 		}
 	}

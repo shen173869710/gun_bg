@@ -25,11 +25,28 @@ public class UserDao extends AbstractDao<User, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property UserId = new Property(1, String.class, "userId", false, "USER_ID");
-        public final static Property Account = new Property(2, String.class, "account", false, "ACCOUNT");
-        public final static Property Password = new Property(3, String.class, "password", false, "PASSWORD");
-        public final static Property Name = new Property(4, String.class, "name", false, "NAME");
-        public final static Property Level = new Property(5, int.class, "level", false, "LEVEL");
+        public final static Property UserId = new Property(1, Long.class, "userId", false, "USER_ID");
+        public final static Property DeptId = new Property(2, Long.class, "deptId", false, "DEPT_ID");
+        public final static Property ParentId = new Property(3, Long.class, "parentId", false, "PARENT_ID");
+        public final static Property RoleId = new Property(4, Long.class, "roleId", false, "ROLE_ID");
+        public final static Property LoginName = new Property(5, String.class, "loginName", false, "LOGIN_NAME");
+        public final static Property UserName = new Property(6, String.class, "userName", false, "USER_NAME");
+        public final static Property UserType = new Property(7, String.class, "userType", false, "USER_TYPE");
+        public final static Property Email = new Property(8, String.class, "email", false, "EMAIL");
+        public final static Property Phonenumber = new Property(9, String.class, "phonenumber", false, "PHONENUMBER");
+        public final static Property Sex = new Property(10, String.class, "sex", false, "SEX");
+        public final static Property Avatar = new Property(11, String.class, "avatar", false, "AVATAR");
+        public final static Property Password = new Property(12, String.class, "password", false, "PASSWORD");
+        public final static Property Salt = new Property(13, String.class, "salt", false, "SALT");
+        public final static Property Status = new Property(14, String.class, "status", false, "STATUS");
+        public final static Property ProjectId = new Property(15, String.class, "projectId", false, "PROJECT_ID");
+        public final static Property ProjectGroupId = new Property(16, String.class, "projectGroupId", false, "PROJECT_GROUP_ID");
+        public final static Property TrunkPipeNum = new Property(17, Integer.class, "trunkPipeNum", false, "TRUNK_PIPE_NUM");
+        public final static Property PileOutNum = new Property(18, Integer.class, "pileOutNum", false, "PILE_OUT_NUM");
+        public final static Property ProjectName = new Property(19, String.class, "projectName", false, "PROJECT_NAME");
+        public final static Property ProjectDesc = new Property(20, String.class, "projectDesc", false, "PROJECT_DESC");
+        public final static Property ProjectRemarks = new Property(21, String.class, "projectRemarks", false, "PROJECT_REMARKS");
+        public final static Property LongitudeLatitude = new Property(22, String.class, "longitudeLatitude", false, "LONGITUDE_LATITUDE");
     }
 
 
@@ -46,11 +63,28 @@ public class UserDao extends AbstractDao<User, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"USER_ID\" TEXT," + // 1: userId
-                "\"ACCOUNT\" TEXT," + // 2: account
-                "\"PASSWORD\" TEXT," + // 3: password
-                "\"NAME\" TEXT," + // 4: name
-                "\"LEVEL\" INTEGER NOT NULL );"); // 5: level
+                "\"USER_ID\" INTEGER," + // 1: userId
+                "\"DEPT_ID\" INTEGER," + // 2: deptId
+                "\"PARENT_ID\" INTEGER," + // 3: parentId
+                "\"ROLE_ID\" INTEGER," + // 4: roleId
+                "\"LOGIN_NAME\" TEXT," + // 5: loginName
+                "\"USER_NAME\" TEXT," + // 6: userName
+                "\"USER_TYPE\" TEXT," + // 7: userType
+                "\"EMAIL\" TEXT," + // 8: email
+                "\"PHONENUMBER\" TEXT," + // 9: phonenumber
+                "\"SEX\" TEXT," + // 10: sex
+                "\"AVATAR\" TEXT," + // 11: avatar
+                "\"PASSWORD\" TEXT," + // 12: password
+                "\"SALT\" TEXT," + // 13: salt
+                "\"STATUS\" TEXT," + // 14: status
+                "\"PROJECT_ID\" TEXT," + // 15: projectId
+                "\"PROJECT_GROUP_ID\" TEXT," + // 16: projectGroupId
+                "\"TRUNK_PIPE_NUM\" INTEGER," + // 17: trunkPipeNum
+                "\"PILE_OUT_NUM\" INTEGER," + // 18: pileOutNum
+                "\"PROJECT_NAME\" TEXT," + // 19: projectName
+                "\"PROJECT_DESC\" TEXT," + // 20: projectDesc
+                "\"PROJECT_REMARKS\" TEXT," + // 21: projectRemarks
+                "\"LONGITUDE_LATITUDE\" TEXT);"); // 22: longitudeLatitude
     }
 
     /** Drops the underlying database table. */
@@ -68,26 +102,115 @@ public class UserDao extends AbstractDao<User, Long> {
             stmt.bindLong(1, id);
         }
  
-        String userId = entity.getUserId();
+        Long userId = entity.getUserId();
         if (userId != null) {
-            stmt.bindString(2, userId);
+            stmt.bindLong(2, userId);
         }
  
-        String account = entity.getAccount();
-        if (account != null) {
-            stmt.bindString(3, account);
+        Long deptId = entity.getDeptId();
+        if (deptId != null) {
+            stmt.bindLong(3, deptId);
+        }
+ 
+        Long parentId = entity.getParentId();
+        if (parentId != null) {
+            stmt.bindLong(4, parentId);
+        }
+ 
+        Long roleId = entity.getRoleId();
+        if (roleId != null) {
+            stmt.bindLong(5, roleId);
+        }
+ 
+        String loginName = entity.getLoginName();
+        if (loginName != null) {
+            stmt.bindString(6, loginName);
+        }
+ 
+        String userName = entity.getUserName();
+        if (userName != null) {
+            stmt.bindString(7, userName);
+        }
+ 
+        String userType = entity.getUserType();
+        if (userType != null) {
+            stmt.bindString(8, userType);
+        }
+ 
+        String email = entity.getEmail();
+        if (email != null) {
+            stmt.bindString(9, email);
+        }
+ 
+        String phonenumber = entity.getPhonenumber();
+        if (phonenumber != null) {
+            stmt.bindString(10, phonenumber);
+        }
+ 
+        String sex = entity.getSex();
+        if (sex != null) {
+            stmt.bindString(11, sex);
+        }
+ 
+        String avatar = entity.getAvatar();
+        if (avatar != null) {
+            stmt.bindString(12, avatar);
         }
  
         String password = entity.getPassword();
         if (password != null) {
-            stmt.bindString(4, password);
+            stmt.bindString(13, password);
         }
  
-        String name = entity.getName();
-        if (name != null) {
-            stmt.bindString(5, name);
+        String salt = entity.getSalt();
+        if (salt != null) {
+            stmt.bindString(14, salt);
         }
-        stmt.bindLong(6, entity.getLevel());
+ 
+        String status = entity.getStatus();
+        if (status != null) {
+            stmt.bindString(15, status);
+        }
+ 
+        String projectId = entity.getProjectId();
+        if (projectId != null) {
+            stmt.bindString(16, projectId);
+        }
+ 
+        String projectGroupId = entity.getProjectGroupId();
+        if (projectGroupId != null) {
+            stmt.bindString(17, projectGroupId);
+        }
+ 
+        Integer trunkPipeNum = entity.getTrunkPipeNum();
+        if (trunkPipeNum != null) {
+            stmt.bindLong(18, trunkPipeNum);
+        }
+ 
+        Integer pileOutNum = entity.getPileOutNum();
+        if (pileOutNum != null) {
+            stmt.bindLong(19, pileOutNum);
+        }
+ 
+        String projectName = entity.getProjectName();
+        if (projectName != null) {
+            stmt.bindString(20, projectName);
+        }
+ 
+        String projectDesc = entity.getProjectDesc();
+        if (projectDesc != null) {
+            stmt.bindString(21, projectDesc);
+        }
+ 
+        String projectRemarks = entity.getProjectRemarks();
+        if (projectRemarks != null) {
+            stmt.bindString(22, projectRemarks);
+        }
+ 
+        String longitudeLatitude = entity.getLongitudeLatitude();
+        if (longitudeLatitude != null) {
+            stmt.bindString(23, longitudeLatitude);
+        }
     }
 
     @Override
@@ -99,26 +222,115 @@ public class UserDao extends AbstractDao<User, Long> {
             stmt.bindLong(1, id);
         }
  
-        String userId = entity.getUserId();
+        Long userId = entity.getUserId();
         if (userId != null) {
-            stmt.bindString(2, userId);
+            stmt.bindLong(2, userId);
         }
  
-        String account = entity.getAccount();
-        if (account != null) {
-            stmt.bindString(3, account);
+        Long deptId = entity.getDeptId();
+        if (deptId != null) {
+            stmt.bindLong(3, deptId);
+        }
+ 
+        Long parentId = entity.getParentId();
+        if (parentId != null) {
+            stmt.bindLong(4, parentId);
+        }
+ 
+        Long roleId = entity.getRoleId();
+        if (roleId != null) {
+            stmt.bindLong(5, roleId);
+        }
+ 
+        String loginName = entity.getLoginName();
+        if (loginName != null) {
+            stmt.bindString(6, loginName);
+        }
+ 
+        String userName = entity.getUserName();
+        if (userName != null) {
+            stmt.bindString(7, userName);
+        }
+ 
+        String userType = entity.getUserType();
+        if (userType != null) {
+            stmt.bindString(8, userType);
+        }
+ 
+        String email = entity.getEmail();
+        if (email != null) {
+            stmt.bindString(9, email);
+        }
+ 
+        String phonenumber = entity.getPhonenumber();
+        if (phonenumber != null) {
+            stmt.bindString(10, phonenumber);
+        }
+ 
+        String sex = entity.getSex();
+        if (sex != null) {
+            stmt.bindString(11, sex);
+        }
+ 
+        String avatar = entity.getAvatar();
+        if (avatar != null) {
+            stmt.bindString(12, avatar);
         }
  
         String password = entity.getPassword();
         if (password != null) {
-            stmt.bindString(4, password);
+            stmt.bindString(13, password);
         }
  
-        String name = entity.getName();
-        if (name != null) {
-            stmt.bindString(5, name);
+        String salt = entity.getSalt();
+        if (salt != null) {
+            stmt.bindString(14, salt);
         }
-        stmt.bindLong(6, entity.getLevel());
+ 
+        String status = entity.getStatus();
+        if (status != null) {
+            stmt.bindString(15, status);
+        }
+ 
+        String projectId = entity.getProjectId();
+        if (projectId != null) {
+            stmt.bindString(16, projectId);
+        }
+ 
+        String projectGroupId = entity.getProjectGroupId();
+        if (projectGroupId != null) {
+            stmt.bindString(17, projectGroupId);
+        }
+ 
+        Integer trunkPipeNum = entity.getTrunkPipeNum();
+        if (trunkPipeNum != null) {
+            stmt.bindLong(18, trunkPipeNum);
+        }
+ 
+        Integer pileOutNum = entity.getPileOutNum();
+        if (pileOutNum != null) {
+            stmt.bindLong(19, pileOutNum);
+        }
+ 
+        String projectName = entity.getProjectName();
+        if (projectName != null) {
+            stmt.bindString(20, projectName);
+        }
+ 
+        String projectDesc = entity.getProjectDesc();
+        if (projectDesc != null) {
+            stmt.bindString(21, projectDesc);
+        }
+ 
+        String projectRemarks = entity.getProjectRemarks();
+        if (projectRemarks != null) {
+            stmt.bindString(22, projectRemarks);
+        }
+ 
+        String longitudeLatitude = entity.getLongitudeLatitude();
+        if (longitudeLatitude != null) {
+            stmt.bindString(23, longitudeLatitude);
+        }
     }
 
     @Override
@@ -130,11 +342,28 @@ public class UserDao extends AbstractDao<User, Long> {
     public User readEntity(Cursor cursor, int offset) {
         User entity = new User( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // userId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // account
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // password
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // name
-            cursor.getInt(offset + 5) // level
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // userId
+            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // deptId
+            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // parentId
+            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // roleId
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // loginName
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // userName
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // userType
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // email
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // phonenumber
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // sex
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // avatar
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // password
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // salt
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // status
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // projectId
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // projectGroupId
+            cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17), // trunkPipeNum
+            cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18), // pileOutNum
+            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // projectName
+            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // projectDesc
+            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // projectRemarks
+            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22) // longitudeLatitude
         );
         return entity;
     }
@@ -142,11 +371,28 @@ public class UserDao extends AbstractDao<User, Long> {
     @Override
     public void readEntity(Cursor cursor, User entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setUserId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setAccount(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setPassword(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setName(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setLevel(cursor.getInt(offset + 5));
+        entity.setUserId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setDeptId(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
+        entity.setParentId(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setRoleId(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setLoginName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setUserName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setUserType(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setEmail(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setPhonenumber(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setSex(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setAvatar(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setPassword(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setSalt(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setStatus(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setProjectId(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setProjectGroupId(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setTrunkPipeNum(cursor.isNull(offset + 17) ? null : cursor.getInt(offset + 17));
+        entity.setPileOutNum(cursor.isNull(offset + 18) ? null : cursor.getInt(offset + 18));
+        entity.setProjectName(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setProjectDesc(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
+        entity.setProjectRemarks(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
+        entity.setLongitudeLatitude(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
      }
     
     @Override

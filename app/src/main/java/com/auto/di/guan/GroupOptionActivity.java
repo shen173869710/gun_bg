@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.auto.di.guan.adapter.RecyclerListAdapter;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.GroupInfo;
+import com.auto.di.guan.db.sql.GroupInfoSql;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class GroupOptionActivity extends Activity  {
 		setContentView(R.layout.activity_group_option_layout);
 		view = findViewById(R.id.title_bar);
 
-		groupInfos = DBManager.getInstance(this).queryGrouplList();
+		groupInfos = GroupInfoSql.queryGrouplList();
 		textView = (TextView)view.findViewById(R.id.title_bar_title);
 		textView.setText("自动轮灌设置");
 		title_bar_status  = (TextView)view.findViewById(R.id.title_bar_status);
@@ -43,11 +43,11 @@ public class GroupOptionActivity extends Activity  {
 //			groupInfos.get(i).setGroupTime(0);
 //			groupInfos.get(i).setGroupLevel(0);
 //		}
-		DBManager.getInstance(GroupOptionActivity.this).updateGroupList(groupInfos);
+		GroupInfoSql.updateGroupList(groupInfos);
 		title_bar_status.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DBManager.getInstance(GroupOptionActivity.this).updateGroupList(groupInfos);
+				GroupInfoSql.updateGroupList(groupInfos);
 				GroupOptionActivity.this.finish();
 			}
 		});

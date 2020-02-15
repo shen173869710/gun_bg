@@ -1,7 +1,6 @@
 package com.auto.di.guan;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +12,10 @@ import com.auto.di.guan.basemodel.view.ILoginView;
 import com.auto.di.guan.view.XEditText;
 import com.trello.rxlifecycle3.LifecycleTransformer;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class LoginActivity extends IBaseActivity<LoginPresenter> implements ILoginView, View.OnClickListener {
 
@@ -84,19 +85,28 @@ public class LoginActivity extends IBaseActivity<LoginPresenter> implements ILog
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @Override
     public void loginSuccess(BaseRespone respone) {
 
     }
 
     @Override
     public void loginFail(Throwable error, Integer code, String msg) {
+
+    }
+
+    @Override
+    public void activationSuccess(BaseRespone respone) {
+
+    }
+
+    @Override
+    public void activationFail(Throwable error, Integer code, String msg) {
+
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onElecEvent() {
 
     }
 }

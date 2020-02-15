@@ -12,7 +12,12 @@ public interface ILoginView extends BaseView{
 
     /***登录成功**/
     void loginSuccess(BaseRespone respone);
-
     /***登录失败**/
     void loginFail(Throwable error, Integer code, String msg);
+
+
+    /***激活成功**/
+    void activationSuccess(BaseRespone respone);
+    /***激活失败**/
+    void activationFail(Throwable error, Integer code, String msg);
 }

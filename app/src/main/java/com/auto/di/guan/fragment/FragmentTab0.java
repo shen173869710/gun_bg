@@ -7,14 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
-import com.auto.di.guan.BaseApp;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.MyGridAdapter;
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.DeviceInfo;
+import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.Entiy;
@@ -41,7 +39,7 @@ public class FragmentTab0 extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_0, null);
         mGridView = (GridView) view.findViewById(R.id.fragment_0_gridview);
-        deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
+        deviceInfos = DeviceInfoSql.queryDeviceList();
         if (deviceInfos.size() == 0) {
             for (int i = 0; i < Entiy.GEID_ALL_ITEM; i++) {
                 DeviceInfo deviceInfo = new DeviceInfo();
@@ -52,7 +50,7 @@ public class FragmentTab0 extends BaseFragment {
                 deviceInfo.controlInfos.add(new ControlInfo(0,"1"));
                 deviceInfos.add(deviceInfo);
             }
-            DBManager.getInstance(getActivity()).insertDeviceInfoList(deviceInfos);
+            DeviceInfoSql.insertDeviceInfoList(deviceInfos);
         }
 
         adapter = new MyGridAdapter(getActivity(), deviceInfos);
@@ -61,12 +59,6 @@ public class FragmentTab0 extends BaseFragment {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
-
-                if (BaseApp.user.getLevel() != 9999) {
-                    Toast.makeText(getContext(), "权限不足无法操作",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 final DeviceInfo info = deviceInfos.get(position);
                 if (info.getStatus() == Entiy.DEVEICE_UNBIND) {
                     MainShowDialog.ShowDialog(getActivity(), "添加阀控器", "添加阀控器到当前区域", new View.OnClickListener() {
@@ -76,8 +68,8 @@ public class FragmentTab0 extends BaseFragment {
                             info.controlInfos = new ArrayList<>();
                             info.controlInfos.add(new ControlInfo(0,"0"));
                             info.controlInfos.add(new ControlInfo(0,"1"));
-                            DBManager.getInstance(getActivity()).updateDevice(info);
-                            deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
+                            DeviceInfoSql.updateDevice(info);
+                            deviceInfos = DeviceInfoSql.queryDeviceList();
                             adapter.setData(deviceInfos);
                         }
                     });
@@ -94,8 +86,8 @@ public class FragmentTab0 extends BaseFragment {
                             info.controlInfos = new ArrayList<>();
                             info.controlInfos.add(new ControlInfo(0,"0"));
                             info.controlInfos.add(new ControlInfo(0,"1"));
-                            DBManager.getInstance(getActivity()).updateDevice(info);
-                            deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
+                            DeviceInfoSql.updateDevice(info);
+                            deviceInfos = DeviceInfoSql.queryDeviceList();
                             adapter.setData(deviceInfos);
                         }
                     });
@@ -109,20 +101,20 @@ public class FragmentTab0 extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (adapter != null)
-        adapter.setData( DBManager.getInstance(getActivity()).queryDeviceList());
+        adapter.setData(DeviceInfoSql.queryDeviceList());
     }
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (adapter != null)
-        adapter.setData(DBManager.getInstance(getActivity()).queryDeviceList());
+        adapter.setData(DeviceInfoSql.queryDeviceList());
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAdapterUpdate(AdapterEvent event) {
 
-        List<DeviceInfo>infos = DBManager.getInstance(getActivity()).queryDeviceList();
+        List<DeviceInfo>infos = DeviceInfoSql.queryDeviceList();
         String str = new Gson().toJson(deviceInfos);
         LogUtils.e("------", "FragmentTab0"+str);
         if (adapter != null){

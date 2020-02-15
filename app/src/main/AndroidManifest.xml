@@ -2,11 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.auto.di.guan">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -15,15 +17,17 @@
         android:roundIcon="@drawable/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"
+        <activity android:name=".WelcomeActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/ThemeSplash"
-            >
+            android:theme="@style/ThemeSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".LoginActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".ActivationActivity" android:screenOrientation="landscape"/>
         <activity android:name=".MainActivity" android:screenOrientation="landscape"/>
         <activity android:name=".AddUserActivity" android:screenOrientation="landscape"/>
         <activity android:name=".ChooseGroupctivity" android:screenOrientation="landscape"/>
@@ -32,19 +36,14 @@
         <activity android:name=".GroupOptionActivity" android:screenOrientation="landscape"/>
         <activity android:name=".GroupStatusActivity" android:screenOrientation="landscape"/>
 
-        <activity android:name=".SerialPortActivity" >
-        </activity>
-        <activity android:name=".ConsoleActivity" >
-        </activity>
-
-        <receiver android:name="com.auto.di.guan.utils.AlarmReceiver">
-        </receiver>
+        <activity android:name=".SerialPortActivity" android:screenOrientation="landscape"/>
+        <activity android:name=".ConsoleActivity" android:screenOrientation="landscape"/>
+        <receiver android:name="com.auto.di.guan.utils.AlarmReceiver"/>
 
         <service android:name="com.auto.di.guan.utils.LongRunningService" />
+        <!-- Mqtt Service -->
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
 
-        <activity android:name="com.yongchun.library.view.ImageSelectorActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="com.yongchun.library.view.ImagePreviewActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="com.yongchun.library.view.ImageCropActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="com.auto.di.guan.floatWindow.FloatActivity" android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 

@@ -12,8 +12,8 @@ import android.widget.GridView;
 import com.auto.di.guan.ControlBindActivity;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.MyGridAdapter;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.DeviceInfo;
+import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.utils.LogUtils;
@@ -37,7 +37,7 @@ public class FragmentTab1 extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_1, null);
-        deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
+        deviceInfos = DeviceInfoSql.queryDeviceList();
         mGridView = (GridView) view.findViewById(R.id.fragment_1_gridview);
         adapter = new MyGridAdapter(getActivity(), deviceInfos);
         mGridView.setAdapter(adapter);
@@ -70,7 +70,7 @@ public class FragmentTab1 extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
+        deviceInfos = DeviceInfoSql.queryDeviceList();
         if (adapter != null)
         adapter.setData(deviceInfos);
     }
@@ -78,7 +78,7 @@ public class FragmentTab1 extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
+        deviceInfos = DeviceInfoSql.queryDeviceList();
         if (adapter != null)
         adapter.setData(deviceInfos);
 

@@ -11,8 +11,8 @@ import android.widget.ListView;
 import com.auto.di.guan.AddUserActivity;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.AddUserAdapter;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.User;
+import com.auto.di.guan.db.sql.UserSql;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class FragmentTab6 extends BaseFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		 List<User> userList = DBManager.getInstance(getActivity()).queryUserList();
+		 List<User> userList = UserSql.queryUserList();
 		if (userList != null && userList.size() > 0) {
 			users.clear();
 			users.addAll(userList);

@@ -4,17 +4,18 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.auto.di.guan.adapter.ChooseGridAdapter;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.LevelInfo;
+import com.auto.di.guan.db.sql.DeviceInfoSql;
+import com.auto.di.guan.db.sql.GroupInfoSql;
+import com.auto.di.guan.db.sql.LevelInfoSql;
 import com.auto.di.guan.entity.Entiy;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class ChooseGroupctivity extends Activity {
 
 		button = (Button) findViewById(R.id.choose_ok);
 		gridView = (GridView) findViewById(R.id.choose_gridview);
-		deviceInfos = DBManager.getInstance(this).queryDeviceList();
+		deviceInfos = DeviceInfoSql.queryDeviceList();
 		adapter = new ChooseGridAdapter(this, deviceInfos);
 		gridView.setAdapter(adapter);
 		groupInfo = new GroupInfo();
@@ -75,7 +76,7 @@ public class ChooseGroupctivity extends Activity {
 					return;
 				}
 
-				List<LevelInfo>levelInfos = DBManager.getInstance(ChooseGroupctivity.this).queryUserLevelInfoListByGroup(false);
+				List<LevelInfo>levelInfos = LevelInfoSql.queryUserLevelInfoListByGroup(false);
 				if (levelInfos != null && levelInfos.size() > 0) {
 					if (groupId == 0) {
 						groupId = levelInfos.get(0).getLevelId();
@@ -83,8 +84,8 @@ public class ChooseGroupctivity extends Activity {
 						groupInfo.setGroupLevel(groupId);
 						groupInfo.setGroupName(levelInfos.get(0).getLevelId()+"");
 						levelInfos.get(0).setIsGroupUse(true);
-						DBManager.getInstance(ChooseGroupctivity.this).insertGroup(groupInfo);
-						DBManager.getInstance(ChooseGroupctivity.this).updateLevelInfo(levelInfos.get(0));
+						GroupInfoSql.insertGroup(groupInfo);
+						LevelInfoSql.updateLevelInfo(levelInfos.get(0));
 					}
 					int size = deviceInfos.size();
 					for (int i = 0; i < size; i++) {
@@ -95,7 +96,7 @@ public class ChooseGroupctivity extends Activity {
 							deviceInfos.get(i).controlInfos.get(1).groupId = groupId;
 						}
 					}
-					DBManager.getInstance(ChooseGroupctivity.this).updateDeviceList(deviceInfos);
+					DeviceInfoSql.updateDeviceList(deviceInfos);
 					finish();
 				}else  {
 					Toast.makeText(ChooseGroupctivity.this, "没有可用的分组",Toast.LENGTH_LONG).show();

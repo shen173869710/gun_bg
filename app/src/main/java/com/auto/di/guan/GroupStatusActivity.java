@@ -8,15 +8,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.auto.di.guan.adapter.GroupStatusAdapter;
 import com.auto.di.guan.adapter.StatusAdapter;
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.GroupInfo;
+import com.auto.di.guan.db.sql.ControlInfoSql;
+import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.entity.MessageEvent;
@@ -55,7 +55,7 @@ public class GroupStatusActivity extends FragmentActivity  {
         setContentView(R.layout.activity_group_status_layout);
         view = findViewById(R.id.title_bar);
         EventBus.getDefault().register(this);
-        groupInfos = DBManager.getInstance(this).queryGrouplList();
+        groupInfos = GroupInfoSql.queryGrouplList();
         Iterator<GroupInfo> iterator = groupInfos.iterator();
         while (iterator.hasNext()) {
             GroupInfo info = iterator.next();
@@ -70,14 +70,14 @@ public class GroupStatusActivity extends FragmentActivity  {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                groupInfos = DBManager.getInstance(GroupStatusActivity.this).queryGrouplList();
+                groupInfos = GroupInfoSql.queryGrouplList();
                 for (int i = 0; i < groupInfos.size(); i++) {
                     groupInfos.get(i).setGroupRunTime(0);
                     groupInfos.get(i).setGroupTime(0);
                     groupInfos.get(i).setGroupLevel(0);
                     groupInfos.get(i).setGroupStatus(Entiy.GROUP_STATUS_COLSE);
                 }
-                DBManager.getInstance(GroupStatusActivity.this).updateGroupList(groupInfos);
+                GroupInfoSql.updateGroupList(groupInfos);
             }
         });
 
@@ -154,7 +154,7 @@ public class GroupStatusActivity extends FragmentActivity  {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdateEvent event) {
         if (adapter != null) {
-            List<GroupInfo> infos = DBManager.getInstance(this).queryGrouplList();
+            List<GroupInfo> infos = GroupInfoSql.queryGrouplList();
             int size = infos.size();
             for (int i = 0; i < size; i++) {
                 int gSize = groupInfos.size();
@@ -188,16 +188,16 @@ public class GroupStatusActivity extends FragmentActivity  {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAdapterUpdate(AdapterEvent event) {
-        List<GroupInfo> datas = DBManager.getInstance(this).queryGrouplList();
+        List<GroupInfo> datas = GroupInfoSql.queryGrouplList();
         int size = datas.size();
         LogUtils.e("------", "GroupStatusActivity"+size);
         if (size > 0) {
             for (int i = 0; i < size; i++) {
                 if (datas.get(i).groupId == event.groupId ) {
-                    List<ControlInfo> clist = DBManager.getInstance(this).queryControlList(datas.get(i).getGroupId());
+                    List<ControlInfo> clist = ControlInfoSql.queryControlList(datas.get(i).getGroupId());
                     if (clist != null && clist.size() > 0) {
                         ArrayList<ControlInfo> infos = new ArrayList<>();
-                        infos.addAll(DBManager.getInstance(this).queryControlList(datas.get(i).getGroupId()));
+                        infos.addAll(ControlInfoSql.queryControlList(datas.get(i).getGroupId()));
                         myGridAdapter.setData(infos);
                     }
                 }

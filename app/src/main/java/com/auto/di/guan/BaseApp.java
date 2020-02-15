@@ -1,42 +1,36 @@
 package com.auto.di.guan;
 
-
 import android.app.Application;
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.auto.di.guan.basemodel.model.respone.LoginRespone;
-import com.auto.di.guan.db.DBManager;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.User;
-import com.auto.di.guan.db.UsrtLevel;
 import com.auto.di.guan.db.greendao.DaoMaster;
 import com.auto.di.guan.db.greendao.DaoSession;
-import com.auto.di.guan.entity.Entiy;
-import com.auto.di.guan.utils.CrashHandler;
+import com.auto.di.guan.db.sql.GroupInfoSql;
+import com.auto.di.guan.db.update.MySQLiteOpenHelper;
 import com.auto.di.guan.utils.FloatWindowUtil;
 import com.auto.di.guan.utils.GsonUtil;
 import com.auto.di.guan.utils.LogUtils;
-import com.auto.di.guan.utils.ShareUtil;
 import com.auto.di.guan.utils.SharedPreferencesUtils;
 import com.facebook.stetho.Stetho;
+
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.greenrobot.greendao.identityscope.IdentityScopeType;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -48,24 +42,17 @@ import java.util.TimerTask;
 public class BaseApp extends Application {
 
     public static String TAG = "BaseApp";
-
-    public static String DB_NAME = "test.db";
-    public static String PERJECT_DIR = "/1111111111";
-    public static DaoSession daoSession;
-    private static DaoMaster daoMaster;
-
+    public static String DB_NAME = "guan.db";
+    private static MySQLiteOpenHelper mSQLiteOpenHelper;
+    public static DaoSession mDaoWriteSession;
     private static BaseApp instance;
-    public static List<UsrtLevel>usrtLevels = new ArrayList<>();
-
     public static User user;
-
     public static boolean groupIsStart;
 
     public SerialPortFinder mSerialPortFinder;
     private SerialPort mSerialPort = null;
 
     private static Context mContext=null;//上下文
-
 
 
     @Override
@@ -76,10 +63,9 @@ public class BaseApp extends Application {
         Stetho.initializeWithDefaults(this);
         mSerialPortFinder = new SerialPortFinder();
         LogUtils.setFilterLevel(LogUtils.ALL);
-        CrashHandler.getInstance().init(getApplicationContext());
+//        CrashHandler.getInstance().init(getApplicationContext());
 
         FloatWindowUtil.getInstance().initFloatWindow(this);
-        getDaoSession(this);
     }
 
     public static BaseApp getInstance() {
@@ -90,97 +76,45 @@ public class BaseApp extends Application {
         return mContext;
     }
 
-    public static String getProjectId () {
-        return ShareUtil.getStringLocalValue(instance, Entiy.GROUP_NAME);
-    }
 
-    public static DaoMaster getDaoMaster(Context context) {
-        if (daoMaster == null) {
+    public static DaoSession getDaoWriteSession(){
+        if(null == mSQLiteOpenHelper){
+            initSQLiteOpenHelper();
+        }
 
-            try{
-                ContextWrapper wrapper = new ContextWrapper(context) {
-                    /**
-                     * 获得数据库路径，如果不存在，则创建对象对象
-                     *
-                     * @param name
-                     */
-                    @Override
-                    public File getDatabasePath(String name) {
-                        // 判断是否存在sd卡
-                        boolean sdExist = Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
-                        if (!sdExist) {// 如果不存在,
-                            Log.e("SD卡管理：", "SD卡不存在，请加载SD卡");
-                            return null;
-                        } else {// 如果存在
-                            // 获取sd卡路径
-                            String dbDir = Environment.getExternalStorageDirectory().getPath();
-                            dbDir += PERJECT_DIR;// 数据库所在目录
-                            String dbPath = dbDir + "/" + name;// 数据库路径
-                            // 判断目录是否存在，不存在则创建该目录
-                            Log.e("--------","dbDir = "+dbPath);
-                            File dirFile = new File(dbDir.trim());
-                            if (!dirFile.exists()){
-                                dirFile.mkdirs();
-                            }
-
-
-                            // 数据库文件是否创建成功
-                            boolean isFileCreateSuccess = false;
-                            // 判断文件是否存在，不存在则创建该文件
-                            File dbFile = new File(dbPath.trim());
-                            if (!dbFile.exists()) {
-                                try {
-                                    isFileCreateSuccess = dbFile.createNewFile();// 创建文件
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            } else
-                                isFileCreateSuccess = true;
-                            // 返回数据库文件对象
-                            if (isFileCreateSuccess)
-                                return dbFile;
-                            else
-                                return super.getDatabasePath(name);
-                        }
+        if(null == mDaoWriteSession){
+            synchronized (DaoSession.class){
+                if(null == mDaoWriteSession){
+                    SQLiteDatabase sqLiteDatabase = mSQLiteOpenHelper.getWritableDatabase();
+                    if(null !=sqLiteDatabase && sqLiteDatabase.isOpen()){
+                        mDaoWriteSession = new DaoMaster(sqLiteDatabase).newSession(IdentityScopeType.None);
+                    }else{
+                        mDaoWriteSession = null;
+                        return null;
                     }
-
-                    /**
-                     * 重载这个方法，是用来打开SD卡上的数据库的，android 2.3及以下会调用这个方法。
-                     *
-                     * @param name
-                     * @param mode
-                     * @param factory
-                     */
-                    @Override
-                    public SQLiteDatabase openOrCreateDatabase(String name, int mode, SQLiteDatabase.CursorFactory factory) {
-                        return SQLiteDatabase.openOrCreateDatabase(getDatabasePath(name), null);
-                    }
-
-                    /**
-                     * Android 4.0会调用此方法获取数据库。
-                     *
-                     * @see android.content.ContextWrapper#openOrCreateDatabase
-                     *      int,
-                     *      android.database.sqlite.SQLiteDatabase.CursorFactory,
-                     *      android.database.DatabaseErrorHandler)
-                     * @param name
-                     * @param mode
-                     * @param factory
-                     * @param errorHandler
-                     */
-                    @Override
-                    public SQLiteDatabase openOrCreateDatabase(String name, int mode, SQLiteDatabase.CursorFactory factory, DatabaseErrorHandler errorHandler) {
-                        return SQLiteDatabase.openOrCreateDatabase(getDatabasePath(name), null);
-                    }
-                };
-                DaoMaster.OpenHelper helper = new DaoMaster.DevOpenHelper(wrapper,DB_NAME,null);
-                daoMaster = new DaoMaster(helper.getWritableDatabase()); //获取未加密的数据库
-            }catch (Exception e){
-                e.printStackTrace();
+                }
             }
         }
-        return daoMaster;
+        return  mDaoWriteSession;
     }
+
+
+    public static MySQLiteOpenHelper initSQLiteOpenHelper(){
+        try{
+            if(null == mSQLiteOpenHelper){
+                synchronized (MySQLiteOpenHelper.class){
+                    if(null ==mSQLiteOpenHelper){
+                        mSQLiteOpenHelper = new MySQLiteOpenHelper(mContext, DB_NAME, null);//建库
+                    }
+                }
+            }
+            return mSQLiteOpenHelper;
+        }catch (Exception e){
+            LogUtils.e(TAG,e.getMessage());
+            return null;
+        }
+    }
+
 
     public SerialPort getSerialPort() throws SecurityException, IOException, InvalidParameterException {
         if (mSerialPort == null) {
@@ -209,23 +143,6 @@ public class BaseApp extends Application {
         }
     }
 
-    /**
-     * 获取DaoSession对象
-     *
-     * @param context
-     * @return
-     */
-    public static DaoSession getDaoSession(Context context) {
-        if (daoSession == null) {
-            if (daoMaster == null) {
-                getDaoMaster(context);
-            }
-            daoSession = daoMaster.newSession();
-        }
-        return daoSession;
-    }
-
-
     public void exit() {
         new Timer().schedule(new TimerTask() {
             @Override
@@ -237,7 +154,7 @@ public class BaseApp extends Application {
 
 
     public static boolean isGroupStart() {
-        List<GroupInfo> groupInfos = DBManager.getInstance(getInstance()).queryGrouplList();
+        List<GroupInfo> groupInfos = GroupInfoSql.queryGrouplList();
         if (groupInfos != null && groupInfos.size() > 0) {
             int size = groupInfos.size();
             for (int i = 0; i < size; i++) {
@@ -251,7 +168,7 @@ public class BaseApp extends Application {
     }
 
     public static GroupInfo isGroupInfoStart() {
-        List<GroupInfo> groupInfos = DBManager.getInstance(getInstance()).queryGrouplList();
+        List<GroupInfo> groupInfos = GroupInfoSql.queryGrouplList();
         if (groupInfos != null && groupInfos.size() > 0) {
             int size = groupInfos.size();
             for (int i = 0; i < size; i++) {
@@ -346,8 +263,6 @@ public class BaseApp extends Application {
             return false;
         }
     }
-
-
     /**
      * 用户登录的token信息
      */
@@ -361,5 +276,10 @@ public class BaseApp extends Application {
             }
         }
         return loginRespone;
+    }
+
+
+    public static String getProjectId() {
+        return "";
     }
 }
