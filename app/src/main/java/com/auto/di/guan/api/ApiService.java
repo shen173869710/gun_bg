@@ -16,15 +16,13 @@ import retrofit2.http.POST;
  */
 public interface ApiService {
 
-
-
     /**
      *  设备激活
      * @param map
      * @return
      */
     @FormUrlEncoded
-    @POST("/open/device/login")
+    @POST("/api//user/deviceActivation")
     Observable<BaseRespone<LoginRespone>> deviceActivation(@FieldMap Map<String, Object> map);
 
     /**
@@ -33,6 +31,6 @@ public interface ApiService {
      * @return
      */
     @FormUrlEncoded
-    @POST("/open/device/login")
+    @POST("/api/user/login")
     Observable<BaseRespone<LoginRespone>> login(@FieldMap Map<String, Object> map);
 }

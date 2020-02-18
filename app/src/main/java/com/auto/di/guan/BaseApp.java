@@ -16,6 +16,7 @@ import com.auto.di.guan.db.User;
 import com.auto.di.guan.db.greendao.DaoMaster;
 import com.auto.di.guan.db.greendao.DaoSession;
 import com.auto.di.guan.db.sql.GroupInfoSql;
+import com.auto.di.guan.db.sql.UserSql;
 import com.auto.di.guan.db.update.MySQLiteOpenHelper;
 import com.auto.di.guan.utils.FloatWindowUtil;
 import com.auto.di.guan.utils.GsonUtil;
@@ -45,8 +46,21 @@ public class BaseApp extends Application {
     public static String DB_NAME = "guan.db";
     private static MySQLiteOpenHelper mSQLiteOpenHelper;
     public static DaoSession mDaoWriteSession;
+    private static DaoSession mDaoReadSession;
     private static BaseApp instance;
-    public static User user;
+
+    public static User getUser() {
+        if (user == null) {
+            user = UserSql.queryUserInfo();
+        }
+        return user;
+    }
+
+    public static void setUser(User user) {
+        BaseApp.user = user;
+    }
+
+    private static User user;
     public static boolean groupIsStart;
 
     public SerialPortFinder mSerialPortFinder;
@@ -81,7 +95,6 @@ public class BaseApp extends Application {
         if(null == mSQLiteOpenHelper){
             initSQLiteOpenHelper();
         }
-
         if(null == mDaoWriteSession){
             synchronized (DaoSession.class){
                 if(null == mDaoWriteSession){
@@ -96,6 +109,33 @@ public class BaseApp extends Application {
             }
         }
         return  mDaoWriteSession;
+    }
+
+    /**
+     * 磁盘满了依然可读,
+     * newSession 不能使用默认级别,否则写进去读取有问题
+     *
+     * @return
+     */
+    public static DaoSession getDaoReadSession(){
+        if(null == mSQLiteOpenHelper){
+            initSQLiteOpenHelper();
+        }
+
+        if(null == mDaoReadSession){
+            synchronized (DaoSession.class){
+                if(null == mDaoReadSession){
+                    SQLiteDatabase sqLiteDatabase = mSQLiteOpenHelper.getReadableDatabase();
+                    //sqLiteDatabase.setLocale(Locale.getDefault()); //设置数据库使用的语言
+                    if(null!=sqLiteDatabase && sqLiteDatabase.isOpen()){
+                        mDaoReadSession = new DaoMaster(sqLiteDatabase).newSession(IdentityScopeType.None);
+                    }else{
+                        mDaoReadSession = null;
+                    }
+                }
+            }
+        }
+        return  mDaoReadSession;
     }
 
 
@@ -211,7 +251,6 @@ public class BaseApp extends Application {
                     }
                 } catch (Exception e) {
                     LogUtils.e(TAG,e.getMessage());
-                    return false;
                 }
             }
 

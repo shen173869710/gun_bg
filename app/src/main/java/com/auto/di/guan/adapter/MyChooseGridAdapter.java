@@ -79,7 +79,7 @@ public class MyChooseGridAdapter extends BaseAdapter {
         AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(itemWidth/ Entiy.GRID_COLUMNS, itemHeight/Entiy.GRID_ROW);
 
         holder.grid_item_layout.setLayoutParams(layoutParams);
-        holder.grid_item_id.setText(datas.get(position).controId+"");
+        holder.grid_item_id.setText(datas.get(position).getProtocalId()+"");
         ControlInfo info = datas.get(position);
 
 //        if (datas.get(position).getGroupId() > 0) {

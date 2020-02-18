@@ -1,6 +1,7 @@
 package com.auto.di.guan;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import com.auto.di.guan.basemodel.model.respone.BaseRespone;
 import com.auto.di.guan.basemodel.presenter.LoginPresenter;
 import com.auto.di.guan.basemodel.view.ILoginView;
+import com.auto.di.guan.entity.BindEvent;
 import com.auto.di.guan.view.XEditText;
 import com.trello.rxlifecycle3.LifecycleTransformer;
 
@@ -18,7 +20,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 
 public class LoginActivity extends IBaseActivity<LoginPresenter> implements ILoginView, View.OnClickListener {
-
 
     @BindView(R.id.user_login_name)
     XEditText userLoginName;
@@ -49,23 +50,19 @@ public class LoginActivity extends IBaseActivity<LoginPresenter> implements ILog
 
     @Override
     public void onClick(View v) {
-
         String id = userLoginName.getText().toString().trim();
+        id = "111";
         if (id == null && TextUtils.isEmpty(id)) {
             Toast.makeText(LoginActivity.this, "请输入账号", Toast.LENGTH_LONG).show();
             return;
         }
         String pwd = userLoginPwd.getText().toString().trim();
+        pwd = "222";
         if (pwd == null && TextUtils.isEmpty(pwd)) {
             Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_LONG).show();
             return;
         }
         mPresenter.doLogin(id, pwd);
-    }
-
-    @Override
-    public LifecycleTransformer bindLifecycle() {
-        return null;
     }
 
     @Override
@@ -91,7 +88,7 @@ public class LoginActivity extends IBaseActivity<LoginPresenter> implements ILog
 
     @Override
     public void loginFail(Throwable error, Integer code, String msg) {
-
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
     }
 
     @Override
@@ -104,9 +101,8 @@ public class LoginActivity extends IBaseActivity<LoginPresenter> implements ILog
 
     }
 
-
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onElecEvent() {
+    public void onElecEvent(BindEvent event) {
 
     }
 }

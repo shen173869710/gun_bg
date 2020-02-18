@@ -94,11 +94,11 @@ public class SureLoadDialog extends Dialog {
 					}
 
 					if (group.length() == 1) {}
-					ShareUtil.setStringLocalValue(context,Entiy.GROUP_NAME, group);
-					if (!TextUtils.isEmpty(tag)) {
-						v.setTag(tag);
-						listener.onClick(v);
-					}
+//					ShareUtil.setStringLocalValue(context,Entiy.GROUP_NAME, group);
+//					if (!TextUtils.isEmpty(tag)) {
+//						v.setTag(tag);
+//						listener.onClick(v);
+//					}
 				}
 				dialog.dismiss();
 			}

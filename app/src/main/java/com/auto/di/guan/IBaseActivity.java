@@ -10,6 +10,7 @@ import com.auto.di.guan.basemodel.presenter.BasePresenter;
 import com.auto.di.guan.basemodel.view.BaseView;
 import com.auto.di.guan.dialog.LoadingDialog;
 import com.auto.di.guan.utils.LogUtils;
+import com.trello.rxlifecycle3.LifecycleTransformer;
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -96,6 +97,14 @@ public abstract class IBaseActivity <T extends BasePresenter> extends RxAppCompa
 	 */
 	protected abstract void setListener();
 	protected abstract T createPresenter();
+
+
+
+	@Override
+	public LifecycleTransformer bindLifecycle() {
+		LifecycleTransformer objectLifecycleTransformer = bindToLifecycle();
+		return objectLifecycleTransformer;
+	}
 
 	@Override
 	protected void onDestroy() {

@@ -63,11 +63,12 @@ public class ChooseGroupctivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				int count = 0;
-				for (int i = 0; i < deviceInfos.size(); i++) {
-					if (deviceInfos.get(i).controlInfos.get(0).isSelect) {
+				int size = deviceInfos.size();
+				for (int i = 0; i < size; i++) {
+					if (deviceInfos.get(i).getValveDeviceSwitchList().get(0).isSelect()) {
 						count++;
 					}
-					if (deviceInfos.get(i).controlInfos.get(1).isSelect) {
+					if (deviceInfos.get(i).getValveDeviceSwitchList().get(1).isSelect()) {
 						count++;
 					}
 				}
@@ -87,13 +88,12 @@ public class ChooseGroupctivity extends Activity {
 						GroupInfoSql.insertGroup(groupInfo);
 						LevelInfoSql.updateLevelInfo(levelInfos.get(0));
 					}
-					int size = deviceInfos.size();
 					for (int i = 0; i < size; i++) {
-						if (deviceInfos.get(i).controlInfos.get(0).isSelect) {
-							deviceInfos.get(i).controlInfos.get(0).groupId = groupId;
+						if (deviceInfos.get(i).getValveDeviceSwitchList().get(0).isSelect()) {
+							deviceInfos.get(i).getValveDeviceSwitchList().get(0).setValve_group_id(groupId);
 						}
-						if (deviceInfos.get(i).controlInfos.get(1).isSelect) {
-							deviceInfos.get(i).controlInfos.get(1).groupId = groupId;
+						if (deviceInfos.get(i).getValveDeviceSwitchList().get(1).isSelect()) {
+							deviceInfos.get(i).getValveDeviceSwitchList().get(1).setValve_group_id(groupId);
 						}
 					}
 					DeviceInfoSql.updateDeviceList(deviceInfos);

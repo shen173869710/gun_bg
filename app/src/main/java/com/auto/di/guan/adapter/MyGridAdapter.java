@@ -94,63 +94,62 @@ public class MyGridAdapter extends BaseAdapter {
         holder.grid_item_layout.setLayoutParams(layoutParams);
 
         final DeviceInfo deviceInfo = datas.get(position);
-        holder.grid_item_device_id.setText(datas.get(position).deviceId+"");
+        holder.grid_item_device_id.setText(deviceInfo.getDeviceSort()+"");
         holder.grid_item_device_id.setVisibility(View.VISIBLE);
         /******设备未绑定******/
-        if (deviceInfo.status == Entiy.DEVEICE_UNBIND) {
+        if (deviceInfo.getDeviceStatus() == Entiy.DEVEICE_UNBIND) {
             holder.grid_item_device_name.setVisibility(View.INVISIBLE);
             holder.grid_item_device.setVisibility(View.INVISIBLE);
             holder.grid_item_device_value.setVisibility(View.INVISIBLE);
             holder.grid_item_left_layout.setVisibility(View.INVISIBLE);
             holder.grid_item_right_layout.setVisibility(View.INVISIBLE);
         }else {
-
-            if (!TextUtils.isEmpty(datas.get(position).getDeviceName())) {
-                holder.grid_item_device_name.setText(datas.get(position).getDeviceName()+"");
+            if (!TextUtils.isEmpty(deviceInfo.getDeviceName())) {
+                holder.grid_item_device_name.setText(deviceInfo.getDeviceName()+"");
                 holder.grid_item_device_name.setVisibility(View.VISIBLE);
             }
             holder.grid_item_device_id.setVisibility(View.VISIBLE);
             holder.grid_item_device.setVisibility(View.VISIBLE);
             holder.grid_item_device_value.setVisibility(View.VISIBLE);
-            holder.grid_item_device_value.setText(deviceInfo.elect+"%");
+            holder.grid_item_device_value.setText(deviceInfo.getElectricQuantity()+"%");
             holder.grid_item_left_layout.setVisibility(View.VISIBLE);
             holder.grid_item_left_sel.setVisibility(View.GONE);
-            if (deviceInfo.controlInfos.get(0).groupId == 0) {
+
+            ControlInfo controlInfo0 = deviceInfo.getValveDeviceSwitchList().get(0);
+            if (controlInfo0.getValve_group_id() == 0) {
                 holder.grid_item_left_group.setVisibility(View.GONE);
             }else {
                 holder.grid_item_left_group.setVisibility(View.VISIBLE);
-                holder.grid_item_left_group.setText(deviceInfo.controlInfos.get(0).groupId+"");
+                holder.grid_item_left_group.setText(controlInfo0.getValve_group_id()+"");
             }
 
-            if (deviceInfo.controlInfos.get(0).imageId == 0) {
+            if (controlInfo0.getValve_imgage_id() == 0) {
                 holder.grid_item_left_image.setVisibility(View.INVISIBLE);
                 holder.grid_item_left_id.setText("");
             }else {
                 holder.grid_item_left_image.setVisibility(View.VISIBLE);
-                holder.grid_item_left_image.setImageResource(deviceInfo.controlInfos.get(0).imageId);
-
-                if (deviceInfo.controlInfos.get(0).controId != 0) {
-                    holder.grid_item_left_id.setText(deviceInfo.getControl_1());
-                }
+                holder.grid_item_left_image.setImageResource(controlInfo0.getValve_imgage_id());
+                holder.grid_item_left_id.setText(controlInfo0.getValve_alias()+"");
             }
 
             holder.grid_item_right_layout.setVisibility(View.VISIBLE);
             holder.grid_item_right_sel.setVisibility(View.GONE);
-            if (deviceInfo.controlInfos.get(1).groupId == 0) {
+
+            ControlInfo controlInfo1 = deviceInfo.getValveDeviceSwitchList().get(1);
+            if (controlInfo1.getValve_group_id() == 0) {
                 holder.grid_item_right_group.setVisibility(View.GONE);
             }else {
                 holder.grid_item_right_group.setVisibility(View.VISIBLE);
-                holder.grid_item_right_group.setText(deviceInfo.controlInfos.get(1).groupId+"");
+                holder.grid_item_right_group.setText(controlInfo1.getValve_group_id()+"");
             }
-            if (deviceInfo.controlInfos.get(1).imageId == 0) {
+            if (controlInfo1.getValve_imgage_id() == 0) {
                 holder.grid_item_right_image.setVisibility(View.INVISIBLE);
                 holder.grid_item_right_id.setText("");
             }else {
                 holder.grid_item_right_image.setVisibility(View.VISIBLE);
-                holder.grid_item_right_image.setImageResource(deviceInfo.controlInfos.get(1).imageId);
-                if (deviceInfo.controlInfos.get(1).controId != 0) {
-                    holder.grid_item_right_id.setText(deviceInfo.getControl_2());
-                }
+                holder.grid_item_right_image.setImageResource(controlInfo1.getValve_imgage_id());
+                holder.grid_item_right_id.setText(controlInfo1.getValve_alias()+"");
+
             }
 
         }

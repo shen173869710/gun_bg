@@ -45,14 +45,7 @@ public class FragmentTab1 extends BaseFragment {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
-
-                String groupName = ShareUtil.getStringLocalValue(activity,Entiy.GROUP_NAME);
-                if (TextUtils.isEmpty(groupName)) {
-                    showToast("请设置项目ID");
-                    return;
-                }
-
-                if ( deviceInfos.get(position).getStatus() == Entiy.DEVEICE_BIND) {
+                if ( deviceInfos.get(position).getDeviceStatus() == Entiy.DEVEICE_BIND) {
                         Intent intent = new Intent(getActivity(), ControlBindActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("info", deviceInfos.get(position));

@@ -34,7 +34,33 @@
             app:x_hidePwdDrawable="@mipmap/edittext_hide"
             app:x_showPwdDrawable="@mipmap/edittext_show" />
 
+        <View
+            style="@style/PersonalProfileLayoutDivider"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="13dp"
+            android:layout_marginRight="13dp"
+            android:background="@color/color_divide_line"
+            android:gravity="center_horizontal" />
 
+
+        <com.auto.di.guan.view.XEditText
+            android:id="@+id/login_pwd"
+            android:layout_width="@dimen/main_login_btn_width"
+            android:layout_height="@dimen/main_login_btn_height"
+            android:layout_gravity="center"
+            android:background="@drawable/login_edittext_bg"
+            android:gravity="center"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:padding="15dp"
+            android:singleLine="true"
+            android:text=""
+            android:paddingRight="20dp"
+            android:textCursorDrawable="@drawable/cursor_color"
+            app:x_disableClear="true"
+            app:x_hidePwdDrawable="@mipmap/edittext_hide"
+            app:x_showPwdDrawable="@mipmap/edittext_show" />
         <View
             style="@style/PersonalProfileLayoutDivider"
             android:layout_gravity="center_horizontal"

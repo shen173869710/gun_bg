@@ -28,16 +28,21 @@ public class DeviceInfoDao extends AbstractDao<DeviceInfo, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property DeviceName = new Property(1, String.class, "deviceName", false, "DEVICE_NAME");
-        public final static Property GroupId = new Property(2, int.class, "groupId", false, "GROUP_ID");
-        public final static Property DeviceId = new Property(3, int.class, "deviceId", false, "DEVICE_ID");
-        public final static Property Elect = new Property(4, String.class, "elect", false, "ELECT");
-        public final static Property Status = new Property(5, int.class, "status", false, "STATUS");
-        public final static Property PipeType = new Property(6, int.class, "pipeType", false, "PIPE_TYPE");
-        public final static Property ControlInfos = new Property(7, String.class, "controlInfos", false, "CONTROL_INFOS");
+        public final static Property DeviceName = new Property(1, String.class, "deviceName", false, "deviceName");
+        public final static Property DeviceId = new Property(2, int.class, "deviceId", false, "deviceId");
+        public final static Property DeviceSort = new Property(3, int.class, "deviceSort", false, "deviceSort");
+        public final static Property ProtocalId = new Property(4, String.class, "protocalId", false, "PROTOCAL_ID");
+        public final static Property UserId = new Property(5, int.class, "userId", false, "userId");
+        public final static Property DeviceImagePath = new Property(6, String.class, "deviceImagePath", false, "deviceImagePath");
+        public final static Property CreateTime = new Property(7, String.class, "createTime", false, "createTime");
+        public final static Property CreateBy = new Property(8, String.class, "createBy", false, "createBy");
+        public final static Property ElectricQuantity = new Property(9, int.class, "electricQuantity", false, "electricQuantity");
+        public final static Property DeviceStatus = new Property(10, int.class, "deviceStatus", false, "deviceStatus");
+        public final static Property Remark = new Property(11, String.class, "remark", false, "remark");
+        public final static Property ValveDeviceSwitchList = new Property(12, String.class, "valveDeviceSwitchList", false, "valveDeviceSwitchList");
     }
 
-    private final ControlConvert controlInfosConverter = new ControlConvert();
+    private final ControlConvert valveDeviceSwitchListConverter = new ControlConvert();
 
     public DeviceInfoDao(DaoConfig config) {
         super(config);
@@ -52,13 +57,18 @@ public class DeviceInfoDao extends AbstractDao<DeviceInfo, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"DEVICE_INFO\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"DEVICE_NAME\" TEXT," + // 1: deviceName
-                "\"GROUP_ID\" INTEGER NOT NULL ," + // 2: groupId
-                "\"DEVICE_ID\" INTEGER NOT NULL ," + // 3: deviceId
-                "\"ELECT\" TEXT," + // 4: elect
-                "\"STATUS\" INTEGER NOT NULL ," + // 5: status
-                "\"PIPE_TYPE\" INTEGER NOT NULL ," + // 6: pipeType
-                "\"CONTROL_INFOS\" TEXT);"); // 7: controlInfos
+                "\"deviceName\" TEXT," + // 1: deviceName
+                "\"deviceId\" INTEGER NOT NULL ," + // 2: deviceId
+                "\"deviceSort\" INTEGER NOT NULL ," + // 3: deviceSort
+                "\"PROTOCAL_ID\" TEXT," + // 4: protocalId
+                "\"userId\" INTEGER NOT NULL ," + // 5: userId
+                "\"deviceImagePath\" TEXT," + // 6: deviceImagePath
+                "\"createTime\" TEXT," + // 7: createTime
+                "\"createBy\" TEXT," + // 8: createBy
+                "\"electricQuantity\" INTEGER NOT NULL ," + // 9: electricQuantity
+                "\"deviceStatus\" INTEGER NOT NULL ," + // 10: deviceStatus
+                "\"remark\" TEXT," + // 11: remark
+                "\"valveDeviceSwitchList\" TEXT);"); // 12: valveDeviceSwitchList
     }
 
     /** Drops the underlying database table. */
@@ -80,19 +90,40 @@ public class DeviceInfoDao extends AbstractDao<DeviceInfo, Long> {
         if (deviceName != null) {
             stmt.bindString(2, deviceName);
         }
-        stmt.bindLong(3, entity.getGroupId());
-        stmt.bindLong(4, entity.getDeviceId());
+        stmt.bindLong(3, entity.getDeviceId());
+        stmt.bindLong(4, entity.getDeviceSort());
  
-        String elect = entity.getElect();
-        if (elect != null) {
-            stmt.bindString(5, elect);
+        String protocalId = entity.getProtocalId();
+        if (protocalId != null) {
+            stmt.bindString(5, protocalId);
         }
-        stmt.bindLong(6, entity.getStatus());
-        stmt.bindLong(7, entity.getPipeType());
+        stmt.bindLong(6, entity.getUserId());
  
-        ArrayList controlInfos = entity.getControlInfos();
-        if (controlInfos != null) {
-            stmt.bindString(8, controlInfosConverter.convertToDatabaseValue(controlInfos));
+        String deviceImagePath = entity.getDeviceImagePath();
+        if (deviceImagePath != null) {
+            stmt.bindString(7, deviceImagePath);
+        }
+ 
+        String createTime = entity.getCreateTime();
+        if (createTime != null) {
+            stmt.bindString(8, createTime);
+        }
+ 
+        String createBy = entity.getCreateBy();
+        if (createBy != null) {
+            stmt.bindString(9, createBy);
+        }
+        stmt.bindLong(10, entity.getElectricQuantity());
+        stmt.bindLong(11, entity.getDeviceStatus());
+ 
+        String remark = entity.getRemark();
+        if (remark != null) {
+            stmt.bindString(12, remark);
+        }
+ 
+        ArrayList valveDeviceSwitchList = entity.getValveDeviceSwitchList();
+        if (valveDeviceSwitchList != null) {
+            stmt.bindString(13, valveDeviceSwitchListConverter.convertToDatabaseValue(valveDeviceSwitchList));
         }
     }
 
@@ -109,19 +140,40 @@ public class DeviceInfoDao extends AbstractDao<DeviceInfo, Long> {
         if (deviceName != null) {
             stmt.bindString(2, deviceName);
         }
-        stmt.bindLong(3, entity.getGroupId());
-        stmt.bindLong(4, entity.getDeviceId());
+        stmt.bindLong(3, entity.getDeviceId());
+        stmt.bindLong(4, entity.getDeviceSort());
  
-        String elect = entity.getElect();
-        if (elect != null) {
-            stmt.bindString(5, elect);
+        String protocalId = entity.getProtocalId();
+        if (protocalId != null) {
+            stmt.bindString(5, protocalId);
         }
-        stmt.bindLong(6, entity.getStatus());
-        stmt.bindLong(7, entity.getPipeType());
+        stmt.bindLong(6, entity.getUserId());
  
-        ArrayList controlInfos = entity.getControlInfos();
-        if (controlInfos != null) {
-            stmt.bindString(8, controlInfosConverter.convertToDatabaseValue(controlInfos));
+        String deviceImagePath = entity.getDeviceImagePath();
+        if (deviceImagePath != null) {
+            stmt.bindString(7, deviceImagePath);
+        }
+ 
+        String createTime = entity.getCreateTime();
+        if (createTime != null) {
+            stmt.bindString(8, createTime);
+        }
+ 
+        String createBy = entity.getCreateBy();
+        if (createBy != null) {
+            stmt.bindString(9, createBy);
+        }
+        stmt.bindLong(10, entity.getElectricQuantity());
+        stmt.bindLong(11, entity.getDeviceStatus());
+ 
+        String remark = entity.getRemark();
+        if (remark != null) {
+            stmt.bindString(12, remark);
+        }
+ 
+        ArrayList valveDeviceSwitchList = entity.getValveDeviceSwitchList();
+        if (valveDeviceSwitchList != null) {
+            stmt.bindString(13, valveDeviceSwitchListConverter.convertToDatabaseValue(valveDeviceSwitchList));
         }
     }
 
@@ -135,12 +187,17 @@ public class DeviceInfoDao extends AbstractDao<DeviceInfo, Long> {
         DeviceInfo entity = new DeviceInfo( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // deviceName
-            cursor.getInt(offset + 2), // groupId
-            cursor.getInt(offset + 3), // deviceId
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // elect
-            cursor.getInt(offset + 5), // status
-            cursor.getInt(offset + 6), // pipeType
-            cursor.isNull(offset + 7) ? null : controlInfosConverter.convertToEntityProperty(cursor.getString(offset + 7)) // controlInfos
+            cursor.getInt(offset + 2), // deviceId
+            cursor.getInt(offset + 3), // deviceSort
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // protocalId
+            cursor.getInt(offset + 5), // userId
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // deviceImagePath
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // createTime
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // createBy
+            cursor.getInt(offset + 9), // electricQuantity
+            cursor.getInt(offset + 10), // deviceStatus
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // remark
+            cursor.isNull(offset + 12) ? null : valveDeviceSwitchListConverter.convertToEntityProperty(cursor.getString(offset + 12)) // valveDeviceSwitchList
         );
         return entity;
     }
@@ -149,12 +206,17 @@ public class DeviceInfoDao extends AbstractDao<DeviceInfo, Long> {
     public void readEntity(Cursor cursor, DeviceInfo entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setDeviceName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setGroupId(cursor.getInt(offset + 2));
-        entity.setDeviceId(cursor.getInt(offset + 3));
-        entity.setElect(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setStatus(cursor.getInt(offset + 5));
-        entity.setPipeType(cursor.getInt(offset + 6));
-        entity.setControlInfos(cursor.isNull(offset + 7) ? null : controlInfosConverter.convertToEntityProperty(cursor.getString(offset + 7)));
+        entity.setDeviceId(cursor.getInt(offset + 2));
+        entity.setDeviceSort(cursor.getInt(offset + 3));
+        entity.setProtocalId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setUserId(cursor.getInt(offset + 5));
+        entity.setDeviceImagePath(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setCreateTime(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setCreateBy(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setElectricQuantity(cursor.getInt(offset + 9));
+        entity.setDeviceStatus(cursor.getInt(offset + 10));
+        entity.setRemark(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setValveDeviceSwitchList(cursor.isNull(offset + 12) ? null : valveDeviceSwitchListConverter.convertToEntityProperty(cursor.getString(offset + 12)));
      }
     
     @Override

@@ -11,6 +11,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.auto.di.guan.BaseApp;
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.entity.Entiy;
@@ -100,10 +101,10 @@ public class MainoptionDialog extends Dialog {
 			}
 		});
 
-		dialog.main_option_1.setText(info.showName);
-		dialog.main_option_2.setText(info.nickName);
-		dialog.main_option_3.setText(info.controId+"");
-		dialog.main_option_4.setText(""+ShareUtil.getStringLocalValue(context, Entiy.GROUP_NAME));
+		dialog.main_option_1.setText(info.getValve_name());
+		dialog.main_option_2.setText(info.getValve_alias());
+		dialog.main_option_3.setText(info.getValve_id()+"");
+		dialog.main_option_4.setText(""+ BaseApp.getUser().getProjectName());
 		dialog.main_option_5.setText(status);
 		LayoutParams lay = dialog.getWindow().getAttributes();
 		DisplayMetrics dm = new DisplayMetrics();// 获取屏幕分辨率

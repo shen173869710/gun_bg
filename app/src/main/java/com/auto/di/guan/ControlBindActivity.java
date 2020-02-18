@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DeviceInfo;
+import com.auto.di.guan.db.User;
 import com.auto.di.guan.db.sql.ControlInfoSql;
 import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.dialog.WaitingDialog;
@@ -64,7 +65,6 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 
 	private List<ControlInfo> controlInfos;
 
-	private String groupName;
 	private WaitingDialog dialog;
 
 	/***是否写入项目ID**/
@@ -77,6 +77,8 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 
 	private View bind_deivce_name;
 	private EditText bind_deivce_name_edit;
+
+	private User mUser;
 
 
 	@Override
@@ -93,6 +95,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 	protected void init() {
         EventBus.getDefault().register(this);
 		controlInfos = ControlInfoSql.queryControlList();
+		mUser = BaseApp.getUser();
 		view = findViewById(R.id.title_bar);
 		textView = (TextView)view.findViewById(R.id.title_bar_title);
 		textView.setText("绑定阀门");
@@ -110,12 +113,12 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 		((TextView)(bind_deivce_name.findViewById(R.id.item_title))).setText("设备名称");
 		bind_deivce_item = findViewById(R.id.bind_deivce_item);
 		((TextView)(bind_deivce_item.findViewById(R.id.item_title))).setText("项目ID");
-		groupName = ShareUtil.getStringLocalValue(this,Entiy.GROUP_NAME);
-		((TextView)(bind_deivce_item.findViewById(R.id.item_desc))).setText(groupName+"");
+
+		((TextView)(bind_deivce_item.findViewById(R.id.item_desc))).setText(BaseApp.getUser().getProjectId()+"");
 
 		bind_group_item = findViewById(R.id.bind_group_item);
 		((TextView)(bind_group_item.findViewById(R.id.item_title))).setText("阀控器ID");
-		((TextView)(bind_group_item.findViewById(R.id.item_desc))).setText(info.getDeviceId()+"");
+		((TextView)(bind_group_item.findViewById(R.id.item_desc))).setText(info.getProtocalId()+"");
 
 
 		bind_control_title_1 = findViewById(R.id.bind_control_title_1);
@@ -163,8 +166,8 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 			@Override
 			public void afterTextChanged(Editable s) {
 				if (!TextUtils.isEmpty(s)) {
-					bind_control_name_1.setText(s + "-1");
-					bind_control_name_2.setText(s + "-2");
+					bind_control_name_1.setText(s + "_1");
+					bind_control_name_2.setText(s + "_2");
 				}
 			}
 		});
@@ -220,52 +223,75 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 //					return;
 //				}
 				info.setDeviceName(deviceName);
+				ControlInfo controlInfo_0 = info.getValveDeviceSwitchList().get(0);
+				ControlInfo controlInfo_1 = info.getValveDeviceSwitchList().get(1);
 				if (bind_control_sel_1.isChecked()) {
-					info.controlInfos.get(0).imageId = R.mipmap.lighe_1;
-					info.controlInfos.get(0).status = Entiy.DEVEICE_BIND;
-					info.controlInfos.get(0).controId = Integer.valueOf(info.deviceId)*2-1;
-					info.controlInfos.get(0).deviceId = Entiy.getBid(info.getDeviceId()+"");
-					info.controlInfos.get(0).controlName = controlName1;
-					info.controlInfos.get(0).showName = info.getControl_1();
-					info.controlInfos.get(0).nickName = nick1;
-					info.controlInfos.get(0).bindId = info.deviceId;
+					controlInfo_0.setValve_imgage_id(R.mipmap.lighe_1);
+					controlInfo_0.setValve_status(Entiy.DEVEICE_BIND);
+					controlInfo_0.setDevice_id(info.getDeviceId());
+					controlInfo_0.setValve_name(controlName1);
+					controlInfo_0.setValve_alias(nick1);
+					controlInfo_0.setValve_id(Integer.valueOf(info.getDeviceId())*2-1);
+//					controlInfo_0.imageId = R.mipmap.lighe_1;
+//					controlInfo_0.status = Entiy.DEVEICE_BIND;
+//					controlInfo_0.controId = Integer.valueOf(info.getDeviceId())*2-1;
+//					controlInfo_0.deviceId = Entiy.getBid(info.getDeviceId()+"");
+//					controlInfo_0.controlName = controlName1;
+//					controlInfo_0.showName = info.getControl_1();
+//					controlInfo_0.nickName = nick1;
+//					controlInfo_0.bindId = info.getDeviceId();
 					DeviceInfoSql.updateDevice(info);
 				}else {
-					info.controlInfos.get(0).imageId = 0;
-					info.controlInfos.get(0).status = 0;
-					info.controlInfos.get(0).controId = 0;
+					controlInfo_0.setValve_imgage_id(0);
+					controlInfo_0.setValve_status(0);
+					controlInfo_0.setValve_id(0);
+//					controlInfo_0.imageId = 0;
+//					controlInfo_0.status = 0;
+//					controlInfo_0.controId = 0;
 				}
 				if (bind_control_sel_2.isChecked()) {
-					info.controlInfos.get(1).imageId = R.mipmap.lighe_1;
-					info.controlInfos.get(1).status = Entiy.DEVEICE_BIND;
-					info.controlInfos.get(1).controId = Integer.valueOf(info.deviceId)*2;
-					info.controlInfos.get(1).deviceId = Entiy.getBid(info.getDeviceId()+"");
-					info.controlInfos.get(1).controlName = controlName2;
-					info.controlInfos.get(1).showName = info.getControl_2();
-					info.controlInfos.get(1).nickName = nick2;
-					info.controlInfos.get(1).bindId = info.deviceId;
+					controlInfo_1.setValve_imgage_id(R.mipmap.lighe_1);
+					controlInfo_1.setValve_status(Entiy.DEVEICE_BIND);
+					controlInfo_1.setDevice_id(info.getDeviceId());
+					controlInfo_1.setValve_name(controlName2);
+					controlInfo_1.setValve_alias(nick2);
+					controlInfo_1.setValve_id(Integer.valueOf(info.getDeviceId())*2-1);
+//					controlInfo_1.imageId = R.mipmap.lighe_1;
+//					controlInfo_1.status = Entiy.DEVEICE_BIND;
+//					controlInfo_1.controId = Integer.valueOf(info.getDeviceId())*2;
+//					controlInfo_1.deviceId = Entiy.getBid(info.getDeviceId()+"");
+//					controlInfo_1.controlName = controlName2;
+//					controlInfo_1.showName = info.getControl_2();
+//					controlInfo_1.nickName = nick2;
+//					controlInfo_1.bindId = info.getDeviceId();
 					DeviceInfoSql.updateDevice(info);
 				}else {
-					info.controlInfos.get(1).imageId = 0;
-					info.controlInfos.get(1).status = 0;
-					info.controlInfos.get(1).controId = 0;
+					controlInfo_1.setValve_imgage_id(0);
+					controlInfo_1.setValve_status(0);
+					controlInfo_1.setValve_id(0);
+//					controlInfo_1.imageId = 0;
+//					controlInfo_1.status = 0;
+//					controlInfo_1.controId = 0;
 				}
 				finish();
 			    break;
 			case R.id.bind_deivce_id:
 					isGroupClick = true;
-					EventBus.getDefault().post(new ReadEvent(Entiy.writeGid(groupName),0));
-					if(dialog != null && !dialog.isShowing()) {
-						dialog.show();
-					}
+//					EventBus.getDefault().post(new ReadEvent(Entiy.writeGid(groupName),0));
+//					if(dialog != null && !dialog.isShowing()) {
+//						dialog.show();
+//					}
+				BindEvent event = new BindEvent("ok");
+				onControlStatusEvent(event);
 				break;
 			case R.id.bind_deivce_control_id:
 					isGroupClick = false;
-				EventBus.getDefault().post(new ReadEvent(Entiy.writeBid(info.getDeviceId()+""),1));
-					if(dialog != null && !dialog.isShowing()) {
-						dialog.show();
-					}
-
+//				EventBus.getDefault().post(new ReadEvent(Entiy.writeBid(info.getDeviceId()+""),1));
+//					if(dialog != null && !dialog.isShowing()) {
+//						dialog.show();
+//					}
+				BindEvent event1 = new BindEvent("ok");
+				onControlStatusEvent(event1);
 				break;
 		}
 	}
@@ -279,16 +305,16 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 	}
 
-	private boolean checkId(int id) {
-		controlInfos = ControlInfoSql.queryControlList();
-		int size = controlInfos.size();
-		for (int i = 0; i < size; i++) {
-			if (controlInfos.get(i).controId == id) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	private boolean checkId(int id) {
+//		controlInfos = ControlInfoSql.queryControlList();
+//		int size = controlInfos.size();
+//		for (int i = 0; i < size; i++) {
+//			if (controlInfos.get(i).controId == id) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	@Override
 	public void urlRequestStart(Task result) {
@@ -298,21 +324,23 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 	@Override
 	public void urlRequestEnd(Task result) {
 
-		if (result.getId() == 1) {
-			info.controlInfos.get(0).imageId = R.mipmap.lighe_1;
-			info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
-			info.controlInfos.get(0).controId = Integer.valueOf(text1);
-			info.controlInfos.get(0).deviceId = Entiy.getBid(info.getDeviceId()+"");
-			DeviceInfoSql.updateDevice(info);
-			showToastLongMsg("写入成功");
-		}else if (result.getId() == 2) {
-			info.controlInfos.get(1).imageId = R.mipmap.lighe_1;
-			info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
-			info.controlInfos.get(1).controId = Integer.valueOf(text2);
-			info.controlInfos.get(1).deviceId = Entiy.getBid(info.getDeviceId()+"");
-			DeviceInfoSql.updateDevice(info);
-			showToastLongMsg("写入成功");
-		}
+//		ControlInfo controlInfo_0 = info.getValveDeviceSwitchList().get(0);
+//		ControlInfo controlInfo_1 = info.getValveDeviceSwitchList().get(1);
+//		if (result.getId() == 1) {
+//			controlInfo_0.imageId = R.mipmap.lighe_1;
+//			controlInfo_0.status = Entiy.CONTROL_STATUS＿CONNECT;
+//			controlInfo_0.controId = Integer.valueOf(text1);
+//			controlInfo_0.deviceId = Entiy.getBid(info.getDeviceId()+"");
+//			DeviceInfoSql.updateDevice(info);
+//			showToastLongMsg("写入成功");
+//		}else if (result.getId() == 2) {
+//			controlInfo_0.imageId = R.mipmap.lighe_1;
+//			controlInfo_0.status = Entiy.CONTROL_STATUS＿CONNECT;
+//			controlInfo_0.controId = Integer.valueOf(text2);
+//			controlInfo_0.deviceId = Entiy.getBid(info.getDeviceId()+"");
+//			DeviceInfoSql.updateDevice(info);
+//			showToastLongMsg("写入成功");
+//		}
 	}
 
 	@Override

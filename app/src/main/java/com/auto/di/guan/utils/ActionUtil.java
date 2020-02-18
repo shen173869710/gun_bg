@@ -15,7 +15,7 @@ public class ActionUtil {
 		UserAction action = new UserAction();
 
 		int operateResult = -1;
-		String name = info.controlName;
+		String name = info.getValve_name();
 		if (com_type == MainActivity.TYPE_OPEN) {
 			operateResult =1;
 			action.setActionDesc(name+ "开启");
@@ -27,18 +27,20 @@ public class ActionUtil {
 		}
 		int operateType=0;
 		int actionType =0;
+		String userName = BaseApp.getUser().getUserName();
+
 		if (optionType == MainActivity.FRAGMENT_4) {
-			action.setUserName(BaseApp.getInstance().user.getUserName());
+			action.setUserName(userName);
 			actionType = Entiy.ACTION_TYPE_4;
 			action.setUserAccount("手动单个操作");
 			operateType = 2;
 		}else if (optionType == MainActivity.FRAGMENT_31) {
-			action.setUserName(BaseApp.getInstance().user.getUserName());
+			action.setUserName(userName);
 			actionType = Entiy.ACTION_TYPE_31;
 			action.setUserAccount("手动分组操作");
 			operateType = 1;
 		}else if (optionType == MainActivity.FRAGMENT_32){
-			action.setUserName(BaseApp.getInstance().user.getUserName());
+			action.setUserName(userName);
 			actionType = Entiy.ACTION_TYPE_32;
 			action.setUserAccount("自动轮灌操作");
 			operateType = 0;
@@ -84,8 +86,8 @@ public class ActionUtil {
 		data.operateType = operateType;
 		data.operateName = action.getUserAccount();
 		data.projectName = ShareUtil.getStringLocalValue(BaseApp.getInstance(), "title_name");
-		data.valveCode = info.deviceId;
-		data.valveName = info.controlName;
+		data.valveCode = info.getValve_id()+"";
+		data.valveName = info.getValve_name();
 		data.projectId = ShareUtil.getStringLocalValue(BaseApp.getInstance(),"group_name");
 		PostUtil.post(data);
 	}

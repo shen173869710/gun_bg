@@ -101,14 +101,14 @@ public class ChooseGridAdapter extends BaseAdapter {
         }
 
 
-        holder.grid_item_device_id.setText(datas.get(position).deviceId+"");
+        holder.grid_item_device_id.setText(datas.get(position).getDeviceId()+"");
         bindView(holder, position);
         return convertView;
     }
 
     private void bindView(ViewHolder holder, int position) {
         final DeviceInfo deviceInfo = datas.get(position);
-        if (deviceInfo.status == Entiy.DEVEICE_UNBIND) {
+        if (deviceInfo.getDeviceStatus() == Entiy.DEVEICE_UNBIND) {
             holder.grid_item_device.setVisibility(View.INVISIBLE);
             holder.grid_item_left_layout.setVisibility(View.INVISIBLE);
             holder.grid_item_right_layout.setVisibility(View.INVISIBLE);
@@ -120,37 +120,37 @@ public class ChooseGridAdapter extends BaseAdapter {
                 holder.grid_item_device_name.setText(datas.get(position).getDeviceName()+"");
                 holder.grid_item_device_name.setVisibility(View.VISIBLE);
             }
-            holder.grid_item_device_value.setText(deviceInfo.elect+"%");
-            ControlInfo info1 = deviceInfo.controlInfos.get(0);
-            if (info1.imageId == 0) {
+            holder.grid_item_device_value.setText(deviceInfo.getElectricQuantity()+"%");
+            ControlInfo info1 = deviceInfo.getValveDeviceSwitchList().get(0);
+            if (info1.getValve_imgage_id() == 0) {
                 holder.grid_item_left_layout.setVisibility(View.INVISIBLE);
                 holder.grid_item_left_layout.setOnClickListener(null);
             }else {
                 holder.grid_item_left_layout.setVisibility(View.VISIBLE);
                 holder.grid_item_left_image.setVisibility(View.VISIBLE);
-                holder.grid_item_left_image.setImageResource(info1.imageId);
+                holder.grid_item_left_image.setImageResource(info1.getValve_imgage_id());
                 holder.grid_item_left_sel.setVisibility(View.VISIBLE);
-                if (info1.isSelect) {
+                if (info1.isSelect()) {
                     holder.grid_item_left_sel.setBackgroundResource(R.drawable.img_selected);
                 }else {
                     holder.grid_item_left_sel.setBackgroundResource(R.drawable.img_unselected);
                 }
 
-                if (info1.groupId == 0) {
+                if (info1.getValve_group_id() == 0) {
                     holder.grid_item_left_group.setVisibility(View.INVISIBLE);
                 }else {
                     holder.grid_item_left_group.setVisibility(View.VISIBLE);
-                    holder.grid_item_left_group.setText(info1.groupId+"");
+                    holder.grid_item_left_group.setText(info1.getValve_group_id()+"");
                 }
 
-                if (info1.groupId > 0) {
+                if (info1.getValve_group_id() > 0) {
                     holder.grid_item_left_sel.setVisibility(View.GONE);
-                    deviceInfo.getControlInfos().get(0).isSelect = false;
+                    deviceInfo.getValveDeviceSwitchList().get(0).setSelect(false);
                 }else {
                     holder.grid_item_left_layout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            deviceInfo.getControlInfos().get(0).isSelect = !deviceInfo.getControlInfos().get(0).isSelect;
+                            deviceInfo.getValveDeviceSwitchList().get(0).setSelect(!deviceInfo.getValveDeviceSwitchList().get(0).isSelect());
                             notifyDataSetChanged();
                         }
                     });
@@ -160,35 +160,35 @@ public class ChooseGridAdapter extends BaseAdapter {
 
             }
 
-            ControlInfo info2 = deviceInfo.controlInfos.get(1);
-            if (info2.imageId == 0) {
+            ControlInfo info2 = deviceInfo.getValveDeviceSwitchList().get(1);
+            if (info2.getValve_imgage_id() == 0) {
                 holder.grid_item_right_layout.setVisibility(View.INVISIBLE);
             }else {
                 holder.grid_item_right_layout.setVisibility(View.VISIBLE);
                 holder.grid_item_right_image.setVisibility(View.VISIBLE);
-                holder.grid_item_right_image.setImageResource(info1.imageId);
+                holder.grid_item_right_image.setImageResource(info1.getValve_imgage_id());
                 holder.grid_item_right_sel.setVisibility(View.VISIBLE);
-                if (info2.isSelect) {
+                if (info2.isSelect()) {
                     holder.grid_item_right_sel.setBackgroundResource(R.drawable.img_selected);
                 }else {
                     holder.grid_item_right_sel.setBackgroundResource(R.drawable.img_unselected);
                 }
 
-                if (info2.groupId == 0) {
+                if (info2.getValve_group_id() == 0) {
                     holder.grid_item_right_group.setVisibility(View.INVISIBLE);
                 }else {
                     holder.grid_item_right_group.setVisibility(View.VISIBLE);
-                    holder.grid_item_right_group.setText(info2.groupId+"");
+                    holder.grid_item_right_group.setText(info2.getValve_group_id()+"");
                 }
 
-                if (info2.groupId > 0) {
+                if (info2.getValve_group_id() > 0) {
                     holder.grid_item_right_sel.setVisibility(View.GONE);
-                    deviceInfo.getControlInfos().get(1).isSelect = false;
+                    deviceInfo.getValveDeviceSwitchList().get(1).setSelect(false);
                 }else {
                     holder.grid_item_right_layout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            deviceInfo.getControlInfos().get(1).isSelect = !deviceInfo.getControlInfos().get(1).isSelect;
+                            deviceInfo.getValveDeviceSwitchList().get(1).setSelect(!deviceInfo.getValveDeviceSwitchList().get(1).isSelect());
                             notifyDataSetChanged();
                         }
                     });

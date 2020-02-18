@@ -192,7 +192,7 @@ public class ImageStatus {
 
     public static int getImageId (ControlInfo info){
         int id = 0;
-        switch (info.status) {
+        switch (info.getValve_status()) {
             case Entiy.CONTROL_STATUS＿CONNECT:
                 id = R.mipmap.lighe_1;
             break;

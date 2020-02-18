@@ -74,7 +74,6 @@ public class MainActivity extends SerialPortActivity {
     private TextView textView;
 
     private List<GroupInfo> groupInfos;
-    private final String TITLE_NAME = "title_name";
     /**
      * 定时任务时间   你自己在这里修改
      *  5 分钟
@@ -149,7 +148,7 @@ public class MainActivity extends SerialPortActivity {
         CMD_TYPE = TYPE_CLOSE;
         showDialog();
         cur = info;
-        final String cmd = Entiy.cmdClose(BaseApp.getProjectId(), info.deviceId, info.name);
+        final String cmd = Entiy.cmdClose(BaseApp.getProjectId(), info.getProtocalId(), info.getValve_name());
         SendUtils.sendClose(cmd,cur);
         Log.e(TAG, Entiy.LOG_CLOSE_START + cmd);
 		try {
@@ -164,7 +163,7 @@ public class MainActivity extends SerialPortActivity {
         CMD_TYPE = TYPE_OPEN;
         showDialog();
         cur = info;
-        final String cmd = Entiy.cmdOpen(BaseApp.getProjectId(), info.deviceId, info.name);
+        final String cmd = Entiy.cmdOpen(BaseApp.getProjectId(), info.getProtocalId(), info.getValve_name());
         SendUtils.sendopen(cmd,cur);
         Log.e(TAG, Entiy.LOG_OPEN_START + cmd);
 		try {
@@ -179,7 +178,7 @@ public class MainActivity extends SerialPortActivity {
         CMD_TYPE = type;
          showDialog();
         cur = info;
-        final String cmd = Entiy.cmdRead(BaseApp.getProjectId(), info.deviceId);
+        final String cmd = Entiy.cmdRead(BaseApp.getProjectId(), info.getProtocalId());
         SendUtils.sendRead(cmd,cur);
         Log.e("-------读取设备", cmd + "       " + System.currentTimeMillis());
         try {
@@ -200,12 +199,7 @@ public class MainActivity extends SerialPortActivity {
         EventBus.getDefault().register(this);
         textView = (TextView) findViewById(R.id.title_bar_title);
 //        textCode = (TextView) findViewById(R.id.title_bar_code);
-
-        String mainTitle = ShareUtil.getStringLocalValue(this, TITLE_NAME);
-        if (mainTitle == null && TextUtils.isEmpty(mainTitle)) {
-            mainTitle = "点击设置项目名称";
-        }
-        textView.setText(mainTitle);
+        textView.setText(BaseApp.getUser().getProjectName());
 
         findViewById(R.id.title_bar_close).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,19 +214,7 @@ public class MainActivity extends SerialPortActivity {
         final ArticleListFragment articleListFragment = new ArticleListFragment();
         transaction.add(R.id.center, articleListFragment, "center");
         transaction.commitAllowingStateLoss();
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SureLoadDialog.ShowDialog(MainActivity.this, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String tag = v.getTag().toString();
-                        ShareUtil.setStringLocalValue(MainActivity.this, TITLE_NAME, tag);
-                        textView.setText(tag);
-                    }
-                });
-            }
-        });
+
         windowTop = getStatusBarHeight();
 
         if (LevelInfoSql.queryLevelInfoList().size() == 0) {
@@ -286,12 +268,12 @@ public class MainActivity extends SerialPortActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void  onSaveInstanceState(Bundle outState) {
 //		super.onSaveInstanceState(outState);
     }
 
     public void setTitle(String title) {
-        String mainTitle = ShareUtil.getStringLocalValue(this, TITLE_NAME);
+        String mainTitle = BaseApp.getUser().getProjectName();
         if (mainTitle == null && TextUtils.isEmpty(mainTitle)) {
             mainTitle = "";
         } else {
@@ -308,11 +290,11 @@ public class MainActivity extends SerialPortActivity {
         int size = deveiceInfo.size();
 
         for (int i = 0; i < size; i++) {
-            if (groupInfo.getGroupId() == deveiceInfo.get(i).controlInfos.get(0).groupId) {
-                infos.add(deveiceInfo.get(i).controlInfos.get(0));
+            if (groupInfo.getGroupId() == deveiceInfo.get(i).getValveDeviceSwitchList().get(0).getValve_group_id()) {
+                infos.add(deveiceInfo.get(i).getValveDeviceSwitchList().get(0));
             }
-            if (groupInfo.getGroupId() == deveiceInfo.get(i).controlInfos.get(1).groupId) {
-                infos.add(deveiceInfo.get(i).controlInfos.get(1));
+            if (groupInfo.getGroupId() == deveiceInfo.get(i).getValveDeviceSwitchList().get(1).getValve_group_id()) {
+                infos.add(deveiceInfo.get(i).getValveDeviceSwitchList().get(1));
             }
         }
         groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
@@ -378,11 +360,11 @@ public class MainActivity extends SerialPortActivity {
         int size = deveiceInfo.size();
 
         for (int i = 0; i < size; i++) {
-            if (groupInfo.getGroupId() == deveiceInfo.get(i).controlInfos.get(0).groupId) {
-                infos.add(deveiceInfo.get(i).controlInfos.get(0));
+            if (groupInfo.getGroupId() == deveiceInfo.get(i).getValveDeviceSwitchList().get(0).getValve_group_id()) {
+                infos.add(deveiceInfo.get(i).getValveDeviceSwitchList().get(0));
             }
-            if (groupInfo.getGroupId() == deveiceInfo.get(i).controlInfos.get(1).groupId) {
-                infos.add(deveiceInfo.get(i).controlInfos.get(1));
+            if (groupInfo.getGroupId() == deveiceInfo.get(i).getValveDeviceSwitchList().get(1).getValve_group_id()) {
+                infos.add(deveiceInfo.get(i).getValveDeviceSwitchList().get(1));
             }
         }
         int groupStatus;
@@ -447,7 +429,7 @@ public class MainActivity extends SerialPortActivity {
             LogUtils.e("------hasnRunCmd====",""+hasRunCmd);
             if (hasRunCmd){
                 hasRunCmd = false;
-                SendUtils.sendError("通讯失败",cur.controId, cur.nickName);
+                SendUtils.sendError("通讯失败",cur.getValve_id(), cur.getValve_alias());
                 play();
                 return;
             }
@@ -469,7 +451,7 @@ public class MainActivity extends SerialPortActivity {
         }
         if (receive.contains("ok") || receive.contains("zt")) {
             OptionStatus status = OptionUtils.receive(receive);
-            SendUtils.sendMiddle(receive, cur.controId,cur.nickName);
+            SendUtils.sendMiddle(receive, cur.getValve_id(),cur.getValve_alias());
             if (status == null) {
                 showToastLongMsg("未知错误+="+receive);
 //                SendUtils.sendError("未知错误"+receive,cur.controId);
@@ -478,7 +460,7 @@ public class MainActivity extends SerialPortActivity {
                 return;
             }
             if (status.type.equals( OptionUtils.ZT)) {
-                doReadOption(status,cur.deviceId);
+                doReadOption(status,cur.getProtocalId());
             } else if (status.type.equals( OptionUtils.KF) ){
 //                doOpenOption(status);
             } else if (status.type.equals( OptionUtils.GF)) {
@@ -600,12 +582,12 @@ public class MainActivity extends SerialPortActivity {
         int groupId = groupInfo.groupId;
         int size = deveiceInfos.size();
         for (int i = 0; i < size; i++) {
-            if (deveiceInfos.get(i).controlInfos.get(0).groupId == groupId) {
-                controlInfos.add(deveiceInfos.get(i).controlInfos.get(0));
+            if (deveiceInfos.get(i).getValveDeviceSwitchList().get(0).getValve_group_id() == groupId) {
+                controlInfos.add(deveiceInfos.get(i).getValveDeviceSwitchList().get(0));
             }
 
-            if (deveiceInfos.get(i).controlInfos.get(1).groupId == groupId) {
-                controlInfos.add(deveiceInfos.get(i).controlInfos.get(1));
+            if (deveiceInfos.get(i).getValveDeviceSwitchList().get(1).getValve_group_id() == groupId) {
+                controlInfos.add(deveiceInfos.get(i).getValveDeviceSwitchList().get(1));
             }
         }
 
@@ -619,12 +601,12 @@ public class MainActivity extends SerialPortActivity {
             final List<ControlInfo>closeCinfo = new ArrayList<>();
             int id = event.closeInfo.groupId;
             for (int i = 0; i < size; i++) {
-                if (deveiceInfos.get(i).controlInfos.get(0).groupId == id) {
-                    closeCinfo.add(deveiceInfos.get(i).controlInfos.get(0));
+                if (deveiceInfos.get(i).getValveDeviceSwitchList().get(0).getValve_group_id() == id) {
+                    closeCinfo.add(deveiceInfos.get(i).getValveDeviceSwitchList().get(0));
                 }
 
-                if (deveiceInfos.get(i).controlInfos.get(1).groupId == id) {
-                    closeCinfo.add(deveiceInfos.get(i).controlInfos.get(1));
+                if (deveiceInfos.get(i).getValveDeviceSwitchList().get(1).getValve_group_id() == id) {
+                    closeCinfo.add(deveiceInfos.get(i).getValveDeviceSwitchList().get(1));
                 }
             }
 
@@ -729,7 +711,7 @@ public class MainActivity extends SerialPortActivity {
                 if (controlInfos != null) {
                     temp = new ArrayList<>();
                     for (int i = 0; i < size; i++) {
-                        if (controlInfos.get(i).groupId == groupInfo.getGroupId()) {
+                        if (controlInfos.get(i).getValve_group_id() == groupInfo.getGroupId()) {
                             temp.add(controlInfos.get(i));
                         }
                     }
@@ -744,7 +726,7 @@ public class MainActivity extends SerialPortActivity {
 
         List<ControlInfo> oneTemp = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            if (controlInfos.get(i).status== Entiy.CONTROL_STATUS＿RUN || controlInfos.get(i).status ==Entiy.CONTROL_STATUS＿ERROR) {
+            if (controlInfos.get(i).getValve_status()== Entiy.CONTROL_STATUS＿RUN || controlInfos.get(i).getValve_status() ==Entiy.CONTROL_STATUS＿ERROR) {
                 oneTemp.add(controlInfos.get(i));
             }
         }
@@ -872,108 +854,116 @@ public class MainActivity extends SerialPortActivity {
                 return;
             }
             final DeviceInfo deviceInfo = DeviceInfoSql.queryDeviceById(Integer.valueOf(deviceId));
-            int controlId = cur.controId;
+            int controlId = cur.getValve_id();
             int type = -1;
 
-            deviceInfo.elect = status.elect;
+            if (TextUtils.isEmpty(status.elect)) {
+                try {
+                    deviceInfo.setElectricQuantity(Integer.valueOf(status.elect));
+                }catch (Exception e) {
+
+                }
+            }
+
 
             ControlInfo controlInfo = null;
             Log.e(" ----开关0---", "cur = "+new Gson().toJson(cur) + "  info = "+new Gson().toJson(info)+ " optionType ="+optionType+"  CMD_TYPE"+CMD_TYPE);
-            if (info != null && cur!= null && cur.name.contains("0")) {
-                controlInfo = info.controlInfos.get(0);
-                int code = info.controlInfos.get(0).status;
+            if (info != null && cur!= null && cur.getValve_name().contains("0")) {
+                controlInfo = info.getValveDeviceSwitchList().get(0);
+                int code = controlInfo.getValve_status();
                 if (code == Entiy.CONTROL_STATUS＿RUN) {
-                    deviceInfo.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
-                    deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_2;
+                    controlInfo.setValve_status(Entiy.CONTROL_STATUS＿RUN);
+                    controlInfo.setValve_imgage_id(R.mipmap.lighe_2);
                     type = 0;
                     LogUtils.e(TAG, ""+code);
 
                 }else if (code == Entiy.CONTROL_STATUS＿CONNECT) {
                     if (optionType == 0) {
-                        deviceInfo.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿ERROR;
-                        deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_3;
+                        controlInfo.setValve_status(Entiy.CONTROL_STATUS＿ERROR);
+                        controlInfo.setValve_imgage_id(R.mipmap.lighe_3);
                         type = -1;
                         play();
                     }else {
                         if (CMD_TYPE == TYPE_OPEN) {
-                            deviceInfo.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿ERROR;
-                            deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_3;
+                            controlInfo.setValve_status(Entiy.CONTROL_STATUS＿ERROR);
+                            controlInfo.setValve_imgage_id(R.mipmap.lighe_3);
                             type = -1;
                             play();
                             Log.e(" ----887---", "-----------------");
                         }else {
-                            deviceInfo.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
-                            deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_1;
+                            controlInfo.setValve_status(Entiy.CONTROL_STATUS＿CONNECT);
+                            controlInfo.setValve_imgage_id(R.mipmap.lighe_1);
                             type = 0;
                             Log.e(" ----892---", "-----------------");
                         }
                         LogUtils.e(TAG, "connect"+code);
                     }
                 }else if (code == Entiy.CONTROL_STATUS＿NOTCLOSE){
-                    deviceInfo.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿ERROR;
-                    deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_3;
+
+                    controlInfo.setValve_status(Entiy.CONTROL_STATUS＿ERROR);
+                    controlInfo.setValve_imgage_id(R.mipmap.lighe_3);
                     play();
                     type = -2;
                     Log.e(" ----901---", "-----------------");
                 }else {
                     if (CMD_TYPE == TYPE_OPEN) {
-                        deviceInfo.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿ERROR;
-                        deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_3;
+                        controlInfo.setValve_status(Entiy.CONTROL_STATUS＿ERROR);
+                        controlInfo.setValve_imgage_id(R.mipmap.lighe_3);
                         type = -1;
                         play();
                         Log.e(" ----887---", "-----------------");
                     }else {
-                        deviceInfo.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
-                        deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_1;
+                        controlInfo.setValve_status(Entiy.CONTROL_STATUS＿CONNECT);
+                        controlInfo.setValve_imgage_id(R.mipmap.lighe_1);
                         type = 0;
                         Log.e(" ----892---", "-----------------");
                     }
-
-                    deviceInfo.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿ERROR;
-                    deviceInfo.controlInfos.get(0).imageId = R.mipmap.lighe_3;
+                    controlInfo.setValve_status(Entiy.CONTROL_STATUS＿ERROR);
+                    controlInfo.setValve_imgage_id(R.mipmap.lighe_3);
                     play();
                     type = -1;
                     Log.e(" ----907---", "-----------------");
                 }
-            }else if (info != null && cur!= null && cur.name.contains("1")) {
-                int code = info.controlInfos.get(1).status;
-                controlInfo = info.controlInfos.get(1);
+            }else if (info != null && cur!= null && cur.getValve_name().contains("1")) {
+                controlInfo = info.getValveDeviceSwitchList().get(1);
+                int code = controlInfo.getValve_status();
+
                 if (code == Entiy.CONTROL_STATUS＿RUN) {
-                    deviceInfo.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿RUN;
-                    deviceInfo.controlInfos.get(1).imageId = R.mipmap.lighe_2;
+                    controlInfo.setValve_status(Entiy.CONTROL_STATUS＿RUN);
+                    controlInfo.setValve_imgage_id(R.mipmap.lighe_2);
                     type = 0;
                     LogUtils.e(TAG, ""+code);
                 }else if (code == Entiy.CONTROL_STATUS＿CONNECT) {
                     if (optionType == 0) {
-                        deviceInfo.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿ERROR;
-                        deviceInfo.controlInfos.get(1).imageId = R.mipmap.lighe_3;
+                        controlInfo.setValve_status(Entiy.CONTROL_STATUS＿ERROR);
+                        controlInfo.setValve_imgage_id(R.mipmap.lighe_3);
                         type = -1;
                         play();
                         Log.e(" ----923---", "-----------------");
                     }else {
                         LogUtils.e(TAG, "CMD_TYPE =="+CMD_TYPE);
                         if (CMD_TYPE == TYPE_OPEN) {
-                            deviceInfo.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿ERROR;
-                            deviceInfo.controlInfos.get(1).imageId = R.mipmap.lighe_3;
+                            controlInfo.setValve_status(Entiy.CONTROL_STATUS＿ERROR);
+                            controlInfo.setValve_imgage_id(R.mipmap.lighe_3);
                             type = -1;
                             play();
                             Log.e(" ----931---", "-----------------");
                         }else {
-                            deviceInfo.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
-                            deviceInfo.controlInfos.get(1).imageId = R.mipmap.lighe_1;
+                            controlInfo.setValve_status(Entiy.CONTROL_STATUS＿CONNECT);
+                            controlInfo.setValve_imgage_id(R.mipmap.lighe_1);
                             type = 0;
                         }
                     }
 //                    play();
                 }else if (code == Entiy.CONTROL_STATUS＿NOTCLOSE){
-                        deviceInfo.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿ERROR;
-                        deviceInfo.controlInfos.get(1).imageId = R.mipmap.lighe_3;
+                    controlInfo.setValve_status(Entiy.CONTROL_STATUS＿ERROR);
+                    controlInfo.setValve_imgage_id(R.mipmap.lighe_3);
                         type = -2;
                         play();
                     Log.e(" ----944---", "-----------------");
                 }else {
-                    deviceInfo.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿ERROR;
-                    deviceInfo.controlInfos.get(1).imageId = R.mipmap.lighe_3;
+                    controlInfo.setValve_status(Entiy.CONTROL_STATUS＿ERROR);
+                    controlInfo.setValve_imgage_id(R.mipmap.lighe_3);
                     type = -1;
                     play();
                     Log.e(" ----950---", "-----------------");
@@ -983,11 +973,11 @@ public class MainActivity extends SerialPortActivity {
             if (isSaveDb && controlInfo != null) {
                 ActionUtil.saveAction(cur, CMD_TYPE, type, optionType);
             }
-            SendUtils.sendEnd(controlId, type, cur.nickName);
+            SendUtils.sendEnd(controlId, type, cur.getValve_alias());
             DeviceInfoSql.updateDevice(deviceInfo);
             String str = new Gson().toJson(DeviceInfoSql.queryDeviceList());
             LogUtils.e("------", "main updatte = "+str);
-            EventBus.getDefault().post(new AdapterEvent(cur.groupId));
+            EventBus.getDefault().post(new AdapterEvent(cur.getValve_group_id()));
         } catch (Exception e) {
             LogUtils.e(TAG, e.toString());
         }

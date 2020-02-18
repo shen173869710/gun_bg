@@ -4,6 +4,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import java.io.Serializable;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Property;
 
 @Entity
 public class User implements Serializable {
@@ -11,70 +12,71 @@ public class User implements Serializable {
     @Id(autoincrement = true)
     private Long id;
     /** 用户ID */
+    @Property(nameInDb = "userId")
     private Long userId;
-    /** 部门ID */
-    private Long deptId;
-    /** 部门父ID */
-    private Long parentId;
-    /** 角色ID */
-    private Long roleId;
     /** 登录名称 */
+    @Property(nameInDb = "loginName")
     private String loginName;
     /** 用户名称 */
+    @Property(nameInDb = "userName")
     private String userName;
-    // 用户类型（00系统用户,成员用户001）
-    private String userType;
     /** 用户邮箱 */
+    @Property(nameInDb = "email")
     private String email;
     /** 手机号码 */
+    @Property(nameInDb = "phonenumber")
     private String phonenumber;
     /** 用户性别 */
+    @Property(nameInDb = "sex")
     private String sex;
     /** 用户头像 */
+    @Property(nameInDb = "avatar")
     private String avatar;
     /** 密码 */
+    @Property(nameInDb = "password")
     private String password;
-    /** 盐加密 */
-    private String salt;
     /** 帐号状态（0正常 1停用） */
+    @Property(nameInDb = "status")
     private String status;
     // 项目id
+    @Property(nameInDb = "projectId")
     private String projectId;
     // 项目组id
+    @Property(nameInDb = "projectGroupId")
     private String projectGroupId;
     // 分干管(数量)
+    @Property(nameInDb = "trunkPipeNum")
     private Integer trunkPipeNum;
     // 出地桩(数量)
+    @Property(nameInDb = "pileOutNum")
     private Integer pileOutNum;
     // 项目名称
+    @Property(nameInDb = "projectName")
     private String projectName;
     // 项目描述
+    @Property(nameInDb = "projectDesc")
     private String projectDesc;
     // 项目备注
+    @Property(nameInDb = "projectRemarks")
     private String projectRemarks;
     // 项目经纬度
+    @Property(nameInDb = "longitudeLatitude")
     private String longitudeLatitude;
-    @Generated(hash = 1907489879)
-    public User(Long id, Long userId, Long deptId, Long parentId, Long roleId,
-            String loginName, String userName, String userType, String email,
-            String phonenumber, String sex, String avatar, String password,
-            String salt, String status, String projectId, String projectGroupId,
+    @Generated(hash = 756738866)
+    public User(Long id, Long userId, String loginName, String userName,
+            String email, String phonenumber, String sex, String avatar,
+            String password, String status, String projectId, String projectGroupId,
             Integer trunkPipeNum, Integer pileOutNum, String projectName,
             String projectDesc, String projectRemarks, String longitudeLatitude) {
         this.id = id;
         this.userId = userId;
-        this.deptId = deptId;
-        this.parentId = parentId;
-        this.roleId = roleId;
         this.loginName = loginName;
         this.userName = userName;
-        this.userType = userType;
         this.email = email;
         this.phonenumber = phonenumber;
         this.sex = sex;
         this.avatar = avatar;
         this.password = password;
-        this.salt = salt;
         this.status = status;
         this.projectId = projectId;
         this.projectGroupId = projectGroupId;
@@ -100,24 +102,6 @@ public class User implements Serializable {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-    public Long getDeptId() {
-        return this.deptId;
-    }
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
-    }
-    public Long getParentId() {
-        return this.parentId;
-    }
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-    public Long getRoleId() {
-        return this.roleId;
-    }
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
     public String getLoginName() {
         return this.loginName;
     }
@@ -129,12 +113,6 @@ public class User implements Serializable {
     }
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-    public String getUserType() {
-        return this.userType;
-    }
-    public void setUserType(String userType) {
-        this.userType = userType;
     }
     public String getEmail() {
         return this.email;
@@ -165,12 +143,6 @@ public class User implements Serializable {
     }
     public void setPassword(String password) {
         this.password = password;
-    }
-    public String getSalt() {
-        return this.salt;
-    }
-    public void setSalt(String salt) {
-        this.salt = salt;
     }
     public String getStatus() {
         return this.status;
@@ -226,6 +198,4 @@ public class User implements Serializable {
     public void setLongitudeLatitude(String longitudeLatitude) {
         this.longitudeLatitude = longitudeLatitude;
     }
-
-
 }

@@ -60,10 +60,12 @@ public class GroupEditListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.group_item_name.setText(datas.get(position).controId + "阀控器");
-        if (datas.get(position).status == Entiy.CONTROL_STATUS＿RUN) {
+
+        ControlInfo controlInfo = datas.get(position);
+        holder.group_item_name.setText(controlInfo.getValve_id() + "阀控器");
+        if (controlInfo.getValve_status() == Entiy.CONTROL_STATUS＿RUN) {
             holder.group_item_status.setText("工作当中");
-        } else if (datas.get(position).status == Entiy.CONTROL_STATUS＿ERROR) {
+        } else if (controlInfo.getValve_status() == Entiy.CONTROL_STATUS＿ERROR) {
             holder.group_item_status.setText("工作异常");
         } else {
             holder.group_item_status.setText("可以编辑");
@@ -72,12 +74,12 @@ public class GroupEditListAdapter extends BaseAdapter {
         holder.group_edit_del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (datas.get(position).status != Entiy.CONTROL_STATUS＿RUN || datas.get(position).status != Entiy.CONTROL_STATUS＿ERROR) {
+                if (controlInfo.getValve_status() != Entiy.CONTROL_STATUS＿RUN ||
+                        controlInfo.getValve_status() != Entiy.CONTROL_STATUS＿ERROR) {
                     MainShowDialog.ShowDialog((Activity) context, "退出分组", "是退出当前分组", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ControlInfo controlInfo = datas.get(position);
-                            controlInfo.groupId = 0;
+                            controlInfo.setValve_group_id(0);
                             datas.remove(position);
                             notifyDataSetChanged();
                             ControlInfoSql.updateControl(controlInfo);

@@ -113,13 +113,18 @@ public class FragmentTab32 extends BaseFragment {
 		}
 		groupInfo.setGroupStatus(groupStatus);
         for (int i =0 ; i < size; i++) {
-            if (groupInfo.getGroupId() == deveiceInfo.get(i).controlInfos.get(0).groupId) {
-                deveiceInfo.get(i).controlInfos.get(0).status = status;
-                deveiceInfo.get(i).controlInfos.get(0).imageId = imageId;
+
+        	DeviceInfo deviceInfo = deveiceInfo.get(i);
+        	ControlInfo controlInfo_0 = deviceInfo.getValveDeviceSwitchList().get(0);
+			ControlInfo controlInfo_1 = deviceInfo.getValveDeviceSwitchList().get(1);
+
+            if (groupInfo.getGroupId() == controlInfo_0.getValve_group_id()) {
+				controlInfo_0.setValve_status(status);
+				controlInfo_0.setValve_imgage_id(imageId);
             }
-            if (groupInfo.getGroupId() == deveiceInfo.get(i).controlInfos.get(1).groupId) {
-                deveiceInfo.get(i).controlInfos.get(1).status = status;
-                deveiceInfo.get(i).controlInfos.get(1).imageId = imageId;
+            if (groupInfo.getGroupId() == controlInfo_1.getValve_group_id()) {
+				controlInfo_1.setValve_status(status);
+				controlInfo_1.setValve_imgage_id(imageId);
             }
         }
 		DeviceInfoSql.updateDeviceList(deveiceInfo);

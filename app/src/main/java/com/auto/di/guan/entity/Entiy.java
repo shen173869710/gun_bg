@@ -1,5 +1,7 @@
 package com.auto.di.guan.entity;
 
+import com.auto.di.guan.BaseApp;
+
 /**
  * Created by Administrator on 2017/7/16.
  */
@@ -16,11 +18,9 @@ public class Entiy {
     public static int GROUP_START = 100000;
     public static int GROUP_STOP = 100001;
     public static int  GROUP_NEXT = 100002;
-
-    public static String GROUP_NAME = "group_name";
-    public static int GEID_ALL_ITEM = 12 * 16;
-    public static int GRID_COLUMNS = 16;
-    public static int GRID_ROW = 12;
+    public static int GEID_ALL_ITEM = BaseApp.getUser().getPileOutNum() * BaseApp.getUser().getTrunkPipeNum();
+    public static int GRID_COLUMNS = BaseApp.getUser().getPileOutNum();
+    public static int GRID_ROW = BaseApp.getUser().getTrunkPipeNum();
     public static String []TAB_TITLE = {"增减阀控器",
             "绑定阀门",
             "轮灌分组",
@@ -209,4 +209,24 @@ public class Entiy {
     public static int ACTION_TYPE_31 = 31;
     public static int ACTION_TYPE_32 = 32;
     public static int ACTION_TYPE_ERROR = -1;
+
+
+    /**
+     *  根据项目位置生成通信ID
+     * @return
+     */
+    public static  String createProtocalId(int id) {
+        return String.format("%03d",id);
+    }
+
+    public static  String createGid(String gid) {
+        if (gid != null) {
+            if (gid.length() == 1) {
+                gid = "00"+gid;
+            }else if (gid.length() ==2) {
+                gid = "0"+gid;
+            }
+        }
+        return "sgid"+gid;
+    }
 }

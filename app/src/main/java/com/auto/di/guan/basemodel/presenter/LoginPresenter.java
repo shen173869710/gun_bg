@@ -6,6 +6,7 @@ import com.auto.di.guan.api.HttpManager;
 import com.auto.di.guan.basemodel.model.request.BaseRequest;
 import com.auto.di.guan.basemodel.model.respone.BaseRespone;
 import com.auto.di.guan.basemodel.view.ILoginView;
+import com.auto.di.guan.utils.MacInfo;
 import com.auto.di.guan.utils.Md5Util;
 import com.auto.di.guan.utils.ToastUtils;
 
@@ -19,12 +20,14 @@ import java.util.TreeMap;
 public class LoginPresenter extends BasePresenter<ILoginView>{
 
     /**
-     *  设备激活
+     *  设备激
      * **/
-    public void doDeviceActivation(String deviceCode,String deviceIdValue) {
+    public void doDeviceActivation(String loginName,String pwd) {
+        String mac = MacInfo.getMacAddress();
        TreeMap<String, Object> treeMap = new TreeMap<>();
-       treeMap.put("code",deviceCode);
-       treeMap.put("deviceIdValue", deviceIdValue);
+       treeMap.put("loginName",loginName);
+       treeMap.put("password", pwd);
+       treeMap.put("mac", mac);
        doHttpTask(getApiService().deviceActivation(BaseRequest.toMerchantDeviceTreeMap(treeMap)),
                new HttpManager.OnResultListener() {
             @Override
@@ -38,7 +41,7 @@ public class LoginPresenter extends BasePresenter<ILoginView>{
 
             @Override
             public void onError(Throwable error, Integer code,String msg) {
-                getBaseView().loginFail(error,code, msg);
+                getBaseView().activationFail(error,code, msg);
             }
        });
     }
@@ -49,26 +52,15 @@ public class LoginPresenter extends BasePresenter<ILoginView>{
      * **/
     public void doLogin(String userName, final String pwd) {
         String password = Md5Util.md5(pwd);
-
+        String mac = MacInfo.getMacAddress();
         TreeMap<String, Object> treeMap = new TreeMap<>();
-        treeMap.put("username",userName);
+        treeMap.put("loginName",userName);
         treeMap.put("password",password);
-//        treeMap.put("client", GlobalConstant.client);
-//        treeMap.put("deviceId",BaseApp.getInstance().getDeviceId());  //设备ID
-//        treeMap.put("code", BaseApp.getInstance().getDeviceCode()+"");
-//        treeMap.put("deviceIdValue",deviceIdValue);
-
-
+        treeMap.put("mac", mac);
         doHttpTask(getApiService().login(BaseRequest.toMerchantTreeMap(treeMap)), new HttpManager.OnResultListener() {
             @Override
             public void onSuccess(BaseRespone respone) {
-                if(respone.getCode() ==4999 || respone.getCode()==4888 || respone.getCode()==4777){
-                    ToastUtils.showLongToast("设备未绑定商户或已报废,请联系管理员!");
-                    return;
-                }
-
-
-
+                getBaseView().loginSuccess(respone);
             }
             @Override
             public void onError(Throwable error, Integer code,String msg) {

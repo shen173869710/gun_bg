@@ -9,6 +9,17 @@ import org.greenrobot.greendao.query.QueryBuilder;
 import java.util.List;
 
 public class UserSql extends BaseSql {
+
+
+    /**
+     * 清空用户
+     */
+//    public static void cleanUser() {
+//        DaoSession daoSession = getDaoWriteSession();
+//        UserDao userDao = daoSession.getUserDao();
+//        userDao.
+//    }
+
     /**
      * 插入一条记录
      *
@@ -57,12 +68,26 @@ public class UserSql extends BaseSql {
     }
 
 
+    /**
+     * 查询用户列表
+     */
+    public static User queryUserInfo() {
+        DaoSession daoSession = getDaoReadSession();
+        UserDao userDao = daoSession.getUserDao();
+        QueryBuilder<User> qb = userDao.queryBuilder();
+        if (qb.list() != null && qb.list().size() > 0) {
+            return  qb.list().get(0);
+        }
+        return null;
+    }
+
+
 
     /**
      * 查询用户列表
      */
     public static List<User> queryUserList() {
-        DaoSession daoSession = getDaoWriteSession();
+        DaoSession daoSession = getDaoReadSession();
         UserDao userDao = daoSession.getUserDao();
         QueryBuilder<User> qb = userDao.queryBuilder();
         return qb.list();
@@ -72,7 +97,7 @@ public class UserSql extends BaseSql {
      * 查询用户列表
      */
     public static List<User> queryUserList(String account) {
-        DaoSession daoSession = getDaoWriteSession();
+        DaoSession daoSession = getDaoReadSession();
         UserDao userDao = daoSession.getUserDao();
         QueryBuilder<User> qb = userDao.queryBuilder();
         qb.where(UserDao.Properties.LoginName.eq(account)).orderAsc(UserDao.Properties.LoginName);

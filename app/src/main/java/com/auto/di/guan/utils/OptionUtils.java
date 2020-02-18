@@ -34,35 +34,35 @@ public class OptionUtils {
 //            String[]result = msg.split(" ");
 //            if(result != null && result.length == 5) {
 //                status.projectId = result[1];
-                status.projectId = msg.substring(3,6);
+            status.projectId = msg.substring(3, 6);
 //                status.deviceId = result[2];
-                status.deviceId = msg.substring(7,10);
+            status.deviceId = msg.substring(7, 10);
 //                status.name = result[3];
-                status.name = msg.substring(11,12);
-                String ok = msg.substring(13,15);
-                status.type = KF;
-                if (OK.toLowerCase().contains(ok)) {
-                    status.status = Entiy.CONTROL_STATUS＿RUN;
-                }
+            status.name = msg.substring(11, 12);
+            String ok = msg.substring(13, 15);
+            status.type = KF;
+            if (OK.toLowerCase().contains(ok)) {
+                status.status = Entiy.CONTROL_STATUS＿RUN;
+            }
 
 //            }
         }
         //        gf 108 003 1110
         /**关闭控制阀**/
         if (msg.contains(GF)) {
-            String[]result = msg.split(" ");
+            String[] result = msg.split(" ");
 //            if(result != null && result.length == 5) {
 //                status.projectId = result[1];
 //                status.deviceId = result[2];
 //                status.name = result[3];
-                status.projectId = msg.substring(3,6);
-                status.deviceId = msg.substring(7,10);
-                status.name = msg.substring(11,12);
-                String ok = msg.substring(13,15);
-                status.type = GF;
-                if (OK.toLowerCase().contains(ok)) {
-                    status.status = Entiy.CONTROL_STATUS＿CONNECT;
-                }
+            status.projectId = msg.substring(3, 6);
+            status.deviceId = msg.substring(7, 10);
+            status.name = msg.substring(11, 12);
+            String ok = msg.substring(13, 15);
+            status.type = GF;
+            if (OK.toLowerCase().contains(ok)) {
+                status.status = Entiy.CONTROL_STATUS＿CONNECT;
+            }
 
 //            }
         }
@@ -72,14 +72,14 @@ public class OptionUtils {
         if (msg.contains(ZT)) {
 //            String[]result = msg.split(" ");
 //            if(result != null && result.length == 5) {
-                status.type = ZT;
-            status.projectId = msg.substring(3,6);
-            status.deviceId = msg.substring(7,10);
-            status.code = msg.substring(11,15);
+            status.type = ZT;
+            status.projectId = msg.substring(3, 6);
+            status.deviceId = msg.substring(7, 10);
+            status.code = msg.substring(11, 15);
 //                status.projectId = result[1];
 //                status.deviceId = result[2];
 //                status.code = result[3];
-                status.elect =msg.substring(16,19);
+            status.elect = msg.substring(16, 19);
 //            }
         }
 
@@ -99,63 +99,71 @@ public class OptionUtils {
         //status = {"allCmd":"zt 102 002 1100 090\n\u0000","code":"1100","deviceId":"002","elect":"090","projectId":"102","type":"zt","status":0}
         if (status != null && !TextUtils.isEmpty(status.code)) {
             DeviceInfo info = new DeviceInfo();
-            info.controlInfos = new ArrayList<>();
-            info.controlInfos.add(new ControlInfo());
-            info.controlInfos.add(new ControlInfo());
+            ArrayList<ControlInfo> controlInfos = new ArrayList<>();
+            ControlInfo controlInfo0 = new ControlInfo();
+            ControlInfo controlInfo1 = new ControlInfo();
             String type = status.code;
-             if (type.contains("0000")) {
-                info.controlInfos.get(0).status = 0;
-                info.controlInfos.get(1).status = 0;
-            }else if (type.contains("0100")) {
-                info.controlInfos.get(0).status = 0;
-                info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
-            }else if (type.contains("0101")) {
-                    info.controlInfos.get(0).status = 0;
-                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿RUN;
-            }else if (type.contains("1000")) {
-                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
-                    info.controlInfos.get(1).status = 0;
-            }else if (type.contains("1010")) {
-                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
-                    info.controlInfos.get(1).status = 0;
-            }else if (type.contains("1100")) {
-                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
-                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
-            }else if (type.contains("1110")) {
-                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
-                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
-            }else if (type.contains("1101")) {
-                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
-                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿RUN;
-            }else if (type.contains("1111")) {
-                    info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
-                    info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿RUN;
-            }else if (type.contains("1103")){
-                 info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿CONNECT;
-                 info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
-            }else if (type.contains("1113")) {
-                 info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿RUN;
-                 info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
-             }else if (type.contains("1130")){
-                 info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
-                 info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿CONNECT;
-            }else if (type.contains("1131")) {
-                 info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
-                 info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿RUN;
-            }else if (type.contains("1133")) {
-                 info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
-                 info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
-             }else if (type.contains("0103")) {
-                 info.controlInfos.get(0).status = 0;
-                 info.controlInfos.get(1).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
-             }else if (type.contains("1030")) {
-                 info.controlInfos.get(0).status = Entiy.CONTROL_STATUS＿NOTCLOSE;
-                 info.controlInfos.get(1).status = 0;
-             }else {
-                 return null;
-             }
+
+            int valueStatus0 = 0;
+            int valueStatus1 = 0;
+            if (type.contains("0000")) {
+                valueStatus0 = 0;
+                valueStatus1 = 0;
+            } else if (type.contains("0100")) {
+                valueStatus0 = 0;
+                valueStatus1 = Entiy.CONTROL_STATUS＿CONNECT;
+            } else if (type.contains("0101")) {
+                valueStatus0 = 0;
+                valueStatus1 = Entiy.CONTROL_STATUS＿RUN;
+            } else if (type.contains("1000")) {
+                valueStatus0 = Entiy.CONTROL_STATUS＿CONNECT;
+                valueStatus1 = 0;
+            } else if (type.contains("1010")) {
+                valueStatus0 = Entiy.CONTROL_STATUS＿RUN;
+                valueStatus1 = 0;
+            } else if (type.contains("1100")) {
+                valueStatus0 = Entiy.CONTROL_STATUS＿CONNECT;
+                valueStatus1 = Entiy.CONTROL_STATUS＿CONNECT;
+            } else if (type.contains("1110")) {
+                valueStatus0 = Entiy.CONTROL_STATUS＿RUN;
+                valueStatus1 = Entiy.CONTROL_STATUS＿CONNECT;
+            } else if (type.contains("1101")) {
+                valueStatus0 = Entiy.CONTROL_STATUS＿CONNECT;
+                valueStatus1 = Entiy.CONTROL_STATUS＿RUN;
+            } else if (type.contains("1111")) {
+                valueStatus0 = Entiy.CONTROL_STATUS＿RUN;
+                valueStatus1 = Entiy.CONTROL_STATUS＿RUN;
+            } else if (type.contains("1103")) {
+                valueStatus0 = Entiy.CONTROL_STATUS＿CONNECT;
+                valueStatus1 = Entiy.CONTROL_STATUS＿NOTCLOSE;
+            } else if (type.contains("1113")) {
+                valueStatus0 = Entiy.CONTROL_STATUS＿RUN;
+                valueStatus1 = Entiy.CONTROL_STATUS＿NOTCLOSE;
+            } else if (type.contains("1130")) {
+                valueStatus0 = Entiy.CONTROL_STATUS＿NOTCLOSE;
+                valueStatus1 = Entiy.CONTROL_STATUS＿CONNECT;
+            } else if (type.contains("1131")) {
+                valueStatus0 = Entiy.CONTROL_STATUS＿NOTCLOSE;
+                valueStatus1 = Entiy.CONTROL_STATUS＿RUN;
+            } else if (type.contains("1133")) {
+                valueStatus0 = Entiy.CONTROL_STATUS＿NOTCLOSE;
+                valueStatus1 = Entiy.CONTROL_STATUS＿NOTCLOSE;
+            } else if (type.contains("0103")) {
+                valueStatus0 = 0;
+                valueStatus1 = Entiy.CONTROL_STATUS＿NOTCLOSE;
+            } else if (type.contains("1030")) {
+                valueStatus0 = Entiy.CONTROL_STATUS＿NOTCLOSE;
+                valueStatus1 = 0;
+            } else {
+                return null;
+            }
+            controlInfo0.setValve_status(valueStatus0);
+            controlInfo1.setValve_status(valueStatus1);
+            controlInfos.add(controlInfo0);
+            controlInfos.add(controlInfo1);
+            info.setValveDeviceSwitchList(controlInfos);
             return info;
-        }else {
+        } else {
             return null;
         }
     }

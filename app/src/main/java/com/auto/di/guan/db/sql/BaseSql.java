@@ -26,6 +26,14 @@ public class BaseSql {
 
     }
 
+    public static DaoSession getDaoReadSession(){
+        try{
+            return BaseApp.getDaoReadSession();
+        }catch (Exception e){
+            return null;
+        }
+    }
+
     /**
      * 批量执行sql
      *

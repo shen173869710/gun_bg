@@ -14,12 +14,15 @@ public class ControlInfoSql extends BaseSql {
 
     public static void updateControl(ControlInfo info) {
         List<DeviceInfo> deviceInfos = DeviceInfoSql.queryDeviceList();
-        for (int i = 0; i < deviceInfos.size(); i++) {
-            if (info.controId == deviceInfos.get(i).getControlInfos().get(0).controId) {
-                deviceInfos.get(i).getControlInfos().get(0).groupId = 0;
+        int size =  deviceInfos.size();
+        for (int i = 0; i < size; i++) {
+            ControlInfo controlInfo_0 = deviceInfos.get(i).getValveDeviceSwitchList().get(0);
+            ControlInfo controlInfo_1 = deviceInfos.get(i).getValveDeviceSwitchList().get(1);
+            if (info.getValve_id() == controlInfo_1.getValve_id()) {
+                controlInfo_0.setValve_group_id(0);
             }
-            if (info.controId == deviceInfos.get(i).getControlInfos().get(1).controId) {
-                deviceInfos.get(i).getControlInfos().get(1).groupId = 0;
+            if (info.getValve_id() == controlInfo_1.getValve_id()) {
+                controlInfo_1.setValve_group_id(0);
             }
         }
         updateDeviceList(deviceInfos);
@@ -33,13 +36,15 @@ public class ControlInfoSql extends BaseSql {
     public static List<ControlInfo> queryControlList(int groupId) {
         ArrayList<ControlInfo> controlInfos = new ArrayList<>();
         List<DeviceInfo>deviceInfos = DeviceInfoSql.queryDeviceList();
-        for (int i = 0; i < deviceInfos.size(); i++) {
-            if (groupId == deviceInfos.get(i).getControlInfos().get(0).groupId) {
-                controlInfos.add(deviceInfos.get(i).controlInfos.get(0));
+        int size =  deviceInfos.size();
+        for (int i = 0; i < size; i++) {
+            ControlInfo controlInfo_0 = deviceInfos.get(i).getValveDeviceSwitchList().get(0);
+            ControlInfo controlInfo_1 = deviceInfos.get(i).getValveDeviceSwitchList().get(1);
+            if (groupId == controlInfo_0.getValve_group_id()) {
+                controlInfos.add(controlInfo_0);
             }
-            if (groupId == deviceInfos.get(i).getControlInfos().get(1).groupId)
-            {
-                controlInfos.add(deviceInfos.get(i).controlInfos.get(1));
+            if (groupId == controlInfo_1.getValve_group_id()) {
+                controlInfos.add(controlInfo_1);
             }
         }
         return controlInfos;
@@ -51,9 +56,10 @@ public class ControlInfoSql extends BaseSql {
     public static List<ControlInfo> queryControlList() {
         ArrayList<ControlInfo>controlInfos = new ArrayList<>();
         List<DeviceInfo>deviceInfos = DeviceInfoSql.queryDeviceList();
-        for (int i = 0; i < deviceInfos.size(); i++) {
-            controlInfos.add(deviceInfos.get(i).controlInfos.get(0));
-            controlInfos.add(deviceInfos.get(i).controlInfos.get(1));
+        int size =  deviceInfos.size();
+        for (int i = 0; i < size; i++) {
+            controlInfos.add(deviceInfos.get(i).getValveDeviceSwitchList().get(0));
+            controlInfos.add(deviceInfos.get(i).getValveDeviceSwitchList().get(1));
 
         }
         return controlInfos;
@@ -66,10 +72,12 @@ public class ControlInfoSql extends BaseSql {
     public static List<ControlInfo> queryBindControlList() {
         ArrayList<ControlInfo>controlInfos = new ArrayList<>();
         List<DeviceInfo>deviceInfos = DeviceInfoSql.queryDeviceList();
-        for (int i = 0; i < deviceInfos.size(); i++) {
-            if (deviceInfos.get(i).status == Entiy.DEVEICE_BIND) {
-                controlInfos.add(deviceInfos.get(i).controlInfos.get(0));
-                controlInfos.add(deviceInfos.get(i).controlInfos.get(1));
+        int size =  deviceInfos.size();
+        for (int i = 0; i < size; i++) {
+            DeviceInfo deviceInfo = deviceInfos.get(i);
+            if (deviceInfo.getDeviceStatus()== Entiy.DEVEICE_BIND) {
+                controlInfos.add(deviceInfo.getValveDeviceSwitchList().get(0));
+                controlInfos.add(deviceInfo.getValveDeviceSwitchList().get(1));
             }
         }
         return controlInfos;

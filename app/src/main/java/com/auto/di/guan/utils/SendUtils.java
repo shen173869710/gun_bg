@@ -8,7 +8,6 @@ import com.auto.di.guan.entity.CmdStatus;
 import org.greenrobot.eventbus.EventBus;
 
 public class SendUtils {
-
     private static String TAG = SendUtils.class.getSimpleName()+"----";
     public static String LOG_READ_START = "读取状态开始\n";
     public static String LOG_OPEN_START = "开启开始\n";
@@ -25,9 +24,9 @@ public class SendUtils {
 
     public static  void sendopen(String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.controlName = info.nickName;
+        cmdStatus.controlName = info.getValve_alias();
         cmdStatus.cmd_start =LOG_OPEN_START+desc;
-        cmdStatus.control_id = info.controId;
+        cmdStatus.control_id = info.getValve_id();
         EventBus.getDefault().post(cmdStatus);
 //        Log.e(TAG, cmdStatus.cmd_start);
     }
@@ -35,17 +34,17 @@ public class SendUtils {
     public static  void sendClose( String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
         cmdStatus.cmd_start =LOG_CLOSE_START+desc;
-        cmdStatus.controlName =info.nickName;
-        cmdStatus.control_id = info.controId;
+        cmdStatus.controlName =info.getValve_alias();
+        cmdStatus.control_id = info.getValve_id();
         EventBus.getDefault().post(cmdStatus);
 //        Log.e(TAG, cmdStatus.cmd_start);
     }
 
     public static  void sendRead( String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.controlName = info.nickName;
+        cmdStatus.controlName = info.getValve_alias();
         cmdStatus.cmd_read_start =LOG_READ_START+desc;
-        cmdStatus.control_id = info.controId;
+        cmdStatus.control_id = info.getValve_id();
         EventBus.getDefault().post(cmdStatus);
 //        Log.e(TAG, cmdStatus.cmd_read_start);
     }

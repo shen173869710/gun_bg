@@ -90,7 +90,7 @@ public class MqttSimple {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     LogUtils.e(TAG+"-----subscribe", "success");
-                    publishMessage();
+
                 }
 
                 @Override
@@ -105,10 +105,9 @@ public class MqttSimple {
     }
 
 
-    public void publishMessage() {
+    public void publishMessage(String msg) {
         try {
             MqttMessage message = new MqttMessage();
-            final String msg = "msg_test";
             message.setPayload(msg.getBytes());
             mqttAndroidClient.publish(Config.p2pTopic, message, null, new IMqttActionListener() {
                 @Override

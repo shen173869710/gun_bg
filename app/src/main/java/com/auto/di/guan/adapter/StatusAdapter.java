@@ -78,8 +78,8 @@ public class StatusAdapter extends BaseAdapter {
         int itemHeight = screenHight - (int)context.getResources().getDimension(R.dimen.main_grid_width)- MainActivity.windowTop;
         AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(itemWidth/ Entiy.GRID_COLUMNS, itemWidth/ Entiy.GRID_COLUMNS);
         holder.group_status_layout.setLayoutParams(layoutParams);
-        holder.group_status_name.setText(datas.get(position).controlName+"");
-        holder.group_status_image.setImageResource(datas.get(position).imageId);
+        holder.group_status_name.setText(datas.get(position).getValve_name()+"");
+        holder.group_status_image.setImageResource(datas.get(position).getValve_imgage_id());
 
 
         return convertView;

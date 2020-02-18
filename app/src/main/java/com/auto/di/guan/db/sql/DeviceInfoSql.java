@@ -60,4 +60,14 @@ public class DeviceInfoSql extends BaseSql {
         userDao.update(user);
     }
 
+
+    /**
+     * 获取设备的数量
+     */
+    public static long queryDeviceCount() {
+        DaoSession daoSession = getDaoWriteSession();
+        DeviceInfoDao userDao = daoSession.getDeviceInfoDao();
+        return userDao.count();
+    }
+
 }

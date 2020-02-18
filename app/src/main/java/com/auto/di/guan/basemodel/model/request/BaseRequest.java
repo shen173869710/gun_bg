@@ -36,21 +36,6 @@ public class BaseRequest {
         return toMerchantMap(map, BuildConfig.secret);
     }
 
-    /***
-     * 公共请求参数签名,发送http支付请求请求TreeMap
-     * @param map
-     * @return
-     */
-    public static TreeMap<String,Object> toPaymentTreeMap(TreeMap<String, Object> map){
-        /*if(null !=map.get("deviceId") && !TextUtils.isEmpty(map.get("deviceId").toString())){
-            return toPaymentTreeMap(map, BuildConfig.secret);
-        }else{
-            return toPaymentTreeMap(map, GlobalConstant.PAYMENT_SECRET);
-        }*/
-        return toPaymentTreeMap(map, BuildConfig.pay_secret);
-    }
-
-
     /**
      * 指定screct组装发送http请求TreeMap
      * @param treeMap
@@ -58,21 +43,9 @@ public class BaseRequest {
      * @return
      */
     private  static TreeMap<String, Object> toMerchantMap(TreeMap<String, Object> treeMap,String screct) {
-        LoginRespone loginRespone= BaseApp.getLoginRespone();
-        String token = "";
-        if (null != loginRespone){
-            token = loginRespone.getToken();
-        }
-
-        treeMap.put("client", "androidCashier");
-        treeMap.put("token", token);
         treeMap.put("timestamp", String.valueOf(System.currentTimeMillis()/1000));
-
         String sign = Md5Util.sign(treeMap, screct);
         treeMap.put("sign", sign);
-        if(treeMap.containsKey("secret")){
-            treeMap.remove("secret");
-        }
         return treeMap;
     }
 

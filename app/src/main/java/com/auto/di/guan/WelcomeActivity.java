@@ -5,41 +5,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.auto.di.guan.mqtt.Config;
-import com.auto.di.guan.mqtt.MqttSimple;
-
-import org.eclipse.paho.android.service.MqttAndroidClient;
-
 public class WelcomeActivity extends Activity{
 
-
-
-	private MqttAndroidClient mqttAndroidClient;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
-
-		mqttAndroidClient = new MqttAndroidClient(getApplicationContext(), Config.serverUri, Config.clientId);
-		MqttSimple mqttSimple = new MqttSimple(mqttAndroidClient);
-		mqttSimple.init();
-
-//		List<User> users = UserSql.queryUserList();
-//		if (users == null) {
-//
-//		}
-
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				startActivity(new Intent(WelcomeActivity.this, ActivationActivity.class));
-			}
-		},2000);
+		// 如果数据表里面没有用户信息
+		if (BaseApp.getUser() != null) {
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+					finish();
+				}
+			},2000);
+		}else {
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					startActivity(new Intent(WelcomeActivity.this, ActivationActivity.class));
+					finish();
+				}
+			},2000);
+		}
 	}
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		mqttAndroidClient.unregisterResources();
-	}
+
 }

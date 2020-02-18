@@ -40,18 +40,6 @@ public class FragmentTab0 extends BaseFragment {
         view = inflater.inflate(R.layout.fragment_0, null);
         mGridView = (GridView) view.findViewById(R.id.fragment_0_gridview);
         deviceInfos = DeviceInfoSql.queryDeviceList();
-        if (deviceInfos.size() == 0) {
-            for (int i = 0; i < Entiy.GEID_ALL_ITEM; i++) {
-                DeviceInfo deviceInfo = new DeviceInfo();
-                deviceInfo.setDeviceId(i+1);
-                deviceInfo.setDeviceName(""+deviceInfo.getDeviceId());
-                deviceInfo.controlInfos = new ArrayList<>();
-                deviceInfo.controlInfos.add(new ControlInfo(0,"0"));
-                deviceInfo.controlInfos.add(new ControlInfo(0,"1"));
-                deviceInfos.add(deviceInfo);
-            }
-            DeviceInfoSql.insertDeviceInfoList(deviceInfos);
-        }
 
         adapter = new MyGridAdapter(getActivity(), deviceInfos);
         mGridView.setAdapter(adapter);
@@ -60,21 +48,19 @@ public class FragmentTab0 extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, final int position, long id) {
                 final DeviceInfo info = deviceInfos.get(position);
-                if (info.getStatus() == Entiy.DEVEICE_UNBIND) {
+                if (info.getDeviceStatus() == Entiy.DEVEICE_UNBIND) {
                     MainShowDialog.ShowDialog(getActivity(), "添加阀控器", "添加阀控器到当前区域", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            info.setStatus(Entiy.DEVEICE_BIND);
-                            info.controlInfos = new ArrayList<>();
-                            info.controlInfos.add(new ControlInfo(0,"0"));
-                            info.controlInfos.add(new ControlInfo(0,"1"));
+                            info.bindDevice();
                             DeviceInfoSql.updateDevice(info);
                             deviceInfos = DeviceInfoSql.queryDeviceList();
                             adapter.setData(deviceInfos);
                         }
                     });
                 }else {
-                    if (info.controlInfos.get(0).groupId > 0 || info.controlInfos.get(1).groupId > 0) {
+                    if (info.getValveDeviceSwitchList().get(0).getValve_group_id() > 0
+                            || info.getValveDeviceSwitchList().get(1).getValve_group_id() > 0) {
                         showToast("该设备已经分组,不可以删除");
                         return;
                     }
@@ -82,10 +68,7 @@ public class FragmentTab0 extends BaseFragment {
                         @Override
                         public void onClick(View v) {
                             LogUtils.e("-----","----------------position ==="+position);
-                            info.setStatus(Entiy.DEVEICE_UNBIND);
-                            info.controlInfos = new ArrayList<>();
-                            info.controlInfos.add(new ControlInfo(0,"0"));
-                            info.controlInfos.add(new ControlInfo(0,"1"));
+                            info.unBindDevice();
                             DeviceInfoSql.updateDevice(info);
                             deviceInfos = DeviceInfoSql.queryDeviceList();
                             adapter.setData(deviceInfos);

@@ -5,6 +5,16 @@
     android:background="@color/main_bg"
     android:orientation="vertical"
     >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
     <include
         android:id="@+id/title_bar"
         layout="@layout/main_title_bar" />
@@ -120,4 +130,6 @@
         android:textColor="@color/white"
         android:layout_gravity="center_horizontal"
         />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
