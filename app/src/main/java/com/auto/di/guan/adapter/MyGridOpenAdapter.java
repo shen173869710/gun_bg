@@ -178,9 +178,6 @@ public class MyGridOpenAdapter extends BaseAdapter {
                     }
                 });
             }
-
-
-
         }
         return convertView;
     }

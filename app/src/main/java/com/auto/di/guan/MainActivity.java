@@ -23,7 +23,6 @@ import com.auto.di.guan.db.sql.ControlInfoSql;
 import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.db.sql.LevelInfoSql;
-import com.auto.di.guan.dialog.SureLoadDialog;
 import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.BindEvent;
 import com.auto.di.guan.entity.CmdStatus;
@@ -36,13 +35,16 @@ import com.auto.di.guan.entity.OptionStatus;
 import com.auto.di.guan.entity.PollingEvent;
 import com.auto.di.guan.entity.ReadEvent;
 import com.auto.di.guan.entity.UpdateEvent;
+import com.auto.di.guan.jobqueue.event.BindIdEvent;
+import com.auto.di.guan.jobqueue.event.ReadIdEvent;
+import com.auto.di.guan.jobqueue.TaskManger;
+import com.auto.di.guan.jobqueue.TestEvent;
 import com.auto.di.guan.utils.ActionUtil;
 import com.auto.di.guan.utils.FloatWindowUtil;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.OptionUtils;
 import com.auto.di.guan.utils.PollingUtils;
 import com.auto.di.guan.utils.SendUtils;
-import com.auto.di.guan.utils.ShareUtil;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -1001,6 +1003,23 @@ public class MainActivity extends SerialPortActivity {
             optionType = FRAGMENT_0;
             optionContron(controlInfos, TYPE_READ);
         }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onReadIdEvent (ReadIdEvent event) {
+        TaskManger.getInstance().startTask(mOutputStream);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onBindIdEvent (BindIdEvent event) {
+        TaskManger.getInstance().startTask(mOutputStream);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onTestEvent (TestEvent event) {
+       TaskManger.getInstance().endTask(event.recive,mOutputStream);
     }
 
 }

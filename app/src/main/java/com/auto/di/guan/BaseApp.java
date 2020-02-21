@@ -22,6 +22,9 @@ import com.auto.di.guan.utils.FloatWindowUtil;
 import com.auto.di.guan.utils.GsonUtil;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.SharedPreferencesUtils;
+import com.birbit.android.jobqueue.JobManager;
+import com.birbit.android.jobqueue.config.Configuration;
+import com.birbit.android.jobqueue.log.CustomLogger;
 import com.facebook.stetho.Stetho;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -67,6 +70,10 @@ public class BaseApp extends Application {
     private SerialPort mSerialPort = null;
 
     private static Context mContext=null;//上下文
+    private JobManager jobManager;
+    public JobManager getJobManager() {
+        return jobManager;
+    }
 
 
     @Override
@@ -80,6 +87,9 @@ public class BaseApp extends Application {
 //        CrashHandler.getInstance().init(getApplicationContext());
 
         FloatWindowUtil.getInstance().initFloatWindow(this);
+
+        configureJobManager();
+
     }
 
     public static BaseApp getInstance() {
@@ -319,6 +329,52 @@ public class BaseApp extends Application {
 
 
     public static String getProjectId() {
-        return "";
+        return user.getProjectId();
     }
+
+
+    /**
+     * 配置JobMananger
+     */
+    private void configureJobManager() {
+        Configuration configuration = new Configuration.Builder(this)
+                //日志设置，便于用户查看任务队列的工作信息
+                .customLogger(new CustomLogger() {
+                    @Override
+                    public boolean isDebugEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    public void d(String text, Object... args) {
+                        LogUtils.e(TAG, String.format(text, args));
+                    }
+
+                    @Override
+                    public void e(Throwable t, String text, Object... args) {
+                        LogUtils.e(TAG, String.format(text, args));
+                    }
+
+                    @Override
+                    public void e(String text, Object... args) {
+                        LogUtils.e(TAG, String.format(text, args));
+                    }
+
+                    @Override
+                    public void v(String text, Object... args) {
+                        LogUtils.e(TAG, String.format(text, args));
+                    }
+                })
+                //最少开启的线程
+                .minConsumerCount(1)
+                //最多开启的线程
+                .maxConsumerCount(1)
+                //一个Thread设置多3个任务
+                .loadFactor(1)
+                //设置线程在没有任务的情况下保持存活的时长，以秒为单位
+                .consumerKeepAlive(120)
+                .build();
+        jobManager = new JobManager(configuration);
+    }
+
 }
