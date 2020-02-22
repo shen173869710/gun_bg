@@ -19,12 +19,6 @@ public abstract class BaseTask {
     private int taskType;
     private ControlInfo taskInfo;
 
-
-    /**
-     *   开始执行命令Eventbus
-     */
-    public abstract  void pushEvnt();
-
     /**
      *   开始执行命令
      */
@@ -67,24 +61,24 @@ public abstract class BaseTask {
     }
 
     public void writeCmd(OutputStream mOutputStream, String cmd) {
-//        try {
-//            mOutputStream.write(new String(cmd).getBytes());
-//            mOutputStream.write('\n');
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (cmd.contains("rgid")) {
-                    EventBus.getDefault().post(new TestEvent("gid=001"));
-                }else if (cmd.contains("rbid")) {
-                    EventBus.getDefault().post(new TestEvent("bid=001"));
-                }else{
-                    EventBus.getDefault().post(new TestEvent("err"));
-                }
-
-            }
-        },2000);
+        try {
+            mOutputStream.write(new String(cmd).getBytes());
+            mOutputStream.write('\n');
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (cmd.contains("rgid")) {
+//                    EventBus.getDefault().post(new TestEvent("gid=001"));
+//                }else if (cmd.contains("rbid")) {
+//                    EventBus.getDefault().post(new TestEvent("bid=001"));
+//                }else{
+//                    EventBus.getDefault().post(new TestEvent("err"));
+//                }
+//
+//            }
+//        },2000);
     }
 }

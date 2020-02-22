@@ -10,6 +10,8 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import androidx.multidex.MultiDex;
+
 import com.auto.di.guan.basemodel.model.respone.LoginRespone;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.User;
@@ -92,6 +94,13 @@ public class BaseApp extends Application {
 
     }
 
+
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(base);
+    }
     public static BaseApp getInstance() {
         return instance;
     }

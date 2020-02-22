@@ -1,25 +1,19 @@
 package com.auto.di.guan.jobqueue.task;
 
-import com.auto.di.guan.BaseApp;
-import com.auto.di.guan.entity.Entiy;
-import com.auto.di.guan.jobqueue.TaskManger;
 import com.auto.di.guan.jobqueue.event.BindSucessEvent;
-import com.auto.di.guan.jobqueue.event.ReadIdEvent;
 import com.auto.di.guan.utils.LogUtils;
+import com.auto.di.guan.utils.SendUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.OutputStream;
 
+/**
+ *   读取设备的任务
+ */
 public class ReadIdTask extends BaseTask{
     private final String TAG = BASETAG+"ReadTask";
     private String taskCmd;
-
-    @Override
-    public void pushEvnt() {
-        LogUtils.e(TAG, "发送事件ReadIdTask=======  pushEvnt ==");
-        EventBus.getDefault().post(new ReadIdEvent(getTaskType(),getTaskCmd()));
-    }
 
     @Override
     public void startTask(OutputStream mOutputStream) {
@@ -30,7 +24,7 @@ public class ReadIdTask extends BaseTask{
     @Override
     public void errorTask(OutputStream mOutputStream) {
         LogUtils.e(TAG, "读取 id 错误 ======="+"errorTask()");
-        TaskManger.getInstance().doNextTask(mOutputStream);
+        EventBus.getDefault().post(new BindSucessEvent(false,getTaskType()));
     }
 
     @Override
@@ -38,10 +32,10 @@ public class ReadIdTask extends BaseTask{
         LogUtils.e(TAG, "读取 id 结束 ======="+"endTask()"+"====收到信息 =="+receive);
         if (receive.toLowerCase().contains("gid")) {
             LogUtils.e(TAG, "读取 gid 正常 =======");
-            EventBus.getDefault().post(new BindSucessEvent(getTaskType()));
+            EventBus.getDefault().post(new BindSucessEvent(true,getTaskType()));
         }else if (receive.toLowerCase().contains("bid")) {
             LogUtils.e(TAG, "读取 bid 正常 =======");
-            EventBus.getDefault().post(new BindSucessEvent(getTaskType()));
+            EventBus.getDefault().post(new BindSucessEvent(true,getTaskType()));
         }else {
             if (getTaskCount() == 2) {
                 setTaskCount(1);

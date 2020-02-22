@@ -49,7 +49,7 @@ public class SendUtils {
 //        Log.e(TAG, cmdStatus.cmd_read_start);
     }
 
-    public static  void sendMiddle(String desc, int controlId, String name) {
+    public static  void sendMiddle(String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
         if (desc.contains("zt")) {
             cmdStatus.cmd_read_middle = LOG_READ_SUC+desc;
@@ -58,8 +58,8 @@ public class SendUtils {
             cmdStatus.cmd_end = LOG_SUC+desc ;
             Log.e(TAG, cmdStatus.cmd_end);
         }
-        cmdStatus.controlName = name;
-        cmdStatus.control_id = controlId;
+        cmdStatus.controlName = info.getValve_alias();
+        cmdStatus.control_id = info.getValve_id();
         EventBus.getDefault().post(cmdStatus);
     }
 

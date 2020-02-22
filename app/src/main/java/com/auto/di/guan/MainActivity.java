@@ -24,7 +24,6 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.db.sql.LevelInfoSql;
 import com.auto.di.guan.entity.AdapterEvent;
-import com.auto.di.guan.entity.BindEvent;
 import com.auto.di.guan.entity.CmdStatus;
 import com.auto.di.guan.entity.ControlOptionEvent;
 import com.auto.di.guan.entity.ElecEvent;
@@ -35,8 +34,6 @@ import com.auto.di.guan.entity.OptionStatus;
 import com.auto.di.guan.entity.PollingEvent;
 import com.auto.di.guan.entity.ReadEvent;
 import com.auto.di.guan.entity.UpdateEvent;
-import com.auto.di.guan.jobqueue.event.BindIdEvent;
-import com.auto.di.guan.jobqueue.event.ReadIdEvent;
 import com.auto.di.guan.jobqueue.TaskManger;
 import com.auto.di.guan.jobqueue.TestEvent;
 import com.auto.di.guan.utils.ActionUtil;
@@ -253,6 +250,8 @@ public class MainActivity extends SerialPortActivity {
 //                }
 //            }
 //        });
+
+        TaskManger.getInstance().init(mOutputStream);
     }
 
 
@@ -395,80 +394,82 @@ public class MainActivity extends SerialPortActivity {
             showToastLongMsg("错误命令"+receive);
             return;
         }
-        if (receive.toLowerCase().contains("ok") && length == 2){
-            Log.e(TAG, "绑定成功 -----");
-            EventBus.getDefault().post(new BindEvent(receive));
-            return;
-        }
 
-        if (receive.length() == 3 || receive.length() == 2) {
-            Log.e(TAG, "发送接收成功 -----"+ receive.length());
+        TaskManger.getInstance().endTask(receive);
+//        if (receive.toLowerCase().contains("ok") && length == 2){
+//            Log.e(TAG, "绑定成功 -----");
 //            EventBus.getDefault().post(new BindEvent(receive));
-            if (isGid == -1) {
-                return;
-            }
-
-            String cmd = "";
-            if (isGid == 0) {
-                cmd = "rgid";
-            }else if (isGid == 1) {
-                cmd = "rbid";
-            }
-            try {
-                mOutputStream.write(cmd.getBytes());
-                mOutputStream.write('\n');
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return;
-        }
-        if (!receive.toLowerCase().contains("zt")&&
-        !receive.toLowerCase().contains("rs")
-                && !receive.toLowerCase().contains("gf")
-                && !receive.toLowerCase().contains("kf")) {
-            showToastLongMsg("错误命令"+receive+ "重新操作");
-
-            LogUtils.e("------hasnRunCmd====",""+hasRunCmd);
-            if (hasRunCmd){
-                hasRunCmd = false;
-                SendUtils.sendError("通讯失败",cur.getValve_id(), cur.getValve_alias());
-                play();
-                return;
-            }
-            hasRunCmd = true;
-            if (CMD_TYPE == TYPE_CLOSE) {
-                LogUtils.e("------TYPE_CLOSE====","第二次执行");
-                closeCmd(cur);
-            }else if (CMD_TYPE == TYPE_OPEN) {
-                LogUtils.e("------TYPE_OPEN====","第二次执行");
-                openCmd(cur);
-            }else if (CMD_TYPE == TYPE_READ) {
-                LogUtils.e("------TYPE_READ====","第二次执行");
-                readCmd(cur,TYPE_READ);
-            }
-            return;
-        }
-        if (cur == null) {
-            return;
-        }
-        if (receive.contains("ok") || receive.contains("zt")) {
-            OptionStatus status = OptionUtils.receive(receive);
-            SendUtils.sendMiddle(receive, cur.getValve_id(),cur.getValve_alias());
-            if (status == null) {
-                showToastLongMsg("未知错误+="+receive);
-//                SendUtils.sendError("未知错误"+receive,cur.controId);
-                LogUtils.e(TAG,"************************"+receive);
-                play();
-                return;
-            }
-            if (status.type.equals( OptionUtils.ZT)) {
-                doReadOption(status,cur.getProtocalId());
-            } else if (status.type.equals( OptionUtils.KF) ){
+//            return;
+//        }
+//
+//        if (receive.length() == 3 || receive.length() == 2) {
+//            Log.e(TAG, "发送接收成功 -----"+ receive.length());
+////            EventBus.getDefault().post(new BindEvent(receive));
+//            if (isGid == -1) {
+//                return;
+//            }
+//
+//            String cmd = "";
+//            if (isGid == 0) {
+//                cmd = "rgid";
+//            }else if (isGid == 1) {
+//                cmd = "rbid";
+//            }
+//            try {
+//                mOutputStream.write(cmd.getBytes());
+//                mOutputStream.write('\n');
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return;
+//        }
+//        if (!receive.toLowerCase().contains("zt")&&
+//        !receive.toLowerCase().contains("rs")
+//                && !receive.toLowerCase().contains("gf")
+//                && !receive.toLowerCase().contains("kf")) {
+//            showToastLongMsg("错误命令"+receive+ "重新操作");
+//
+//            LogUtils.e("------hasnRunCmd====",""+hasRunCmd);
+//            if (hasRunCmd){
+//                hasRunCmd = false;
+//                SendUtils.sendError("通讯失败",cur.getValve_id(), cur.getValve_alias());
+//                play();
+//                return;
+//            }
+//            hasRunCmd = true;
+//            if (CMD_TYPE == TYPE_CLOSE) {
+//                LogUtils.e("------TYPE_CLOSE====","第二次执行");
+//                closeCmd(cur);
+//            }else if (CMD_TYPE == TYPE_OPEN) {
+//                LogUtils.e("------TYPE_OPEN====","第二次执行");
+//                openCmd(cur);
+//            }else if (CMD_TYPE == TYPE_READ) {
+//                LogUtils.e("------TYPE_READ====","第二次执行");
+//                readCmd(cur,TYPE_READ);
+//            }
+//            return;
+//        }
+//        if (cur == null) {
+//            return;
+//        }
+//        if (receive.contains("ok") || receive.contains("zt")) {
+//            OptionStatus status = OptionUtils.receive(receive);
+//            SendUtils.sendMiddle(receive, cur.getValve_id(),cur.getValve_alias());
+//            if (status == null) {
+//                showToastLongMsg("未知错误+="+receive);
+////                SendUtils.sendError("未知错误"+receive,cur.controId);
+//                LogUtils.e(TAG,"************************"+receive);
+//                play();
+//                return;
+//            }
+//            if (status.type.equals( OptionUtils.ZT)) {
+//                doReadOption(status,cur.getProtocalId());
+//            } else if (status.type.equals( OptionUtils.KF) ){
 //                doOpenOption(status);
-            } else if (status.type.equals( OptionUtils.GF)) {
+//            } else if (status.type.equals( OptionUtils.GF)) {
 //                doCloseOption(status);
-            }
-        }
+//            }
+//        }
 
     }
 
@@ -1006,20 +1007,10 @@ public class MainActivity extends SerialPortActivity {
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onReadIdEvent (ReadIdEvent event) {
-        TaskManger.getInstance().startTask(mOutputStream);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onBindIdEvent (BindIdEvent event) {
-        TaskManger.getInstance().startTask(mOutputStream);
-    }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onTestEvent (TestEvent event) {
-       TaskManger.getInstance().endTask(event.recive,mOutputStream);
+       TaskManger.getInstance().endTask(event.recive);
     }
 
 }

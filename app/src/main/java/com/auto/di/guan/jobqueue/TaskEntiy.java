@@ -17,6 +17,14 @@ public class TaskEntiy {
      *   读取bid
      */
     public static final int TASK_READ_BID = 4;
+    /**
+     *   单个的开启task
+     */
+    public static final int TASK_READ_OPEN_STATUS = 5;
+    /**
+     *   单个的关闭task
+     */
+    public static final int TASK_READ_ClOSE_STATUS = 6;
 
     /**
      *        是否绑定设备成功

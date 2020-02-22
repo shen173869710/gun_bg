@@ -10,9 +10,7 @@ import android.widget.Toast;
 import com.auto.di.guan.basemodel.model.respone.BaseRespone;
 import com.auto.di.guan.basemodel.presenter.LoginPresenter;
 import com.auto.di.guan.basemodel.view.ILoginView;
-import com.auto.di.guan.entity.BindEvent;
 import com.auto.di.guan.view.XEditText;
-import com.trello.rxlifecycle3.LifecycleTransformer;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;

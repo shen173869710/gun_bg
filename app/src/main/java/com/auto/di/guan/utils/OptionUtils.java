@@ -31,30 +31,19 @@ public class OptionUtils {
 
         /**开启控制阀**/
         if (msg.contains(KF)) {
-//            String[]result = msg.split(" ");
-//            if(result != null && result.length == 5) {
-//                status.projectId = result[1];
             status.projectId = msg.substring(3, 6);
-//                status.deviceId = result[2];
             status.deviceId = msg.substring(7, 10);
-//                status.name = result[3];
             status.name = msg.substring(11, 12);
             String ok = msg.substring(13, 15);
             status.type = KF;
             if (OK.toLowerCase().contains(ok)) {
                 status.status = Entiy.CONTROL_STATUS＿RUN;
             }
-
-//            }
         }
         //        gf 108 003 1110
         /**关闭控制阀**/
         if (msg.contains(GF)) {
             String[] result = msg.split(" ");
-//            if(result != null && result.length == 5) {
-//                status.projectId = result[1];
-//                status.deviceId = result[2];
-//                status.name = result[3];
             status.projectId = msg.substring(3, 6);
             status.deviceId = msg.substring(7, 10);
             status.name = msg.substring(11, 12);
@@ -63,24 +52,16 @@ public class OptionUtils {
             if (OK.toLowerCase().contains(ok)) {
                 status.status = Entiy.CONTROL_STATUS＿CONNECT;
             }
-
-//            }
         }
 
 //        zt 108 003 1110  zt 108 003 1100 090
         /**读取控制阀**/
         if (msg.contains(ZT)) {
-//            String[]result = msg.split(" ");
-//            if(result != null && result.length == 5) {
             status.type = ZT;
             status.projectId = msg.substring(3, 6);
             status.deviceId = msg.substring(7, 10);
             status.code = msg.substring(11, 15);
-//                status.projectId = result[1];
-//                status.deviceId = result[2];
-//                status.code = result[3];
             status.elect = msg.substring(16, 19);
-//            }
         }
 
         if (TextUtils.isEmpty(status.type)) {
@@ -94,8 +75,6 @@ public class OptionUtils {
     //zt 012 004 xxxx
 
     public static DeviceInfo changeStatus(OptionStatus status) {
-
-
         //status = {"allCmd":"zt 102 002 1100 090\n\u0000","code":"1100","deviceId":"002","elect":"090","projectId":"102","type":"zt","status":0}
         if (status != null && !TextUtils.isEmpty(status.code)) {
             DeviceInfo info = new DeviceInfo();
@@ -103,7 +82,6 @@ public class OptionUtils {
             ControlInfo controlInfo0 = new ControlInfo();
             ControlInfo controlInfo1 = new ControlInfo();
             String type = status.code;
-
             int valueStatus0 = 0;
             int valueStatus1 = 0;
             if (type.contains("0000")) {

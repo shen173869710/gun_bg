@@ -1,25 +1,17 @@
 package com.auto.di.guan.jobqueue.task;
 
-import com.auto.di.guan.BaseApp;
-import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.jobqueue.TaskEntiy;
-import com.auto.di.guan.jobqueue.event.BindIdEvent;
 import com.auto.di.guan.jobqueue.TaskManger;
 import com.auto.di.guan.utils.LogUtils;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.OutputStream;
 
+/**
+ *   绑定ID的任务
+ */
 public class BindIdTask extends BaseTask{
     private final String TAG = BASETAG+"BindIdTask";
     private String taskCmd;
-
-    @Override
-    public void pushEvnt() {
-        LogUtils.e(TAG, "发送事件=======  pushEvnt ==");
-        EventBus.getDefault().post(new BindIdEvent(getTaskType()));
-    }
 
     @Override
     public void startTask(OutputStream mOutputStream) {
@@ -30,28 +22,19 @@ public class BindIdTask extends BaseTask{
     @Override
     public void errorTask(OutputStream mOutputStream) {
         LogUtils.e(TAG, "写入id 错误 ======="+"errorTask()");
-        TaskManger.getInstance().doNextTask(mOutputStream);
+
     }
 
     @Override
     public void endTask(String receive, OutputStream mOutputStream) {
-        LogUtils.e(TAG, "写入id 结束 ======="+"endTask()"+"====收到信息 =="+receive);
-        if (receive.toLowerCase().contains("ok") && receive.length() == 2) {
+        LogUtils.e(TAG, "写入id 结束 ======="+"endTask()"+"====收到信息 =="+receive+ " receive.length() = "+receive.length());
+        if (receive.toLowerCase().contains("ok") && receive.trim().length() == 2) {
             if (getTaskType() == TaskEntiy.TASK_TYPE_GID) {
                 LogUtils.e(TAG, "写入项目gid 正常 =======");
-                ReadIdTask gTask = new ReadIdTask();
-                gTask.setTaskType(TaskEntiy.TASK_READ_GID);
-                gTask.setTaskCmd("rgid");
-                TaskManger.getInstance().addTask(gTask);
-                gTask.pushEvnt();
-
+                TaskManger.getInstance().doNextTask();
             }else if (getTaskType() == TaskEntiy.TASK_TYPE_BID) {
                 LogUtils.e(TAG, "写入项目bid 正常 =======");
-                ReadIdTask bTask = new ReadIdTask();
-                bTask.setTaskType(TaskEntiy.TASK_READ_BID);
-                bTask.setTaskCmd("rbid");
-                TaskManger.getInstance().addTask(bTask);
-                bTask.pushEvnt();
+                TaskManger.getInstance().doNextTask();
             }
         }else {
             if (getTaskCount() == 2) {

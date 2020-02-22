@@ -11,12 +11,9 @@ public class OptionStatus {
     public String name;
     public int status;
 
-
     public String type;
     public String code;
-
     public String allCmd;
-
     /**电量**/
     public String elect;
 }

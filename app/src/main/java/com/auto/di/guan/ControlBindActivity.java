@@ -19,15 +19,12 @@ import com.auto.di.guan.db.User;
 import com.auto.di.guan.db.sql.ControlInfoSql;
 import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.dialog.WaitingDialog;
-import com.auto.di.guan.entity.BindEvent;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.jobqueue.TaskEntiy;
 import com.auto.di.guan.jobqueue.TaskManger;
-import com.auto.di.guan.jobqueue.event.BindIdEvent;
 import com.auto.di.guan.jobqueue.event.BindSucessEvent;
-import com.auto.di.guan.jobqueue.event.ReadIdEvent;
-import com.auto.di.guan.jobqueue.task.BaseTask;
 import com.auto.di.guan.jobqueue.task.BindIdTask;
+import com.auto.di.guan.jobqueue.task.ReadIdTask;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.Task;
 
@@ -277,9 +274,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
                     controlInfo_1.setValve_imgage_id(0);
                     controlInfo_1.setValve_status(0);
                     controlInfo_1.setValve_id(0);
-//					controlInfo_1.imageId = 0;
-//					controlInfo_1.status = 0;
-//					controlInfo_1.controId = 0;
+
                 }
                 finish();
                 break;
@@ -288,25 +283,14 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
                 if(dialog != null && !dialog.isShowing()) {
                     dialog.show();
                 }
-                BindIdTask gTask = new BindIdTask();
-                gTask.setTaskType(TaskEntiy.TASK_TYPE_GID);
-                gTask.setTaskCmd(Entiy.writeGid(BaseApp.getProjectId()));
-                TaskManger.getInstance().addTask(gTask);
-                gTask.pushEvnt();
-
-
+                writeGidTask();
 //				EventBus.getDefault().post(new ReadEvent(Entiy.writeGid(groupName),0));
 //                BindEvent event = new BindEvent("ok");
 //                onControlStatusEvent(event);
                 break;
             case R.id.bind_deivce_control_id:
                 isGroupClick = false;
-
-                BindIdTask bTask = new BindIdTask();
-                bTask.setTaskType(TaskEntiy.TASK_TYPE_BID);
-                bTask.setTaskCmd(Entiy.writeBid(BaseApp.getProjectId()));
-                TaskManger.getInstance().addTask(bTask);
-                bTask.pushEvnt();
+                writeBidTask();
 //				EventBus.getDefault().post(new ReadEvent(Entiy.writeBid(info.getDeviceId()+""),1));
 //					if(dialog != null && !dialog.isShowing()) {
 //						dialog.show();
@@ -345,23 +329,6 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
     @Override
     public void urlRequestEnd(Task result) {
 
-//		ControlInfo controlInfo_0 = info.getValveDeviceSwitchList().get(0);
-//		ControlInfo controlInfo_1 = info.getValveDeviceSwitchList().get(1);
-//		if (result.getId() == 1) {
-//			controlInfo_0.imageId = R.mipmap.lighe_1;
-//			controlInfo_0.status = Entiy.CONTROL_STATUS＿CONNECT;
-//			controlInfo_0.controId = Integer.valueOf(text1);
-//			controlInfo_0.deviceId = Entiy.getBid(info.getDeviceId()+"");
-//			DeviceInfoSql.updateDevice(info);
-//			showToastLongMsg("写入成功");
-//		}else if (result.getId() == 2) {
-//			controlInfo_0.imageId = R.mipmap.lighe_1;
-//			controlInfo_0.status = Entiy.CONTROL_STATUS＿CONNECT;
-//			controlInfo_0.controId = Integer.valueOf(text2);
-//			controlInfo_0.deviceId = Entiy.getBid(info.getDeviceId()+"");
-//			DeviceInfoSql.updateDevice(info);
-//			showToastLongMsg("写入成功");
-//		}
     }
 
     @Override
@@ -369,49 +336,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
 
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onControlStatusEvent(BindEvent event) {
-        LogUtils.e("GidTask", "写入项目gid 结束 =======onControlStatusEvent()"+event.getType());
-        if (dialog != null) {
-            dialog.dismiss();
-        }
-        String receive = event.status;
-        if (receive != null && !TextUtils.isEmpty(receive)) {
-            if (event.type == TaskEntiy.TASK_TYPE_GID) {
-                isPeroJectId = true;
-                showToastLongMsg("写入项目ID成功");
-            }else if (event.type == TaskEntiy.TASK_TYPE_BID) {
-                isGroupId = true;
-                showToastLongMsg("写入组ID成功");
-            }
-//            if (isGroupClick) {
-//                isPeroJectId = true;
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        showToastLongMsg("写入项目ID成功");
-//                    }
-//                });
-//            } else {
-//                isGroupId = true;
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        showToastLongMsg("写入组ID成功");
-//                    }
-//                });
-//            }
-        } else {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showToastLongMsg("写入失败");
-                }
-            });
 
-        }
-
-    }
 
     /**
      *       设置项目GID正常
@@ -423,6 +348,14 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
             dialog.dismiss();
         }
 
+        if (event == null) {
+            return;
+        }
+
+        if (!event.isOk()) {
+            showToastLongMsg("写入失败");
+            return;
+        }
         LogUtils.e("BaseTask == ", "onBindSucessEvent"+event.getType());
         if (event.getType() == TaskEntiy.TASK_READ_GID) {
             isPeroJectId = true;
@@ -431,6 +364,38 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
             isGroupId = true;
             showToastLongMsg("写入组ID成功");
         }
+    }
+
+    /**
+     *    添加写入GID  task
+     */
+    private void writeGidTask() {
+        BindIdTask wTask = new BindIdTask();
+        wTask.setTaskType(TaskEntiy.TASK_TYPE_GID);
+        wTask.setTaskCmd(Entiy.writeBid(BaseApp.getProjectId()));
+        TaskManger.getInstance().addTask(wTask);
+
+        ReadIdTask rTask = new ReadIdTask();
+        rTask.setTaskType(TaskEntiy.TASK_READ_GID);
+        rTask.setTaskCmd("rgid");
+        TaskManger.getInstance().addTask(rTask);
+        TaskManger.getInstance().startTask();
+    }
+
+    /**
+     *    添加写入GID  task
+     */
+    private void writeBidTask() {
+        BindIdTask wTask = new BindIdTask();
+        wTask.setTaskType(TaskEntiy.TASK_TYPE_BID);
+        wTask.setTaskCmd(Entiy.writeBid(BaseApp.getProjectId()));
+        TaskManger.getInstance().addTask(wTask);
+
+        ReadIdTask rTask = new ReadIdTask();
+        rTask.setTaskType(TaskEntiy.TASK_READ_BID);
+        rTask.setTaskCmd("rbid");
+        TaskManger.getInstance().addTask(rTask);
+        TaskManger.getInstance().startTask();
     }
 
 
