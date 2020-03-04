@@ -5,12 +5,13 @@ import android.text.TextUtils;
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DeviceInfo;
+import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.sql.DeviceInfoSql;
+import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.entity.OptionStatus;
 import com.auto.di.guan.jobqueue.TaskEntiy;
 import com.auto.di.guan.jobqueue.TaskManger;
-import com.auto.di.guan.jobqueue.event.SendCmdEvent;
 import com.auto.di.guan.jobqueue.event.VideoPlayEcent;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.OptionUtils;
@@ -19,26 +20,81 @@ import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.OutputStream;
+
 /**
  *   读取设备的状态
  *   rs 012 002 0 01
  *   zt 102 002 1100 090
  */
-public class ReadTask extends BaseTask{
-    private final String TAG = BASETAG+"ReadTask";
-    public ReadTask(int taskType, String taskCmd) {
+public class ReadGroupTask extends BaseTask{
+    private final String TAG = BASETAG+"ReadGroupTask";
+
+   private GroupInfo groupInfo;
+
+    public ReadGroupTask(int taskType, String taskCmd) {
         super(taskType, taskCmd);
     }
 
-    public ReadTask(int taskType, String taskCmd, ControlInfo taskInfo) {
+    public ReadGroupTask(int taskType, String taskCmd, ControlInfo taskInfo) {
         super(taskType, taskCmd, taskInfo);
+    }
+
+    public ReadGroupTask(int taskType, String taskCmd, GroupInfo groupInfo) {
+        super(taskType, taskCmd);
+        this.groupInfo = groupInfo;
     }
 
     @Override
     public void startTask() {
         LogUtils.e(TAG, "读取状态 开始=======  cmd =="+getTaskCmd());
-        SendUtils.sendReadStart(getTaskCmd(), getTaskInfo());
-        writeCmd(getTaskCmd());
+        // 如果是这个任务说明开启任务已经全部完成
+        if (getTaskType() == TaskEntiy.TASK_OPTION_GROUP_OPEN_READ_END) {
+            LogUtils.e(TAG, "分组开启操作结束=======  cmd =="+getTaskCmd());
+            openGroupStatus();
+            finishTask();
+        }else if (getTaskType() == TaskEntiy.TASK_OPTION_GROUP_CLOSE_READ_END) {
+            LogUtils.e(TAG, "分组关闭操作结束=======  cmd =="+getTaskCmd());
+            closeGroupStatus();
+            TaskManger.getInstance().doNextTask();
+            finishTask();
+        }else {
+            SendUtils.sendReadStart(getTaskCmd(), getTaskInfo());
+            writeCmd(getTaskCmd());
+        }
+    }
+
+    /**
+     *   执行完操作更新组的状态
+     */
+    public void openGroupStatus(){
+       GroupInfo groupInfo = getGroupInfo();
+       if (groupInfo != null) {
+           groupInfo.setGroupTime(0);
+           groupInfo.setGroupRunTime(0);
+           groupInfo.setGroupStatus(Entiy.GROUP_STATUS_OPEN);
+           GroupInfoSql.updateGroup(groupInfo);
+           LogUtils.e(TAG, "更新开启组的状态成功  openGroupStatus");
+       }else {
+           LogUtils.e(TAG, "更新开启组的状态失败");
+       }
+
+    }
+
+    /**
+     *   执行完操作更新组的状态
+     */
+    public void closeGroupStatus(){
+        GroupInfo groupInfo = getGroupInfo();
+        if (groupInfo != null) {
+            groupInfo.setGroupTime(0);
+            groupInfo.setGroupRunTime(0);
+            groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
+            GroupInfoSql.updateGroup(groupInfo);
+            LogUtils.e(TAG, "更新开启组的状态成功   CloseGroupStatus()");
+        }else {
+            LogUtils.e(TAG, "更新开启组的状态失败");
+        }
     }
 
     @Override
@@ -56,17 +112,14 @@ public class ReadTask extends BaseTask{
     @Override
     public void endTask(String receive) {
         LogUtils.e(TAG, "读取状态 通信成功 ======="+"endTask()"+"====收到信息 =="+receive);
-        if (receive.equals("rs")) {
-            LogUtils.e(TAG, "读取状态 通信成功 过滤回显");
-            return;
-        }
         /**
          *  未知的命令 如果count == 2 重试一次
          *                   如果count == 1 进入错误
          */
-
-        setReceive(receive);
-        if (!receive.toLowerCase().contains("zt")) {
+        if (!receive.toLowerCase().contains("zt") &&
+                !receive.toLowerCase().contains("rs") &&
+                !receive.toLowerCase().contains("gf")
+                && !receive.toLowerCase().contains("kf")) {
             /**
              *  未知命令重试
              */
@@ -84,6 +137,7 @@ public class ReadTask extends BaseTask{
                 SendUtils.sendReadMiddle(receive, getTaskInfo());
                 // 解析通信成功的状态
                 doReadStatus(receive,status);
+                // 执行下一个任务
                 finishTask();
             }
         }
@@ -94,7 +148,7 @@ public class ReadTask extends BaseTask{
         LogUtils.e(TAG, "读取状态 重试======="+"retryTask()  cmd =="+getTaskCmd()+ " 当前重试次数 = "+getTaskCount());
         if(getTaskCount() == 2) {
             setTaskCount(1);
-            SendUtils.sendReadMiddle("读取异常 "+getReceive(), getTaskInfo());
+            SendUtils.sendReadMiddle("读取异常\n "+getReceive(), getTaskInfo());
             writeCmd(getTaskCmd());
         }else {
             errorTask();
@@ -185,7 +239,7 @@ public class ReadTask extends BaseTask{
                 case Entiy.CONTROL_STATUS＿CONNECT:
                     //   设备处于链接状态, 说明关闭成功
                     valveStatus = Entiy.CONTROL_STATUS＿CONNECT;
-                    imageId = R.mipmap.lighe_1;
+                    taskInfo.setValve_imgage_id(R.mipmap.lighe_1);
                     type = SendUtils.OPTION_CLOSE_SUCESS;
                     break;
                 case Entiy.CONTROL_STATUS＿RUN:
@@ -214,7 +268,7 @@ public class ReadTask extends BaseTask{
                     break;
             }
 
-            if(type != SendUtils.OPTION_CLOSE_SUCESS) {
+            if(type != SendUtils.OPTION_OPEN_SUCESS) {
                 // 关阀异常报警
                 EventBus.getDefault().post(new VideoPlayEcent(Entiy.VIDEO_CLOSE_ERROR));
             }
@@ -222,44 +276,13 @@ public class ReadTask extends BaseTask{
              *   如果是单独的查询
              */
         } else if (taskType == TaskEntiy.TASK_OPTION_READ) {
-//            if(taskInfo.getValve_status() != info.getValve_status() && taskInfo.getValve_status() != Entiy.CONTROL_STATUS＿ERROR) {
-//                // 读取异常
-//                EventBus.getDefault().post(new VideoPlayEcent(Entiy.VIDEO_READ_ERROR));
-//                type = SendUtils.OPTION_READ_ERROR;
-//            }
-
-            switch (code) {
-                case Entiy.CONTROL_STATUS＿CONNECT:
-                    //   设备处于链接状态
-                    valveStatus = Entiy.CONTROL_STATUS＿CONNECT;
-                    imageId = R.mipmap.lighe_1;
-                    type = SendUtils.OPTION_READ_CONNECT;
-                    break;
-                case Entiy.CONTROL_STATUS＿RUN:
-                    //   如果设备处于运行状态
-                    valveStatus = Entiy.CONTROL_STATUS＿RUN;
-                    imageId = R.mipmap.lighe_2;
-                    type = SendUtils.OPTION_READ_RUN;
-                    break;
-                case Entiy.CONTROL_STATUS＿NOTCLOSE:
-                    //  阀门无法关闭
-                    valveStatus = Entiy.CONTROL_STATUS＿ERROR;
-                    imageId = R.mipmap.lighe_3;
-                    type = SendUtils.OPTION_READ_ERROR;
-                    break;
-                case Entiy.CONTROL_STATUS＿DISCONNECT:
-                    //   阀门线未连接
-                    valveStatus = Entiy.CONTROL_STATUS＿ERROR;
-                    imageId = R.mipmap.lighe_3;
-                    type = SendUtils.OPTION_READ_DIS;
-                    break;
-                default:
-                    //   其他异常
-                    valveStatus = Entiy.CONTROL_STATUS＿ERROR;
-                    imageId = R.mipmap.lighe_3;
-                    type = SendUtils.OPTION_READ_FAILE;
-                    break;
+            if(taskInfo.getValve_status() != info.getValve_status() && taskInfo.getValve_status() != Entiy.CONTROL_STATUS＿ERROR) {
+                // 关阀异常报警
+                EventBus.getDefault().post(new VideoPlayEcent(Entiy.VIDEO_READ_ERROR));
+                type = SendUtils.OPTION_READ_ERROR;
             }
+            valveStatus = info.getValve_status();
+            imageId = info.getValve_imgage_id();
         }
 
         ControlInfo controlInfo = null;
@@ -276,7 +299,7 @@ public class ReadTask extends BaseTask{
 
         controlInfo.setValve_status(valveStatus);
         controlInfo.setValve_imgage_id(imageId);
-        if (!TextUtils.isEmpty(elect)) {
+        if (TextUtils.isEmpty(elect)) {
             try {
                 deviceInfo.setElectricQuantity(Integer.valueOf(elect));
             }catch (Exception e) {
@@ -290,10 +313,16 @@ public class ReadTask extends BaseTask{
         /**
          *  更新设备信息
          */
-        LogUtils.e(TAG, "设备信息"+(new Gson().toJson(deviceInfo)));
         DeviceInfoSql.updateDevice(deviceInfo);
+
     }
 
 
+    public GroupInfo getGroupInfo() {
+        return groupInfo;
+    }
 
+    public void setGroupInfo(GroupInfo groupInfo) {
+        this.groupInfo = groupInfo;
+    }
 }

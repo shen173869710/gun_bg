@@ -70,11 +70,11 @@ public class FragmentTab5 extends BaseFragment {
 	}
 
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		showListByType(0);
-	}
+//	@Override
+//	public void onResume() {
+//		super.onResume();
+//		showListByType(0);
+//	}
 
 	private void showChooseTimeDialog(final TextView tv) {
 		List<ControlInfo>controlInfoList = new ArrayList<>();
@@ -222,7 +222,7 @@ public class FragmentTab5 extends BaseFragment {
 
 	private void showEnd(List<UserAction>action) {
 		if (action.size() == 0) {
-			Toast.makeText(getActivity(), "暂无可以查询的信息", Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "暂无可以查询的信息111", Toast.LENGTH_LONG).show();
 			userActions.clear();
 			adapter.notifyDataSetChanged();
 		}else {

@@ -68,7 +68,7 @@ public class ChooseGridAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.grid_item, null);
-            holder.grid_item_layout = (LinearLayout) convertView.findViewById(R.id.grid_item_layout);
+            holder.grid_item_layout = (RelativeLayout) convertView.findViewById(R.id.grid_item_layout);
             holder.grid_item_device = (ImageView) convertView.findViewById(R.id.grid_item_device);
             holder.grid_item_device_id = (TextView) convertView.findViewById(R.id.grid_item_device_id);
             holder.grid_item_device_value = (TextView) convertView.findViewById(R.id.grid_item_device_value);
@@ -78,11 +78,13 @@ public class ChooseGridAdapter extends BaseAdapter {
             holder.grid_item_left_image = (ImageView) convertView.findViewById(R.id.grid_item_left_image);
             holder.grid_item_left_group = (TextView) convertView.findViewById(R.id.grid_item_left_group);
             holder.grid_item_left_sel = (TextView) convertView.findViewById(R.id.grid_item_left_sel);
+            holder.grid_item_left_id = (TextView) convertView.findViewById(R.id.grid_item_left_id);
 
             holder.grid_item_right_layout = (RelativeLayout) convertView.findViewById(R.id.grid_item_right_layout);
             holder.grid_item_right_image = (ImageView) convertView.findViewById(R.id.grid_item_right_image);
             holder.grid_item_right_group = (TextView) convertView.findViewById(R.id.grid_item_right_group);
             holder.grid_item_right_sel = (TextView) convertView.findViewById(R.id.grid_item_right_sel);
+            holder.grid_item_right_id = (TextView) convertView.findViewById(R.id.grid_item_right_id);
 
             int itemWidth = screenWidth - (int)context.getResources().getDimension(R.dimen.main_table_list_width);
             int itemHeight = screenHight - (int)context.getResources().getDimension(R.dimen.main_grid_width)- MainActivity.windowTop;
@@ -116,8 +118,8 @@ public class ChooseGridAdapter extends BaseAdapter {
             holder.grid_item_device_value.setVisibility(View.INVISIBLE);
         }else {
             holder.grid_item_device.setVisibility(View.VISIBLE);
-            if (!TextUtils.isEmpty(datas.get(position).getDeviceName())) {
-                holder.grid_item_device_name.setText(datas.get(position).getDeviceName()+"");
+            if (!TextUtils.isEmpty(deviceInfo.getDeviceName())) {
+                holder.grid_item_device_name.setText(deviceInfo.getDeviceName()+"");
                 holder.grid_item_device_name.setVisibility(View.VISIBLE);
             }
             holder.grid_item_device_value.setText(deviceInfo.getElectricQuantity()+"%");
@@ -130,6 +132,7 @@ public class ChooseGridAdapter extends BaseAdapter {
                 holder.grid_item_left_image.setVisibility(View.VISIBLE);
                 holder.grid_item_left_image.setImageResource(info1.getValve_imgage_id());
                 holder.grid_item_left_sel.setVisibility(View.VISIBLE);
+                holder.grid_item_left_id.setText(info1.getValve_alias()+"");
                 if (info1.isSelect()) {
                     holder.grid_item_left_sel.setBackgroundResource(R.drawable.img_selected);
                 }else {
@@ -155,9 +158,6 @@ public class ChooseGridAdapter extends BaseAdapter {
                         }
                     });
                 }
-
-
-
             }
 
             ControlInfo info2 = deviceInfo.getValveDeviceSwitchList().get(1);
@@ -168,6 +168,7 @@ public class ChooseGridAdapter extends BaseAdapter {
                 holder.grid_item_right_image.setVisibility(View.VISIBLE);
                 holder.grid_item_right_image.setImageResource(info1.getValve_imgage_id());
                 holder.grid_item_right_sel.setVisibility(View.VISIBLE);
+                holder.grid_item_right_id.setText(info2.getValve_alias()+"");
                 if (info2.isSelect()) {
                     holder.grid_item_right_sel.setBackgroundResource(R.drawable.img_selected);
                 }else {
@@ -198,7 +199,7 @@ public class ChooseGridAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        public LinearLayout grid_item_layout;
+        public RelativeLayout grid_item_layout;
         public ImageView grid_item_device;
         public TextView grid_item_device_id;
         public TextView grid_item_device_name;
@@ -208,10 +209,12 @@ public class ChooseGridAdapter extends BaseAdapter {
         public ImageView grid_item_left_image;
         public TextView grid_item_left_group;
         public TextView grid_item_left_sel;
+        public TextView grid_item_left_id;
 
         public RelativeLayout grid_item_right_layout;
         public ImageView grid_item_right_image;
         public TextView grid_item_right_group;
         public TextView grid_item_right_sel;
+        public TextView grid_item_right_id;
     }
 }

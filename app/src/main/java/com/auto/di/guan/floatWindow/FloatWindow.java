@@ -63,6 +63,7 @@ public class FloatWindow {
         int mWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
         int mHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
         int gravity = Gravity.TOP | Gravity.START;
+
         int xOffset;
         int yOffset;
         boolean mShow = true;
@@ -219,6 +220,5 @@ public class FloatWindow {
             IFloatWindow floatWindowImpl = new IFloatWindowImpl(this);
             mFloatWindowMap.put(mTag, floatWindowImpl);
         }
-
     }
 }

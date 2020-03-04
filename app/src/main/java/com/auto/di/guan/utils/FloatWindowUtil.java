@@ -44,23 +44,32 @@ public class FloatWindowUtil {
     private final String TAG = "FloatWindowUtil";
     public void initFloatWindow(Context mContext) {
         view = View.inflate(BaseApp.getInstance(), R.layout.dialog_listview, null);
+        view.setFocusableInTouchMode(true);
         mListView = (ListView) view.findViewById(R.id.listview);
         view.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+            }
+        });
+        view.findViewById(R.id.close).setOnClickListener(new DoubleClickListener (){
+
+            @Override
+            public void onMultiClick(View v) {
                 alist.clear();
                 FloatWindow.destroy(TAG);
             }
         });
+
         alist = new ArrayList<>();
         adapter = new DialogListViewAdapter(mContext, alist);
         mListView.setAdapter(adapter);
+
         setListViewHeightBasedOnChildren(mListView);
 
     }
 
     public boolean isShow() {
-
         if (FloatWindow.get(TAG) == null) {
             return false;
         }
@@ -71,22 +80,15 @@ public class FloatWindowUtil {
         if (FloatWindow.get(TAG) == null) {
             FloatWindow.with(BaseApp.getInstance())
                     .setView(view)
-                    .setWidth(Screen.width,0.3f)
+                    .setWidth(Screen.width,0.4f)
                     .setHeight(Screen.height,0.3f)
                     .setX(Screen.width,0.4f)
                     .setY(Screen.height,0.5f)
                     .setDesktopShow(true)
                     .setFilter(true, MainActivity.class, GroupStatusActivity.class)
-                    .setMoveType(MoveType.inactive)
+                    .setMoveType(MoveType.active)
                     .setTag(TAG)
                     .build();
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alist.clear();
-                    FloatWindow.destroy(TAG);
-                }
-            });
             FloatWindow.get(TAG).show();
         }else {
             if (!FloatWindow.get(TAG).isShowing()) {
@@ -105,7 +107,7 @@ public class FloatWindowUtil {
     }
 
     public void onStatsuEvent(CmdStatus event) {
-        LogUtils.e("------------------", new Gson().toJson(event));
+//        LogUtils.e("------------------", new Gson().toJson(event));
         if (event != null) {
             int size = alist.size();
             boolean isHas = false;

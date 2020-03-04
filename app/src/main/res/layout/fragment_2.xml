@@ -6,7 +6,7 @@
 
     <ExpandableListView
         android:id ="@+id/expandableListView"
-        android:layout_width ="fill_parent"
+        android:layout_width ="match_parent"
         android:layout_height ="match_parent"
         android:layout_above="@+id/addBtn_layout"
         >
@@ -14,20 +14,20 @@
 
     <LinearLayout
         android:id="@+id/addBtn_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="340dp"
+        android:layout_height="100dp"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="10dp"
         >
         <Button
             android:id="@+id/addBtn"
             android:layout_width="@dimen/main_button_width"
             android:layout_height="@dimen/main_button_height"
             android:text="新增分组"
-            android:layout_marginBottom="20dp"
             android:textColor="@color/white"
             android:background="@drawable/bg_red_buttom_rect"
             android:layout_marginRight="20dp"
@@ -37,8 +37,6 @@
             android:layout_width="@dimen/main_button_width"
             android:layout_height="@dimen/main_button_height"
             android:text="删除所有分组"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="20dp"
             android:textColor="@color/white"
             android:background="@drawable/bg_red_buttom_rect"
             />

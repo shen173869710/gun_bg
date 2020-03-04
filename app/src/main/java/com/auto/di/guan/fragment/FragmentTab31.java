@@ -9,17 +9,14 @@ import android.widget.ExpandableListView;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.GroupExpandableListViewaAdapter31;
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.GroupList;
 import com.auto.di.guan.db.sql.ControlInfoSql;
-import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.dialog.Main31Dialog;
-import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.AdapterEvent;
-import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.entity.GroupOptionEvent;
+import com.auto.di.guan.jobqueue.task.TaskFactory;
 import com.auto.di.guan.utils.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -54,7 +51,6 @@ public class FragmentTab31 extends BaseFragment {
 
 
 	public void startWork(final GroupInfo groupInfo) {
-
 		String title;
 		if (groupInfo.getGroupStatus() == 0) {
 			title = "当前分组处于关闭状态";
@@ -67,69 +63,20 @@ public class FragmentTab31 extends BaseFragment {
 			@Override
 			public void onItemClick(int index) {
 				if (index == 1) {
-					groupInfo.setGroupStatus(1);
-					GroupInfoSql.updateGroup(groupInfo);
-					EventBus.getDefault().post(new GroupOptionEvent(groupInfo,true));
+//					groupInfo.setGroupStatus(1);
+//					GroupInfoSql.updateGroup(groupInfo);
+//					EventBus.getDefault().post(new GroupOptionEvent(groupInfo,true));
+					TaskFactory.createGroupOpenTask(groupInfo);
 				}else if (index == 2) {
-					groupInfo.setGroupStatus(0);
-					GroupInfoSql.updateGroup(groupInfo);
-					EventBus.getDefault().post(new GroupOptionEvent(groupInfo, false));
+					TaskFactory.createGroupCloseTask(groupInfo);
+//					groupInfo.setGroupStatus(0);
+//					GroupInfoSql.updateGroup(groupInfo);
+//					EventBus.getDefault().post(new GroupOptionEvent(groupInfo, false));
 				}
 			}
 		});
 	}
 
-	private void showStoptDialog(final GroupInfo groupInfo) {
-		MainShowDialog.ShowDialog(getActivity(), "关闭轮灌组", "是否关闭当前正在运行的轮灌组", new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				groupInfo.setGroupStatus(0);
-				GroupInfoSql.updateGroup(groupInfo);
-				EventBus.getDefault().post(new GroupOptionEvent(groupInfo, false));
-			}
-		});
-	}
-
-	private void doRun(boolean isSatrt, GroupInfo groupInfo) {
-		List<DeviceInfo>deveiceInfo = DeviceInfoSql.queryDeviceList();
-		int size = deveiceInfo.size();
-		int imageId;
-		int status;
-		if (isSatrt) {
-			status = Entiy.CONTROL_STATUS＿RUN;
-			imageId = R.mipmap.lighe_2;
-		}else {
-			status = Entiy.CONTROL_STATUS＿CONNECT;
-			imageId = R.mipmap.lighe_1;
-		}
-		for (int i =0 ; i < size; i++) {
-			DeviceInfo info = deveiceInfo.get(i);
-			ControlInfo controlInfo_0 = info.getValveDeviceSwitchList().get(0);
-			ControlInfo controlInfo_1 = info.getValveDeviceSwitchList().get(1);
-			if (groupInfo.getGroupId() == controlInfo_0.getValve_group_id()) {
-				controlInfo_0.setValve_status(status);
-				controlInfo_0.setValve_imgage_id(imageId);
-
-			}
-			if (groupInfo.getGroupId() == controlInfo_1.getValve_group_id()) {
-				controlInfo_1.setValve_status(status);
-				controlInfo_1.setValve_imgage_id(imageId);
-			}
-		}
-		DeviceInfoSql.updateDeviceList(deveiceInfo);
-		initData();
-	}
-
-	private void showStartDialog(final GroupInfo groupInfo, final GroupInfo closeInfo) {
-		MainShowDialog.ShowDialog(getActivity(), "开启轮灌组", "是否开启轮灌组轮灌操作", new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				groupInfo.setGroupStatus(1);
-				GroupInfoSql.updateGroup(groupInfo);
-				EventBus.getDefault().post(new GroupOptionEvent(groupInfo,closeInfo,true));
-			}
-		});
-	}
 
 	@Override
 	public void onResume() {

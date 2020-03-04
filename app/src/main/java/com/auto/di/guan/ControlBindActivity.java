@@ -25,6 +25,7 @@ import com.auto.di.guan.jobqueue.TaskManger;
 import com.auto.di.guan.jobqueue.event.BindSucessEvent;
 import com.auto.di.guan.jobqueue.task.BindIdTask;
 import com.auto.di.guan.jobqueue.task.ReadIdTask;
+import com.auto.di.guan.jobqueue.task.TaskFactory;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.Task;
 
@@ -236,6 +237,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
                     controlInfo_0.setValve_alias(nick1);
                     controlInfo_0.setValve_id(Integer.valueOf(info.getDeviceId()) * 2 - 1);
                     controlInfo_0.setProtocalId("0");
+                    controlInfo_0.setDeviceProtocalId(info.getProtocalId());
 //					controlInfo_0.imageId = R.mipmap.lighe_1;
 //					controlInfo_0.status = Entiy.DEVEICE_BIND;
 //					controlInfo_0.controId = Integer.valueOf(info.getDeviceId())*2-1;
@@ -259,8 +261,9 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
                     controlInfo_1.setDevice_id(info.getDeviceId());
                     controlInfo_1.setValve_name(controlName2);
                     controlInfo_1.setValve_alias(nick2);
-                    controlInfo_1.setValve_id(Integer.valueOf(info.getDeviceId()) * 2 - 1);
-                    controlInfo_0.setProtocalId("1");
+                    controlInfo_1.setValve_id(Integer.valueOf(info.getDeviceId()) * 2);
+                    controlInfo_1.setDeviceProtocalId(info.getProtocalId());
+                    controlInfo_1.setProtocalId("1");
 //					controlInfo_1.imageId = R.mipmap.lighe_1;
 //					controlInfo_1.status = Entiy.DEVEICE_BIND;
 //					controlInfo_1.controId = Integer.valueOf(info.getDeviceId())*2;
@@ -283,14 +286,14 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
                 if(dialog != null && !dialog.isShowing()) {
                     dialog.show();
                 }
-                writeGidTask();
+                TaskFactory.createGidTak();
 //				EventBus.getDefault().post(new ReadEvent(Entiy.writeGid(groupName),0));
 //                BindEvent event = new BindEvent("ok");
 //                onControlStatusEvent(event);
                 break;
             case R.id.bind_deivce_control_id:
                 isGroupClick = false;
-                writeBidTask();
+                TaskFactory.createBidTak(info.getProtocalId());
 //				EventBus.getDefault().post(new ReadEvent(Entiy.writeBid(info.getDeviceId()+""),1));
 //					if(dialog != null && !dialog.isShowing()) {
 //						dialog.show();
@@ -365,39 +368,6 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
             showToastLongMsg("写入组ID成功");
         }
     }
-
-    /**
-     *    添加写入GID  task
-     */
-    private void writeGidTask() {
-        BindIdTask wTask = new BindIdTask();
-        wTask.setTaskType(TaskEntiy.TASK_TYPE_GID);
-        wTask.setTaskCmd(Entiy.writeBid(BaseApp.getProjectId()));
-        TaskManger.getInstance().addTask(wTask);
-
-        ReadIdTask rTask = new ReadIdTask();
-        rTask.setTaskType(TaskEntiy.TASK_READ_GID);
-        rTask.setTaskCmd("rgid");
-        TaskManger.getInstance().addTask(rTask);
-        TaskManger.getInstance().startTask();
-    }
-
-    /**
-     *    添加写入GID  task
-     */
-    private void writeBidTask() {
-        BindIdTask wTask = new BindIdTask();
-        wTask.setTaskType(TaskEntiy.TASK_TYPE_BID);
-        wTask.setTaskCmd(Entiy.writeBid(BaseApp.getProjectId()));
-        TaskManger.getInstance().addTask(wTask);
-
-        ReadIdTask rTask = new ReadIdTask();
-        rTask.setTaskType(TaskEntiy.TASK_READ_BID);
-        rTask.setTaskCmd("rbid");
-        TaskManger.getInstance().addTask(rTask);
-        TaskManger.getInstance().startTask();
-    }
-
 
     @Override
     protected void onDestroy() {

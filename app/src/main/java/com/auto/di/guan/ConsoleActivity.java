@@ -26,6 +26,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.utils.LogUtils;
 
 import java.io.IOException;
 
@@ -131,13 +132,14 @@ public class ConsoleActivity extends SerialPortActivity {
 //						showToastLongMsg("开启设备  发送命令"+"kf 002 001 0 01");
 //					}
 //				});
-//				try {
-//					String cmd = Entiy.cmdOpen("002", "001","0","01");
-//					mOutputStream.write(cmd.getBytes());
-//					mOutputStream.write('\n');
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
+				try {
+					String cmd = Entiy.cmdOpen("001", "001","0");
+					LogUtils.e("写入  ",""+cmd);
+					mOutputStream.write(cmd.getBytes());
+					mOutputStream.write('\n');
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 
@@ -146,7 +148,7 @@ public class ConsoleActivity extends SerialPortActivity {
 			public void onClick(View v) {
 				try {
 
-					mOutputStream.write(new String("gf 002 001 0 00").getBytes());
+					mOutputStream.write(new String("gf 001 001 0 00").getBytes());
 					mOutputStream.write('\n');
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -191,14 +193,14 @@ public class ConsoleActivity extends SerialPortActivity {
 //				}
 //			}
 //		});
-
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				showToastLongMsg("aaaaaaaaaaaaaaa开启设备成功"+new String(buffer, 0, size));
-
-			}
-		});
+		LogUtils.e("收到",""+new String(buffer, 0, size));
+//		runOnUiThread(new Runnable() {
+//			@Override
+//			public void run() {
+//				showToastLongMsg("aaaaaaaaaaaaaaa开启设备成功"+new String(buffer, 0, size));
+//
+//			}
+//		});
 
 
 	}

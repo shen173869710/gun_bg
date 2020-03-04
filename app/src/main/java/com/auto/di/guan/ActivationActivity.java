@@ -144,6 +144,7 @@ public class ActivationActivity extends IBaseActivity<LoginPresenter> implements
 				deviceInfo.setDeviceName((i+1)+"");
 				deviceInfo.setDeviceStatus(0);
 				deviceInfo.setDeviceSort(i+1);
+				deviceInfo.setDeviceId(i+1);
 				deviceInfo.setProtocalId(Entiy.createProtocalId(i+1));
 				ArrayList<ControlInfo>controlInfos = new ArrayList<>();
 				controlInfos.add(new ControlInfo(0,"0"));

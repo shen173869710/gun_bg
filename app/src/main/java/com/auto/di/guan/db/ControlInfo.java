@@ -1,6 +1,7 @@
 package com.auto.di.guan.db;
 
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Transient;
 
 import java.io.Serializable;
 
@@ -45,7 +46,9 @@ public class ControlInfo implements Serializable {
     private String update_time;
     //通信协议ID
     private String protocalId;
-
+    //通信协议ID
+    private String deviceProtocalId;
+    @Transient
     private boolean isSelect;
 
     public ControlInfo() {
@@ -179,5 +182,13 @@ public class ControlInfo implements Serializable {
 
     public void setProtocalId(String protocalId) {
         this.protocalId = protocalId;
+    }
+
+    public String getDeviceProtocalId() {
+        return deviceProtocalId;
+    }
+
+    public void setDeviceProtocalId(String deviceProtocalId) {
+        this.deviceProtocalId = deviceProtocalId;
     }
 }

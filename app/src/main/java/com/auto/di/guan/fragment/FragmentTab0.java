@@ -96,7 +96,6 @@ public class FragmentTab0 extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAdapterUpdate(AdapterEvent event) {
-
         List<DeviceInfo>infos = DeviceInfoSql.queryDeviceList();
         String str = new Gson().toJson(deviceInfos);
         LogUtils.e("------", "FragmentTab0"+str);

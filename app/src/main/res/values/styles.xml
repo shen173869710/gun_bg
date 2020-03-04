@@ -9,7 +9,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">@null</item>
         <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
         <!--将Activity的Theme设置成透明-->
         <item name="android:windowIsTranslucent">true</item>
@@ -227,6 +227,9 @@
         <item name="android:windowFullscreen">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:windowBackground">@mipmap/welcome_bg</item>
+
     </style>
 
 

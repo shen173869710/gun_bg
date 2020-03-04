@@ -72,7 +72,7 @@ public class GroupExpandableListViewaAdapter2 extends BaseExpandableListAdapter 
         ControlInfo controlInfo = groupLists.get(groupPosition).controlInfos.get(childPosition);
         holder.group_item_name.setText(controlInfo.getValve_name()+" 号控制阀");
         holder.group_item_icon.setImageResource(controlInfo.getValve_imgage_id());
-        holder.group_item_type.setText(controlInfo.getValve_alias());
+        holder.group_item_type.setText("名称  "+controlInfo.getValve_alias());
     }
 
 

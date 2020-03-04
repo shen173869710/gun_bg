@@ -8,6 +8,15 @@ import com.auto.di.guan.BaseApp;
 
 public class Entiy {
 
+    /**
+     *  报警信息
+     */
+    //  开阀异常
+    public static final int VIDEO_OPEN_ERROR = 1;
+    //  关阀异常
+    public static final int VIDEO_CLOSE_ERROR =2;
+    //  查询异常
+    public static final int VIDEO_READ_ERROR = 5;
 
 
     public static final int TIME_DIVIDE = 6000;
@@ -71,9 +80,6 @@ public class Entiy {
      *    群组状态 开启
      */
     public static final int GROUP_STATUS_OPEN = 1;
-
-
-
     /**
      *    设备是否添加
      */
@@ -90,19 +96,8 @@ public class Entiy {
     public static final int CONTROL_STATUS＿ERROR = 300;
     /**设备无法关闭**/
     public static final int CONTROL_STATUS＿NOTCLOSE = 400;
-
-
-    /****发送相关命令***/
-
-    public static final String CMD_RBID = "rbid";
-    public static final String CMD_RGID = "rgid";
-
-    /**读取相关状态**/
-    public static final String DEVEICE_NAME_0 = "0";
-    public static final String DEVEICE_NAME_1 = "1";
-
-    public static final String DEVEICE_OPEN_0 = "01";
-    public static final String DEVEICE_CLOSE_0 = "00";
+    /**设备断开链接**/
+    public static final int CONTROL_STATUS＿DISCONNECT = 0;
 
 
     public static  String writeBid(String bid) {
@@ -196,13 +191,8 @@ public class Entiy {
         return "gf"+" "+groupId+" "+deviceId+" "+deveiceName;
     }
 
-    public static String LOG_READ_START = "读取---";
     public static String LOG_OPEN_START = "开启---";
     public static String LOG_CLOSE_START = "关闭---";
-    public static String LOG_SUC = "接收---";
-    public static String LOG_OPEN_END = "开启成功---";
-    public static String LOG_CLOSE_END = "关闭成功---";
-    public static String LOG_READ_END = "读取成功---";
 
 
     public static int ACTION_TYPE_4 = 100;

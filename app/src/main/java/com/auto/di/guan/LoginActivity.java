@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.auto.di.guan.basemodel.model.respone.BaseRespone;
 import com.auto.di.guan.basemodel.presenter.LoginPresenter;
 import com.auto.di.guan.basemodel.view.ILoginView;
+import com.auto.di.guan.utils.Task;
 import com.auto.di.guan.view.XEditText;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -87,6 +88,7 @@ public class LoginActivity extends IBaseActivity<LoginPresenter> implements ILog
     @Override
     public void loginFail(Throwable error, Integer code, String msg) {
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
     }
 
     @Override
@@ -100,7 +102,7 @@ public class LoginActivity extends IBaseActivity<LoginPresenter> implements ILog
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onElecEvent(BindEvent event) {
+    public void onElecEvent(Task event) {
 
     }
 }

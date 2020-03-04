@@ -11,7 +11,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     
-	<dimen name="main_divider_width">1px</dimen>
+	<dimen name="main_divider_width">1dp</dimen>
     
 	<dimen name="dot_width">6dip</dimen>
     <!-- carHomeActivity -->
@@ -47,8 +47,9 @@
     <dimen name="expand_list_child_image">60dp</dimen>
     <dimen name="expand_list_child_check">30dp</dimen>
     <dimen name="main_button_magin_bottom">20dp</dimen>
-    <dimen name="main_expand_height">60dp</dimen>
-    <dimen name="main_expand_group_height">50dp</dimen>
+    <dimen name="main_expand_height">70dp</dimen>
+    <dimen name="main_expand_group_height">70dp</dimen>
+    <dimen name="main_expand_group_child">50dp</dimen>
     <dimen name="main_edittex_width">200dp</dimen>
     <dimen name="main_item_width">300dp</dimen>
     <dimen name="main_item_height">60dp</dimen>

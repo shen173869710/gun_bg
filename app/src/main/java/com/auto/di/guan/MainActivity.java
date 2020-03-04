@@ -8,7 +8,6 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,13 +34,15 @@ import com.auto.di.guan.entity.PollingEvent;
 import com.auto.di.guan.entity.ReadEvent;
 import com.auto.di.guan.entity.UpdateEvent;
 import com.auto.di.guan.jobqueue.TaskManger;
-import com.auto.di.guan.jobqueue.TestEvent;
+import com.auto.di.guan.jobqueue.event.SendCmdEvent;
+import com.auto.di.guan.jobqueue.event.VideoPlayEcent;
 import com.auto.di.guan.utils.ActionUtil;
 import com.auto.di.guan.utils.FloatWindowUtil;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.OptionUtils;
 import com.auto.di.guan.utils.PollingUtils;
 import com.auto.di.guan.utils.SendUtils;
+import com.auto.di.guan.utils.ToastUtils;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -61,13 +62,8 @@ import io.reactivex.schedulers.Schedulers;
 /**
  */
 public class MainActivity extends SerialPortActivity {
-    /**
-     *  是否执行过一次
-     */
-    private boolean hasRunCmd = false;
 
     private final String TAG = "------" + MainActivity.class.getSimpleName();
-    private Button button;
     private FragmentManager manager;
     private FragmentTransaction transaction;
     private TextView textView;
@@ -178,7 +174,7 @@ public class MainActivity extends SerialPortActivity {
          showDialog();
         cur = info;
         final String cmd = Entiy.cmdRead(BaseApp.getProjectId(), info.getProtocalId());
-        SendUtils.sendRead(cmd,cur);
+//        SendUtils.sendRead(cmd,cur);
         Log.e("-------读取设备", cmd + "       " + System.currentTimeMillis());
         try {
 			mOutputStream.write(new String(cmd).getBytes());
@@ -204,6 +200,16 @@ public class MainActivity extends SerialPortActivity {
             @Override
             public void onClick(View v) {
                 FloatWindowUtil.getInstance().distory();
+//                 String cmd = Entiy.cmdRead(BaseApp.getProjectId(), "001");
+//
+//                cmd = "gf 001 001 1";
+//                LogUtils.e(TAG, Entiy.LOG_CLOSE_START + cmd);
+//                try {
+//                    mOutputStream.write(new String(cmd).getBytes());
+//                    mOutputStream.write('\n');
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
 
@@ -251,7 +257,7 @@ public class MainActivity extends SerialPortActivity {
 //            }
 //        });
 
-        TaskManger.getInstance().init(mOutputStream);
+//        TaskManger.getInstance().init(mOutputStream);
     }
 
 
@@ -388,14 +394,29 @@ public class MainActivity extends SerialPortActivity {
         final String receive = new String(buffer, 0, size);
         show = "";
         int length = receive.trim().length();
-        Log.e(TAG, "接收命令 -------------------"+ receive+"    length = "+length);
+        LogUtils.e(TAG, "收到 -------------------"+ receive+"    length = "+length);
 
         if (TextUtils.isEmpty(receive)) {
             showToastLongMsg("错误命令"+receive);
             return;
         }
 
-        TaskManger.getInstance().endTask(receive);
+
+        if ((receive.contains("kf")
+                || receive.contains("gf")
+                || receive.contains("rs"))
+                && !receive.contains("ok")) {
+            LogUtils.e(TAG, "过滤回显信息 -------------------"+receive);
+            return;
+        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TaskManger.getInstance().endTask(receive);
+            }
+        });
+
 //        if (receive.toLowerCase().contains("ok") && length == 2){
 //            Log.e(TAG, "绑定成功 -----");
 //            EventBus.getDefault().post(new BindEvent(receive));
@@ -641,18 +662,18 @@ public class MainActivity extends SerialPortActivity {
      **/
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onControlStatusEvent(ControlOptionEvent event) {
-        isSaveDb = true;
-        optionType = FRAGMENT_4;
-        List<ControlInfo>list = new ArrayList<>();
-        list.add(event.controlInfo);
-
-        if (event.type == 0) {
-            readCmd(event.controlInfo,TYPE_READ);
-        }else if (event.type == 1) {
-            optionContron(list, TYPE_OPEN);
-        }else if (event.type == 2) {
-            optionContron(list, TYPE_CLOSE);
-        }
+//        isSaveDb = true;
+//        optionType = FRAGMENT_4;
+//        List<ControlInfo>list = new ArrayList<>();
+//        list.add(event.controlInfo);
+//
+//        if (event.type == 0) {
+//            readCmd(event.controlInfo,TYPE_READ);
+//        }else if (event.type == 1) {
+//            optionContron(list, TYPE_OPEN);
+//        }else if (event.type == 2) {
+//            optionContron(list, TYPE_CLOSE);
+//        }
 //        if(event.controlInfo.status ==  Entiy.CONTROL_STATUS＿ERROR) {
 //            readCmd(event.controlInfo,TYPE_READ);
 //            return;
@@ -976,7 +997,7 @@ public class MainActivity extends SerialPortActivity {
             if (isSaveDb && controlInfo != null) {
                 ActionUtil.saveAction(cur, CMD_TYPE, type, optionType);
             }
-            SendUtils.sendEnd(controlId, type, cur.getValve_alias());
+//            SendUtils.sendEnd(type,controlInfo);
             DeviceInfoSql.updateDevice(deviceInfo);
             String str = new Gson().toJson(DeviceInfoSql.queryDeviceList());
             LogUtils.e("------", "main updatte = "+str);
@@ -1008,9 +1029,44 @@ public class MainActivity extends SerialPortActivity {
 
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onTestEvent (TestEvent event) {
-       TaskManger.getInstance().endTask(event.recive);
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onTestEvent (TestEvent event) {
+//       TaskManger.getInstance().endTask(event.recive);
+//    }
+
+        @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onTestEvent (SendCmdEvent event) {
+
+        if (event == null) {
+            return;
+        }
+        String cmd = event.getCmd();
+        if (TextUtils.isEmpty(cmd) ){
+            ToastUtils.showLongToast("无效的命令格式");
+            return;
+        }
+
+        if (!cmd.contains("bid") && !cmd.contains("gid")) {
+            showDialog();
+        }
+
+        LogUtils.e(TAG, "-----写入命令"+event.getCmd());
+            try {
+                mOutputStream.write(new String(event.getCmd()).getBytes());
+                mOutputStream.write('\n');
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 
+
+
+    /**
+     *       异常报警
+     * @param event
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onTestEvent (VideoPlayEcent event) {
+       play();
+    }
 }

@@ -2,7 +2,6 @@ package com.auto.di.guan.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +16,13 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.utils.LogUtils;
-import com.auto.di.guan.utils.ShareUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- */
 public class FragmentTab1 extends BaseFragment {
     private GridView mGridView;
     private View view;

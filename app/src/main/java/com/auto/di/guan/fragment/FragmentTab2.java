@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  *
- *
+ *   控制阀分组
  */
 public class FragmentTab2 extends BaseFragment {
 	private Button addBtn;
@@ -56,25 +56,6 @@ public class FragmentTab2 extends BaseFragment {
 			}
 		});
 
-//		expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-//			@Override
-//			public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-//				Intent intent = new Intent(getActivity(), GroupEditctivity.class);
-//				intent.putExtra("groupId",groupLists.get(groupPosition).groupInfo.getGroupId());
-//				startActivity(intent);
-//				return false;
-//			}
-//		});
-//
-//		expandableListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//			@Override
-//			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//				Intent intent = new Intent(getActivity(), GroupEditctivity.class);
-//				intent.putExtra("groupId",groupLists.get(position).groupInfo.getGroupId());
-//				startActivity(intent);
-//			}
-//		});
-
 
 		Button button = (Button) view.findViewById(R.id.delBtn);
 		button.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +67,6 @@ public class FragmentTab2 extends BaseFragment {
 						List<DeviceInfo> deviceInfos = DeviceInfoSql.queryDeviceList();
 						int size = deviceInfos.size();
 						for (int i = 0; i < size; i++) {
-
 							DeviceInfo deviceInfo = deviceInfos.get(i);
 							deviceInfo.getValveDeviceSwitchList().get(0).setValve_group_id(0);
 							deviceInfo.getValveDeviceSwitchList().get(0).setSelect(false);

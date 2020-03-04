@@ -1,12 +1,7 @@
 package com.auto.di.guan.adapter;
 
 import android.app.Activity;
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.auto.di.guan.R;
@@ -14,88 +9,53 @@ import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.sql.ControlInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.Entiy;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
 import java.util.List;
+public class GroupEditListAdapter extends BaseQuickAdapter<ControlInfo, BaseViewHolder> {
 
-/**
- * Created by Administrator on 2017/6/27.
- */
-
-public class GroupEditListAdapter extends BaseAdapter {
-    private LayoutInflater mInflater = null;
-    private Context context;
-    private List<ControlInfo> datas;
-
-    public GroupEditListAdapter(Context context, List<ControlInfo> datas) {
-        this.context = context;
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.datas = datas;
+    public GroupEditListAdapter(List<ControlInfo> data) {
+        super(R.layout.group_edit_list_item, data);
     }
 
     @Override
-    public int getCount() {
-        return datas.size();
-    }
+    protected void convert(BaseViewHolder holder, ControlInfo info) {
 
-    @Override
-    public Object getItem(int position) {
-        return position;
-    }
+        holder.setText(R.id.group_item_name,info.getValve_id() + "阀控器" );
+        holder.setText(R.id.group_item_id,"名称"+info.getValve_alias());
 
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(final int position, View convertView, final ViewGroup parent) {
-        ViewHolder holder = null;
-        if (convertView == null) {
-            holder = new ViewHolder();
-            convertView = mInflater.inflate(R.layout.group_edit_list_item, null);
-            holder.group_item_name = (TextView) convertView.findViewById(R.id.group_item_name);
-            holder.group_item_status = (TextView) convertView.findViewById(R.id.group_item_status);
-            holder.group_edit_del = (TextView) convertView.findViewById(R.id.group_edit_del);
-            convertView.setTag(holder);
+        String stutes = "";
+        int valveStatus = info.getValve_status();
+        if (valveStatus == Entiy.CONTROL_STATUS＿RUN) {
+            stutes = "工作当中";
+        } else if (valveStatus == Entiy.CONTROL_STATUS＿ERROR) {
+            stutes = "工作异常";
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            stutes = "可以编辑";
         }
-
-        ControlInfo controlInfo = datas.get(position);
-        holder.group_item_name.setText(controlInfo.getValve_id() + "阀控器");
-        if (controlInfo.getValve_status() == Entiy.CONTROL_STATUS＿RUN) {
-            holder.group_item_status.setText("工作当中");
-        } else if (controlInfo.getValve_status() == Entiy.CONTROL_STATUS＿ERROR) {
-            holder.group_item_status.setText("工作异常");
-        } else {
-            holder.group_item_status.setText("可以编辑");
-        }
-
-        holder.group_edit_del.setOnClickListener(new View.OnClickListener() {
+        holder.setText(R.id.group_item_status,stutes);
+        holder.getView(R.id.group_edit_del).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (controlInfo.getValve_status() != Entiy.CONTROL_STATUS＿RUN ||
-                        controlInfo.getValve_status() != Entiy.CONTROL_STATUS＿ERROR) {
-                    MainShowDialog.ShowDialog((Activity) context, "退出分组", "是退出当前分组", new View.OnClickListener() {
+                if (valveStatus != Entiy.CONTROL_STATUS＿RUN ||
+                        valveStatus != Entiy.CONTROL_STATUS＿ERROR) {
+                    MainShowDialog.ShowDialog((Activity) getContext(), "退出分组", "是退出当前分组", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            controlInfo.setValve_group_id(0);
-                            datas.remove(position);
+                            info.setValve_group_id(0);
+                            info.setSelect(false);
+                            getData().remove(holder.getAdapterPosition());
                             notifyDataSetChanged();
-                            ControlInfoSql.updateControl(controlInfo);
+                            ControlInfoSql.updateControl(info);
                         }
                     });
                 } else {
-                    Toast.makeText(context, "阀控器处于不可以编辑状态", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "阀控器处于不可以编辑状态", Toast.LENGTH_LONG).show();
                 }
             }
         });
-        return convertView;
     }
 
-    class ViewHolder {
-        public TextView group_item_name;
-        public TextView group_item_status;
-        public TextView group_edit_del;
-    }
+
 }

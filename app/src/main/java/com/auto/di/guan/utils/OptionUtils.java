@@ -85,20 +85,20 @@ public class OptionUtils {
             int valueStatus0 = 0;
             int valueStatus1 = 0;
             if (type.contains("0000")) {
-                valueStatus0 = 0;
-                valueStatus1 = 0;
+                valueStatus0 = Entiy.CONTROL_STATUS＿DISCONNECT;
+                valueStatus1 = Entiy.CONTROL_STATUS＿DISCONNECT;
             } else if (type.contains("0100")) {
-                valueStatus0 = 0;
+                valueStatus0 = Entiy.CONTROL_STATUS＿DISCONNECT;
                 valueStatus1 = Entiy.CONTROL_STATUS＿CONNECT;
             } else if (type.contains("0101")) {
-                valueStatus0 = 0;
+                valueStatus0 = Entiy.CONTROL_STATUS＿DISCONNECT;
                 valueStatus1 = Entiy.CONTROL_STATUS＿RUN;
             } else if (type.contains("1000")) {
                 valueStatus0 = Entiy.CONTROL_STATUS＿CONNECT;
-                valueStatus1 = 0;
+                valueStatus1 = Entiy.CONTROL_STATUS＿DISCONNECT;
             } else if (type.contains("1010")) {
                 valueStatus0 = Entiy.CONTROL_STATUS＿RUN;
-                valueStatus1 = 0;
+                valueStatus1 = Entiy.CONTROL_STATUS＿DISCONNECT;
             } else if (type.contains("1100")) {
                 valueStatus0 = Entiy.CONTROL_STATUS＿CONNECT;
                 valueStatus1 = Entiy.CONTROL_STATUS＿CONNECT;
@@ -127,11 +127,11 @@ public class OptionUtils {
                 valueStatus0 = Entiy.CONTROL_STATUS＿NOTCLOSE;
                 valueStatus1 = Entiy.CONTROL_STATUS＿NOTCLOSE;
             } else if (type.contains("0103")) {
-                valueStatus0 = 0;
+                valueStatus0 = Entiy.CONTROL_STATUS＿DISCONNECT;
                 valueStatus1 = Entiy.CONTROL_STATUS＿NOTCLOSE;
             } else if (type.contains("1030")) {
                 valueStatus0 = Entiy.CONTROL_STATUS＿NOTCLOSE;
-                valueStatus1 = 0;
+                valueStatus1 = Entiy.CONTROL_STATUS＿DISCONNECT;
             } else {
                 return null;
             }

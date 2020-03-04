@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,10 +19,10 @@ import com.auto.di.guan.R;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.dialog.MainoptionDialog;
-import com.auto.di.guan.entity.ControlOptionEvent;
 import com.auto.di.guan.entity.Entiy;
-
-import org.greenrobot.eventbus.EventBus;
+import com.auto.di.guan.jobqueue.TaskEntiy;
+import com.auto.di.guan.jobqueue.TaskManger;
+import com.auto.di.guan.jobqueue.task.TaskFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +71,7 @@ public class MyGridOpenAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.grid_item, null);
-            holder.grid_item_layout = (LinearLayout) convertView.findViewById(R.id.grid_item_layout);
+            holder.grid_item_layout = (RelativeLayout) convertView.findViewById(R.id.grid_item_layout);
             holder.grid_item_device = (ImageView) convertView.findViewById(R.id.grid_item_device);
             holder.grid_item_device_id = (TextView) convertView.findViewById(R.id.grid_item_device_id);
             holder.grid_item_device_name = (TextView) convertView.findViewById(R.id.grid_item_device_name);
@@ -188,7 +187,7 @@ public class MyGridOpenAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
     class ViewHolder {
-        public LinearLayout grid_item_layout;
+        public RelativeLayout grid_item_layout;
         public ImageView grid_item_device;
         public TextView grid_item_device_id;
         public TextView grid_item_device_name;
@@ -208,7 +207,6 @@ public class MyGridOpenAdapter extends BaseAdapter {
     }
 
     private void openDevice(final ControlInfo controlInfo) {
-
         String status = "关闭";
         if (controlInfo.getValve_status() == Entiy.CONTROL_STATUS＿RUN) {
             status = "开启";
@@ -216,7 +214,25 @@ public class MyGridOpenAdapter extends BaseAdapter {
         MainoptionDialog.ShowDialog((Activity) context,controlInfo , "手动操作",status,new MainoptionDialog.ItemClick() {
             @Override
             public void onItemClick(int index) {
-                EventBus.getDefault().post(new ControlOptionEvent(index,controlInfo, true));
+                /**
+                 *    index = 0  读
+                 *    index = 1  开阀
+                 *    index = 2  关阀
+                 */
+                if (index == 0) {
+                    TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_READ);
+                    TaskManger.getInstance().startTask();
+                }else if (index == 1) {
+                    TaskFactory.createOpenTask(controlInfo);
+                    TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_OPEN_READ);
+                    TaskManger.getInstance().startTask();
+                }else if (index == 2) {
+                    TaskFactory.createCloseTask(controlInfo);
+                    TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_CLOSE_READ);
+                    TaskManger.getInstance().startTask();
+                }
+
+
             }
         });
 

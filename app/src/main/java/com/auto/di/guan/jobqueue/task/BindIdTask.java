@@ -11,22 +11,26 @@ import java.io.OutputStream;
  */
 public class BindIdTask extends BaseTask{
     private final String TAG = BASETAG+"BindIdTask";
-    private String taskCmd;
 
-    @Override
-    public void startTask(OutputStream mOutputStream) {
-        LogUtils.e(TAG, "写入id 开始=======  cmd =="+getTaskCmd());
-        writeCmd(mOutputStream, getTaskCmd());
+    public BindIdTask(int taskType, String taskCmd) {
+        super(taskType, taskCmd);
     }
 
     @Override
-    public void errorTask(OutputStream mOutputStream) {
+    public void startTask() {
+        LogUtils.e(TAG, "写入id 开始=======  cmd =="+getTaskCmd());
+        writeCmd(getTaskCmd());
+    }
+
+    @Override
+    public void errorTask() {
         LogUtils.e(TAG, "写入id 错误 ======="+"errorTask()");
 
     }
 
     @Override
-    public void endTask(String receive, OutputStream mOutputStream) {
+    public void endTask(String receive) {
+        setReceive(receive);
         LogUtils.e(TAG, "写入id 结束 ======="+"endTask()"+"====收到信息 =="+receive+ " receive.length() = "+receive.length());
         if (receive.toLowerCase().contains("ok") && receive.trim().length() == 2) {
             if (getTaskType() == TaskEntiy.TASK_TYPE_GID) {
@@ -39,24 +43,17 @@ public class BindIdTask extends BaseTask{
         }else {
             if (getTaskCount() == 2) {
                 setTaskCount(1);
-                retryTask(mOutputStream);
+                retryTask();
             }else {
-                errorTask(mOutputStream);
+                errorTask();
             }
         }
     }
 
     @Override
-    public void retryTask(OutputStream mOutputStream) {
+    public void retryTask() {
         LogUtils.e(TAG, "写入项目gid 重试======="+"retryTask()  cmd =="+getTaskCmd());
-        writeCmd(mOutputStream, getTaskCmd());
+        writeCmd( getTaskCmd());
     }
 
-    public String getTaskCmd() {
-        return taskCmd;
-    }
-
-    public void setTaskCmd(String taskCmd) {
-        this.taskCmd = taskCmd;
-    }
 }

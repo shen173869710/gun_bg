@@ -48,28 +48,50 @@ public class ActionUtil {
 
 
 		String end = "";
-		if (type == SendUtils.TYPE_RUN) {
-			end = "操作正常";
-		}else if (type == SendUtils.TYPE_DISCONTENT) {
-			end = "通信正常, 阀门未打开";
-			operateResult = 3;
-//			actionType = Entiy.ACTION_TYPE_ERROR;
-		}else if (type == SendUtils.TYPE_CONTENT) {
-			end = "通信异常";
-			operateResult = 3;
-//			actionType = Entiy.ACTION_TYPE_ERROR;
-//			action.setUserId(MyApplication.getInstance().user.getUserId());
-		}else if (type == SendUtils.TYPE_NOT_CLOSE) {
-			operateResult = 3;
-			end = "通信正常, 阀门未关闭";
+
+		switch (type) {
+			case SendUtils.OPTION_OPEN_SUCESS:
+				end = SendUtils.OPTION_OPEN_SUCESS_VALUE;
+				operateResult = 3;
+				break;
+			case SendUtils.OPTION_OPEN_ERROR:
+				end = SendUtils.OPTION_OPEN_ERROR_VALUE;
+				operateResult = 3;
+				break;
+			case SendUtils.OPTION_OPEN_FAILE:
+				end = SendUtils.OPTION_OPEN_FAILE_VALUE;
+				operateResult = 3;
+				break;
+			case SendUtils.OPTION_CLOSE_SUCESS:
+				end = SendUtils.OPTION_CLOSE_SUCESS_VALUE;
+				operateResult = 3;
+				break;
+			case SendUtils.OPTION_CLOSE_ERROR:
+				end = SendUtils.OPTION_CLOSE_ERROR_VALUE;
+				operateResult = 3;
+				break;
+			case SendUtils.OPTION_CLOSE_FAILE:
+				end = SendUtils.OPTION_CLOSE_FAILE_VALUE;
+				operateResult = 3;
+				break;
+
 		}
 
-
+//		if (type == SendUtils.TYPE_RUN) {
+//			end = "操作正常";
+//		}else if (type == SendUtils.TYPE_DISCONTENT) {
+//			end = "通信正常, 阀门未打开";
+//			operateResult = 3;
+//		}else if (type == SendUtils.TYPE_CONTENT) {
+//			end = "通信异常";
+//			operateResult = 3;
+//		}else if (type == SendUtils.TYPE_NOT_CLOSE) {
+//			operateResult = 3;
+//			end = "通信正常, 阀门未关闭";
+//		}
 		action.setActionEnd(end);
 		action.setTime(System.currentTimeMillis());
 		action.setActionType(actionType);
-//		action.setUserId(MyApplication.getInstance().user.getUserId());
-
 
 		LogUtils.e("------------","插入数据");
 		UserActionSql.insertUserAction(action);

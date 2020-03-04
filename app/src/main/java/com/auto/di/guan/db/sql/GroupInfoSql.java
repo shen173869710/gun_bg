@@ -64,4 +64,19 @@ public class GroupInfoSql extends BaseSql {
         return list;
     }
 
+    /**
+     * 查询正在开启的轮灌分组
+     */
+    public static List<GroupInfo> queryOpenGrouplList() {
+        DaoSession daoSession = getDaoWriteSession();
+        GroupInfoDao dao = daoSession.getGroupInfoDao();
+        QueryBuilder<GroupInfo> qb = dao.queryBuilder().orderAsc(GroupInfoDao.Properties.GroupLevel);
+        qb.where(GroupInfoDao.Properties.GroupStatus.eq(1));
+        List<GroupInfo> list = qb.list();
+        if(list != null && list.size() > 0) {
+            return list;
+        }
+        return null;
+    }
+
 }

@@ -68,7 +68,7 @@ public class MyGridAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.grid_item, null);
-            holder.grid_item_layout = (LinearLayout) convertView.findViewById(R.id.grid_item_layout);
+            holder.grid_item_layout = (RelativeLayout) convertView.findViewById(R.id.grid_item_layout);
             holder.grid_item_device = (ImageView) convertView.findViewById(R.id.grid_item_device);
             holder.grid_item_device_id = (TextView) convertView.findViewById(R.id.grid_item_device_id);
             holder.grid_item_device_name = (TextView) convertView.findViewById(R.id.grid_item_device_name);
@@ -162,7 +162,7 @@ public class MyGridAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
     class ViewHolder {
-        public LinearLayout grid_item_layout;
+        public RelativeLayout grid_item_layout;
         public ImageView grid_item_device;
         public TextView grid_item_device_id;
         public TextView grid_item_device_name;
