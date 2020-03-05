@@ -15,14 +15,6 @@ import com.auto.di.guan.R;
 public class FragmentTab11 extends BaseFragment {
 	private Button login_out;
 	private View view;
-	private Activity activity;
-
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = activity;
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,4 +26,8 @@ public class FragmentTab11 extends BaseFragment {
 		return view;
 	}
 
+	@Override
+	public void refreshData() {
+
+	}
 }

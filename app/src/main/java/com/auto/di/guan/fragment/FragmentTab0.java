@@ -10,18 +10,11 @@ import android.widget.GridView;
 
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.MyGridAdapter;
-import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
-import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.utils.LogUtils;
-import com.google.gson.Gson;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,38 +70,15 @@ public class FragmentTab0 extends BaseFragment {
                 }
             }
         });
-        EventBus.getDefault().register(this);
         return view;
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (adapter != null)
-        adapter.setData(DeviceInfoSql.queryDeviceList());
-    }
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (adapter != null)
-        adapter.setData(DeviceInfoSql.queryDeviceList());
-    }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAdapterUpdate(AdapterEvent event) {
-        List<DeviceInfo>infos = DeviceInfoSql.queryDeviceList();
-        String str = new Gson().toJson(deviceInfos);
-        LogUtils.e("------", "FragmentTab0"+str);
-        if (adapter != null){
-            adapter.setData(infos);
+    @Override
+    public void refreshData() {
+        LogUtils.e("-------------", "0000000");
+        if (adapter != null) {
+            adapter.setData(DeviceInfoSql.queryDeviceList());
         }
-
-    };
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 }

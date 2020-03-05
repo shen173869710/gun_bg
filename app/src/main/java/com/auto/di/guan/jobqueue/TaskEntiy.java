@@ -46,7 +46,10 @@ public class TaskEntiy {
      *   手动分组关闭查询束标志位
      */
     public static final int TASK_OPTION_GROUP_CLOSE_READ_END = 11;
-
+    /**
+     *   手动单个操作结束标志位
+     */
+    public static final int TASK_OPTION_SINGLE_READ_END = 12;
 
 
     /**

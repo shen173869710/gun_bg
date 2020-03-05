@@ -33,7 +33,7 @@ import com.auto.di.guan.entity.OptionStatus;
 import com.auto.di.guan.entity.PollingEvent;
 import com.auto.di.guan.entity.ReadEvent;
 import com.auto.di.guan.entity.UpdateEvent;
-import com.auto.di.guan.jobqueue.TaskManger;
+import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.event.SendCmdEvent;
 import com.auto.di.guan.jobqueue.event.VideoPlayEcent;
 import com.auto.di.guan.utils.ActionUtil;
@@ -196,23 +196,6 @@ public class MainActivity extends SerialPortActivity {
 //        textCode = (TextView) findViewById(R.id.title_bar_code);
         textView.setText(BaseApp.getUser().getProjectName());
 
-        findViewById(R.id.title_bar_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FloatWindowUtil.getInstance().distory();
-//                 String cmd = Entiy.cmdRead(BaseApp.getProjectId(), "001");
-//
-//                cmd = "gf 001 001 1";
-//                LogUtils.e(TAG, Entiy.LOG_CLOSE_START + cmd);
-//                try {
-//                    mOutputStream.write(new String(cmd).getBytes());
-//                    mOutputStream.write('\n');
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-            }
-        });
-
         manager = getSupportFragmentManager();
 
         transaction = manager.beginTransaction();
@@ -257,7 +240,7 @@ public class MainActivity extends SerialPortActivity {
 //            }
 //        });
 
-//        TaskManger.getInstance().init(mOutputStream);
+//        TaskManager.getInstance().init(mOutputStream);
     }
 
 
@@ -406,14 +389,14 @@ public class MainActivity extends SerialPortActivity {
                 || receive.contains("gf")
                 || receive.contains("rs"))
                 && !receive.contains("ok")) {
-            LogUtils.e(TAG, "过滤回显信息 -------------------"+receive);
+//            LogUtils.e(TAG, "过滤回显信息 -------------------"+receive);
             return;
         }
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TaskManger.getInstance().endTask(receive);
+                TaskManager.getInstance().endTask(receive);
             }
         });
 
@@ -1031,7 +1014,7 @@ public class MainActivity extends SerialPortActivity {
 
 //    @Subscribe(threadMode = ThreadMode.MAIN)
 //    public void onTestEvent (TestEvent event) {
-//       TaskManger.getInstance().endTask(event.recive);
+//       TaskManager.getInstance().endTask(event.recive);
 //    }
 
         @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1058,9 +1041,6 @@ public class MainActivity extends SerialPortActivity {
                 e.printStackTrace();
             }
     }
-
-
-
     /**
      *       异常报警
      * @param event

@@ -197,6 +197,11 @@ public class FragmentTab7 extends BaseFragment {
 		});
 	}
 
+	@Override
+	public void refreshData() {
+
+	}
+
 	protected static final class QueryArg {
 		public Uri uri;
 		public String[] projection;

@@ -12,11 +12,14 @@ public class SendUtils {
     public static String LOG_CLOSE_START = "关闭开始\n";
 
     public static String LOG_OPEN_SUC = "开阀通信成功\n";
+    public static String LOG_OPEN_RET = "开阀通信重试\n";
     public static String LOG_CLOSE_SUC = "关阀通信成功\n";
+    public static String LOG_CLOSE_RET = "关阀通信重试\n";
 
     public static String LOG_OPEN_FALIE = "开阀失败\n";
     public static String LOG_CLOSE_FALIE  = "关阀失败\n";
 
+    public static String LOG_READ_RET = "读取重试\n";
     public static String LOG_READ_SUC = "读取成功\n";
     public static String LOG_READ_END = "读取结束\n";
     public static String LOG_NAME = "阀门";
@@ -82,7 +85,6 @@ public class SendUtils {
         cmdStatus.cmd_start =LOG_OPEN_START+desc;
         cmdStatus.control_id = info.getValve_id();
         EventBus.getDefault().post(cmdStatus);
-//        LogUtils.e(TAG, cmdStatus.cmd_start);
     }
 
     /**
@@ -96,7 +98,6 @@ public class SendUtils {
         cmdStatus.controlName =info.getValve_alias();
         cmdStatus.control_id = info.getValve_id();
         EventBus.getDefault().post(cmdStatus);
-//        LogUtils.e(TAG, cmdStatus.cmd_start);
     }
 
     /**
@@ -107,6 +108,19 @@ public class SendUtils {
     public static  void sendOpenEnd(String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
         cmdStatus.cmd_end = LOG_OPEN_SUC+desc ;
+        cmdStatus.controlName = info.getValve_alias();
+        cmdStatus.control_id = info.getValve_id();
+        EventBus.getDefault().post(cmdStatus);
+    }
+
+    /**
+     *      开阀结束发送信息
+     * @param desc
+     * @param info
+     */
+    public static  void sendOpenRet(String desc, ControlInfo info) {
+        CmdStatus cmdStatus = new CmdStatus();
+        cmdStatus.cmd_end = LOG_OPEN_RET+desc ;
         cmdStatus.controlName = info.getValve_alias();
         cmdStatus.control_id = info.getValve_id();
         EventBus.getDefault().post(cmdStatus);
@@ -125,13 +139,25 @@ public class SendUtils {
         EventBus.getDefault().post(cmdStatus);
     }
 
+    /**
+     *      关闭阀结通信重试
+     * @param desc
+     * @param info
+     */
+    public static  void sendCloseRet(String desc, ControlInfo info) {
+        CmdStatus cmdStatus = new CmdStatus();
+        cmdStatus.cmd_end = LOG_CLOSE_RET+desc ;
+        cmdStatus.controlName = info.getValve_alias();
+        cmdStatus.control_id = info.getValve_id();
+        EventBus.getDefault().post(cmdStatus);
+    }
+
     public static  void sendOpenError(String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
         cmdStatus.cmd_end = LOG_OPEN_FALIE+desc;
         cmdStatus.control_id = info.getValve_id();
         cmdStatus.controlName = info.getValve_alias();
         EventBus.getDefault().post(cmdStatus);
-//        LogUtils.e(TAG, cmdStatus.cmd_end);
     }
 
     public static  void sendCloseError(String desc, ControlInfo info) {
@@ -140,7 +166,6 @@ public class SendUtils {
         cmdStatus.control_id = info.getValve_id();
         cmdStatus.controlName = info.getValve_alias();
         EventBus.getDefault().post(cmdStatus);
-//        LogUtils.e(TAG, cmdStatus.cmd_end);
     }
 
 
@@ -155,7 +180,6 @@ public class SendUtils {
         cmdStatus.cmd_read_start = LOG_READ_START+desc;
         cmdStatus.control_id = info.getValve_id();
         EventBus.getDefault().post(cmdStatus);
-//        LogUtils.e(TAG, cmdStatus.cmd_read_start);
     }
 
 
@@ -170,7 +194,19 @@ public class SendUtils {
         cmdStatus.cmd_read_middle =LOG_READ_SUC+desc;
         cmdStatus.control_id = info.getValve_id();
         EventBus.getDefault().post(cmdStatus);
-//        LogUtils.e(TAG, cmdStatus.cmd_read_start);
+    }
+
+    /**
+     *        读取获取数据
+     * @param desc
+     * @param info
+     */
+    public static  void sendReadTryMiddle( String desc, ControlInfo info) {
+        CmdStatus cmdStatus = new CmdStatus();
+        cmdStatus.controlName = info.getValve_alias();
+        cmdStatus.cmd_read_middle =LOG_READ_RET+desc;
+        cmdStatus.control_id = info.getValve_id();
+        EventBus.getDefault().post(cmdStatus);
     }
 
     /**

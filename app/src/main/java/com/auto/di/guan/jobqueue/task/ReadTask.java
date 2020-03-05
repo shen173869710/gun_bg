@@ -1,7 +1,6 @@
 package com.auto.di.guan.jobqueue.task;
 
 import android.text.TextUtils;
-
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DeviceInfo;
@@ -9,14 +8,11 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.entity.OptionStatus;
 import com.auto.di.guan.jobqueue.TaskEntiy;
-import com.auto.di.guan.jobqueue.TaskManger;
-import com.auto.di.guan.jobqueue.event.SendCmdEvent;
 import com.auto.di.guan.jobqueue.event.VideoPlayEcent;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.OptionUtils;
 import com.auto.di.guan.utils.SendUtils;
 import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -36,7 +32,7 @@ public class ReadTask extends BaseTask{
 
     @Override
     public void startTask() {
-        LogUtils.e(TAG, "读取状态 开始=======  cmd =="+getTaskCmd());
+        LogUtils.e(TAG, "读取状态 开始 =========================================  cmd =="+getTaskCmd());
         SendUtils.sendReadStart(getTaskCmd(), getTaskInfo());
         writeCmd(getTaskCmd());
     }
@@ -94,7 +90,7 @@ public class ReadTask extends BaseTask{
         LogUtils.e(TAG, "读取状态 重试======="+"retryTask()  cmd =="+getTaskCmd()+ " 当前重试次数 = "+getTaskCount());
         if(getTaskCount() == 2) {
             setTaskCount(1);
-            SendUtils.sendReadMiddle("读取异常 "+getReceive(), getTaskInfo());
+            SendUtils.sendReadTryMiddle(getReceive(), getTaskInfo());
             writeCmd(getTaskCmd());
         }else {
             errorTask();
@@ -222,12 +218,6 @@ public class ReadTask extends BaseTask{
              *   如果是单独的查询
              */
         } else if (taskType == TaskEntiy.TASK_OPTION_READ) {
-//            if(taskInfo.getValve_status() != info.getValve_status() && taskInfo.getValve_status() != Entiy.CONTROL_STATUS＿ERROR) {
-//                // 读取异常
-//                EventBus.getDefault().post(new VideoPlayEcent(Entiy.VIDEO_READ_ERROR));
-//                type = SendUtils.OPTION_READ_ERROR;
-//            }
-
             switch (code) {
                 case Entiy.CONTROL_STATUS＿CONNECT:
                     //   设备处于链接状态
@@ -260,6 +250,15 @@ public class ReadTask extends BaseTask{
                     type = SendUtils.OPTION_READ_FAILE;
                     break;
             }
+            /**
+             *   如果设备不处于
+             */
+            if(type == SendUtils.OPTION_READ_ERROR
+                    || type == SendUtils.OPTION_READ_DIS
+                    || type == SendUtils.OPTION_READ_DIS) {
+                // 异常报警
+                EventBus.getDefault().post(new VideoPlayEcent(Entiy.VIDEO_CLOSE_ERROR));
+            }
         }
 
         ControlInfo controlInfo = null;
@@ -290,7 +289,7 @@ public class ReadTask extends BaseTask{
         /**
          *  更新设备信息
          */
-        LogUtils.e(TAG, "设备信息"+(new Gson().toJson(deviceInfo)));
+        LogUtils.e(TAG, "更新设备信息"+(new Gson().toJson(deviceInfo)));
         DeviceInfoSql.updateDevice(deviceInfo);
     }
 

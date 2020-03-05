@@ -20,6 +20,7 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.db.sql.LevelInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
+import com.auto.di.guan.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,14 +98,11 @@ public class FragmentTab2 extends BaseFragment {
 				});
 			}
 		});
+		initData();
 		return view;
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		initData();
-	}
+
 
 	private void initData() {
 		groupLists.clear();
@@ -136,9 +134,10 @@ public class FragmentTab2 extends BaseFragment {
 		adapter.setData(groupLists);
 	}
 
+
 	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
+	public void refreshData() {
+		LogUtils.e("-------------", "222222");
 		initData();
 	}
 }

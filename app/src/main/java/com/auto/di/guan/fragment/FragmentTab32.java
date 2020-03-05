@@ -23,13 +23,12 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
-
- *
  */
 public class FragmentTab32 extends BaseFragment {
 	private View view;
@@ -93,6 +92,8 @@ public class FragmentTab32 extends BaseFragment {
 
 			}
 		});
+
+		initData();
 		return view;
 	}
 
@@ -131,18 +132,7 @@ public class FragmentTab32 extends BaseFragment {
 		GroupInfoSql.updateGroup(groupInfo);
         initData();
     }
-	@Override
-	public void onResume() {
-		super.onResume();
-		initData();
 
-	}
-
-	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-		initData();
-	}
 
 	private void initData() {
 		groupInfos.clear();
@@ -159,7 +149,9 @@ public class FragmentTab32 extends BaseFragment {
 					groupLists.add(list);
 				}
 			}
-            adapter.setData(groupLists);
+			if (adapter != null) {
+				adapter.setData(groupLists);
+			}
 		}
 	}
 
@@ -169,4 +161,10 @@ public class FragmentTab32 extends BaseFragment {
 		adapter.notifyDataSetChanged();
 	}
 
+
+	@Override
+	public void refreshData() {
+		LogUtils.e("-------------", "323232");
+		initData();
+	}
 }

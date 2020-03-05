@@ -12,10 +12,10 @@ import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.GroupList;
 import com.auto.di.guan.db.sql.ControlInfoSql;
+import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.dialog.Main31Dialog;
-import com.auto.di.guan.entity.AdapterEvent;
-import com.auto.di.guan.entity.GroupOptionEvent;
+import com.auto.di.guan.jobqueue.event.Fragment31Event;
 import com.auto.di.guan.jobqueue.task.TaskFactory;
 import com.auto.di.guan.utils.LogUtils;
 
@@ -45,6 +45,7 @@ public class FragmentTab31 extends BaseFragment {
 		expandableListView.setAdapter(adapter);
 		expandableListView.setGroupIndicator(null);
 		EventBus.getDefault().register(this);
+		initData();
 		return view;
 	}
 
@@ -63,34 +64,15 @@ public class FragmentTab31 extends BaseFragment {
 			@Override
 			public void onItemClick(int index) {
 				if (index == 1) {
-//					groupInfo.setGroupStatus(1);
-//					GroupInfoSql.updateGroup(groupInfo);
-//					EventBus.getDefault().post(new GroupOptionEvent(groupInfo,true));
 					TaskFactory.createGroupOpenTask(groupInfo);
 				}else if (index == 2) {
 					TaskFactory.createGroupCloseTask(groupInfo);
-//					groupInfo.setGroupStatus(0);
-//					GroupInfoSql.updateGroup(groupInfo);
-//					EventBus.getDefault().post(new GroupOptionEvent(groupInfo, false));
 				}
 			}
 		});
 	}
 
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		initData();
-	}
-
-	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-		initData();
-	}
-
-	private void initData() {
+	public void initData() {
 		groupInfos.clear();
 		groupLists.clear();
 		groupInfos = GroupInfoSql.queryGrouplList();
@@ -105,7 +87,10 @@ public class FragmentTab31 extends BaseFragment {
 					groupLists.add(list);
 				}
 			}
-			adapter.setData(groupLists);
+
+			if (adapter != null) {
+				adapter.setData(groupLists);
+			}
 		}
 	}
 
@@ -119,9 +104,10 @@ public class FragmentTab31 extends BaseFragment {
 
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
-	public void onAdapterUpdate(AdapterEvent event) {
+	public void onFragment31Update(Fragment31Event event) {
+		if (adapter != null) {
 			initData();
-			LogUtils.e("------", "fragment31");
+		}
 	};
 
 	@Override
@@ -129,4 +115,13 @@ public class FragmentTab31 extends BaseFragment {
 		super.onDestroy();
 		EventBus.getDefault().unregister(this);
 	}
+
+	@Override
+	public void refreshData() {
+		LogUtils.e("-------------", "313131");
+		if (adapter != null) {
+			initData();
+		}
+	}
+
 }

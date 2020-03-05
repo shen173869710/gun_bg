@@ -1,5 +1,9 @@
 package com.auto.di.guan.jobqueue.event;
 
+
+/**
+ *   发送开关阀的命令
+ */
 public class SendCmdEvent {
     private String cmd;
 

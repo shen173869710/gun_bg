@@ -19,11 +19,6 @@ public class FragmentTab8 extends BaseFragment {
 	private Activity activity;
 
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = activity;
-	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,4 +29,8 @@ public class FragmentTab8 extends BaseFragment {
 		return view;
 	}
 
+	@Override
+	public void refreshData() {
+
+	}
 }

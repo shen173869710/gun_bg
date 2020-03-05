@@ -81,15 +81,6 @@ public class GroupStatusActivity extends FragmentActivity  {
             }
         });
 
-
-        findViewById(R.id.title_bar_close).setVisibility(View.VISIBLE);
-        findViewById(R.id.title_bar_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FloatWindowUtil.getInstance().distory();
-            }
-        });
-
         final TextView title_bar_pull = (TextView) findViewById(R.id.title_bar_pull);
         title_bar_pull.setVisibility(View.VISIBLE);
         if (PollingUtils.isStart) {

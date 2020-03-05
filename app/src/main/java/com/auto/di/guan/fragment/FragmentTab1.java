@@ -50,37 +50,15 @@ public class FragmentTab1 extends BaseFragment {
                 }
             }
         });
-        EventBus.getDefault().register(this);
         return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void refreshData() {
+        LogUtils.e("-------------", "111111");
         deviceInfos = DeviceInfoSql.queryDeviceList();
         if (adapter != null)
-        adapter.setData(deviceInfos);
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        deviceInfos = DeviceInfoSql.queryDeviceList();
-        if (adapter != null)
-        adapter.setData(deviceInfos);
-
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAdapterUpdate(AdapterEvent event) {
-        LogUtils.e("------", "Main");
-    };
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
+            adapter.setData(deviceInfos);
     }
 
 }

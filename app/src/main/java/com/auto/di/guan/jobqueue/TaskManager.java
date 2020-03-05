@@ -6,16 +6,16 @@ import com.auto.di.guan.utils.LogUtils;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class TaskManger {
+public class TaskManager {
     public static BlockingQueue <BaseTask>queue = new LinkedBlockingQueue(200);
     private BaseTask mTask;
 
-    private static TaskManger mTaskManger = null;
-    public static TaskManger getInstance(){
-        if (mTaskManger==null){
-            mTaskManger=new TaskManger();
+    private static TaskManager mTaskManager = null;
+    public static TaskManager getInstance(){
+        if (mTaskManager ==null){
+            mTaskManager =new TaskManager();
         }
-        return mTaskManger;
+        return mTaskManager;
     }
 
     /**

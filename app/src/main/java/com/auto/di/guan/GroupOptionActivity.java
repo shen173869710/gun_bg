@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.auto.di.guan.adapter.RecyclerListAdapter;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.sql.GroupInfoSql;
+import com.auto.di.guan.utils.ToastUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -47,6 +49,21 @@ public class GroupOptionActivity extends Activity  {
 		title_bar_status.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+
+				int size = groupInfos.size();
+				HashMap<Integer, Integer> lv = new HashMap<>();
+				for (int i = 0; i < size; i++) {
+					int level = groupInfos.get(i).getGroupLevel();
+					if(level == 0) {
+						ToastUtils.showLongToast("轮灌优先级不能为0");
+						return;
+					}
+					if (lv.containsKey(level)) {
+						ToastUtils.showLongToast("不能设置相同的轮灌优先级,或者优先级不能为空");
+						return;
+					}
+					lv.put(level,level);
+				}
 				GroupInfoSql.updateGroupList(groupInfos);
 				GroupOptionActivity.this.finish();
 			}

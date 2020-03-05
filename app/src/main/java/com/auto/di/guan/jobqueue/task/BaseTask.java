@@ -1,8 +1,9 @@
 package com.auto.di.guan.jobqueue.task;
 
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.jobqueue.TaskManger;
+import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.event.SendCmdEvent;
+import com.auto.di.guan.utils.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -74,37 +75,6 @@ public abstract class BaseTask {
 
     public void writeCmd(String cmd) {
         EventBus.getDefault().post(new SendCmdEvent(cmd));
-//        try {
-//            mOutputStream.write(new String(cmd).getBytes());
-//            mOutputStream.write('\n');
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
-//        FloatWindowUtil.getInstance().show();
-//        new Handler().postDelayed(new Runnable() {
-//        @Override
-//        public void run() {
-//
-//            ControlInfo info = getTaskInfo();
-//            String rec = "";
-//            if (cmd.contains("rgid")) {
-//                rec = "gid=001";
-//            }else if (cmd.contains("rbid")) {
-//                rec = "bid=001";
-//            }else if(cmd.contains("kf")){
-//                rec  = "kf"+" "+ BaseApp.getProjectId()+" "+ info.getDeviceProtocalId()+" "+ info.getProtocalId()+" "+"ok";
-//            }else if (cmd.contains("rs")) {
-//                rec  = "zt"+" "+ BaseApp.getProjectId()+" "+ info.getDeviceProtocalId()+" "+"1100 090";
-//            }else if (cmd.contains("gf")) {
-//                rec  = "gf"+" "+ BaseApp.getProjectId()+" "+ info.getDeviceProtocalId()+" "+ info.getProtocalId()+" "+"ok";
-//            }else {
-//                EventBus.getDefault().post(new TestEvent("err"));
-//            }
-//            EventBus.getDefault().post(new TestEvent(rec));
-//        }
-//    },2000);
 }
 
     public int getRETRY_COUNT() {
@@ -131,6 +101,7 @@ public abstract class BaseTask {
      *   任务完成
      */
     public void finishTask() {
-        TaskManger.getInstance().doNextTask();
+        LogUtils.e("BaseTask", "############################################完成一次操作#############################################");
+        TaskManager.getInstance().doNextTask();
     }
 }

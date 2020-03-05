@@ -237,4 +237,8 @@ public class FragmentTab5 extends BaseFragment {
 		showEnd(action);
 	}
 
+	@Override
+	public void refreshData() {
+
+	}
 }

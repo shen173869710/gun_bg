@@ -11,8 +11,8 @@ import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.MyGridOpenAdapter;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.sql.DeviceInfoSql;
-import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.jobqueue.event.Fragment4Event;
 import com.auto.di.guan.utils.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -40,34 +40,32 @@ public class FragmentTab4 extends BaseFragment {
 		mGridView.setAdapter(adapter);
 		mGridView.setNumColumns(Entiy.GRID_COLUMNS);
 		EventBus.getDefault().register(this);
+		adapter.setData(deviceInfos);
 		return view;
 	}
-	@Override
-	public void onResume() {
-		super.onResume();
-		deviceInfos = DeviceInfoSql.queryDeviceList();
-		if (adapter != null)
-		adapter.setData(deviceInfos);
-	}
-	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-		deviceInfos = DeviceInfoSql.queryDeviceList();
-		if (adapter != null)
-		adapter.setData(deviceInfos);
-	}
+
+
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
-	public void onAdapterUpdate(AdapterEvent event) {
-//			deviceInfos = DBManager.getInstance(getActivity()).queryDeviceList();
-			adapter.setData(DeviceInfoSql.queryDeviceList());
-			LogUtils.e("-------", "FragmentTab4");
+	public void onFragment4Update(Fragment4Event event) {
+			if (adapter != null) {
+				adapter.setData(DeviceInfoSql.queryDeviceList());
+			}
 	};
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		EventBus.getDefault().unregister(this);
+	}
+
+	@Override
+	public void refreshData() {
+		LogUtils.e("-------------", "444444");
+		deviceInfos = DeviceInfoSql.queryDeviceList();
+		if (adapter != null) {
+			adapter.setData(deviceInfos);
+		}
 	}
 
 

@@ -1,11 +1,9 @@
 package com.auto.di.guan.jobqueue.task;
 
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.jobqueue.TaskManger;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.SendUtils;
 
-import java.io.OutputStream;
 /**
  *   开启阀门的任务
  *
@@ -26,7 +24,7 @@ public class OpenTask extends BaseTask{
 
     @Override
     public void startTask() {
-        LogUtils.e(TAG, "开阀 开始=======  cmd =="+getTaskCmd());
+        LogUtils.e(TAG, "开阀 开始======================================= cmd =="+getTaskCmd());
         SendUtils.sendopen(getTaskCmd(), getTaskInfo());
         writeCmd(getTaskCmd());
     }
@@ -74,7 +72,7 @@ public class OpenTask extends BaseTask{
         LogUtils.e(TAG, "开阀 开启 重试======="+"retryTask()  cmd =="+getTaskCmd()+ " 当前重试次数 = "+getTaskCount());
         if(getTaskCount() == 2) {
             setTaskCount(1);
-            SendUtils.sendOpenEnd("开阀数据异常,重新通信\n"+getReceive(), getTaskInfo());
+            SendUtils.sendOpenRet(getReceive(), getTaskInfo());
             writeCmd(getTaskCmd());
         }else {
             errorTask();

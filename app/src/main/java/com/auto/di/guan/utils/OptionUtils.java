@@ -43,7 +43,6 @@ public class OptionUtils {
         //        gf 108 003 1110
         /**关闭控制阀**/
         if (msg.contains(GF)) {
-            String[] result = msg.split(" ");
             status.projectId = msg.substring(3, 6);
             status.deviceId = msg.substring(7, 10);
             status.name = msg.substring(11, 12);

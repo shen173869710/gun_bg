@@ -4,19 +4,26 @@ import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.greendao.DaoSession;
 import com.auto.di.guan.db.greendao.DeviceInfoDao;
 import org.greenrobot.greendao.query.QueryBuilder;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class DeviceInfoSql extends BaseSql {
     private final static String TAG = "DeviceInfoSql";
+
+    public static List<DeviceInfo>deviceInfos = new ArrayList<>();
+
     /**
      * 获取所有设备列表
      */
     public static List<DeviceInfo> queryDeviceList() {
-        DaoSession daoSession = getDaoWriteSession();
-        DeviceInfoDao userDao = daoSession.getDeviceInfoDao();
-        QueryBuilder<DeviceInfo> qb = userDao.queryBuilder();
-        List<DeviceInfo> list = qb.list();
-        return list;
+        if (deviceInfos.size() == 0) {
+            DaoSession daoSession = getDaoWriteSession();
+            DeviceInfoDao userDao = daoSession.getDeviceInfoDao();
+            QueryBuilder<DeviceInfo> qb = userDao.queryBuilder();
+            deviceInfos = qb.list();
+        }
+        return deviceInfos;
     }
 
     /**
@@ -37,27 +44,29 @@ public class DeviceInfoSql extends BaseSql {
         DaoSession daoSession = getDaoWriteSession();
         DeviceInfoDao userDao = daoSession.getDeviceInfoDao();
         userDao.updateInTx(infos);
+        upDateList();
     }
     /**
      * 插入
-     * @param users
+     * @param deviceInfos
      */
-    public static void insertDeviceInfoList(List<DeviceInfo> users) {
-        if (users == null || users.isEmpty()) {
+    public static void insertDeviceInfoList(List<DeviceInfo> deviceInfos) {
+        if (deviceInfos == null || deviceInfos.isEmpty()) {
             return;
         }
         DaoSession daoSession = getDaoWriteSession();
         DeviceInfoDao userDao = daoSession.getDeviceInfoDao();
-        userDao.insertInTx(users);
+        userDao.insertInTx(deviceInfos);
     }
     /**
      * 更新一条记录
-     * @param user
+     * @param deviceInfo
      */
-    public static void updateDevice(DeviceInfo user) {
+    public static void updateDevice(DeviceInfo deviceInfo) {
         DaoSession daoSession = getDaoWriteSession();
         DeviceInfoDao userDao = daoSession.getDeviceInfoDao();
-        userDao.update(user);
+        userDao.update(deviceInfo);
+        upDateList();
     }
 
 
@@ -68,6 +77,16 @@ public class DeviceInfoSql extends BaseSql {
         DaoSession daoSession = getDaoWriteSession();
         DeviceInfoDao userDao = daoSession.getDeviceInfoDao();
         return userDao.count();
+    }
+
+    /**
+     *  更新缓存的list
+     */
+    private static void upDateList() {
+        DaoSession daoSession = getDaoWriteSession();
+        DeviceInfoDao userDao = daoSession.getDeviceInfoDao();
+        QueryBuilder<DeviceInfo> qb = userDao.queryBuilder();
+        deviceInfos = qb.list();
     }
 
 }

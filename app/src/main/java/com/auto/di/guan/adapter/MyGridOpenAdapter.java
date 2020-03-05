@@ -21,7 +21,7 @@ import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.dialog.MainoptionDialog;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.jobqueue.TaskEntiy;
-import com.auto.di.guan.jobqueue.TaskManger;
+import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.task.TaskFactory;
 
 import java.util.ArrayList;
@@ -221,15 +221,18 @@ public class MyGridOpenAdapter extends BaseAdapter {
                  */
                 if (index == 0) {
                     TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_READ);
-                    TaskManger.getInstance().startTask();
+                    TaskFactory.createReadEndTask();
+                    TaskManager.getInstance().startTask();
                 }else if (index == 1) {
                     TaskFactory.createOpenTask(controlInfo);
                     TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_OPEN_READ);
-                    TaskManger.getInstance().startTask();
+                    TaskFactory.createReadEndTask();
+                    TaskManager.getInstance().startTask();
                 }else if (index == 2) {
                     TaskFactory.createCloseTask(controlInfo);
                     TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_CLOSE_READ);
-                    TaskManger.getInstance().startTask();
+                    TaskFactory.createReadEndTask();
+                    TaskManager.getInstance().startTask();
                 }
 
 

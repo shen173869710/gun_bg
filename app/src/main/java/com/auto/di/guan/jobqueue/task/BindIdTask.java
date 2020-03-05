@@ -1,10 +1,8 @@
 package com.auto.di.guan.jobqueue.task;
 
 import com.auto.di.guan.jobqueue.TaskEntiy;
-import com.auto.di.guan.jobqueue.TaskManger;
+import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.utils.LogUtils;
-
-import java.io.OutputStream;
 
 /**
  *   绑定ID的任务
@@ -35,10 +33,10 @@ public class BindIdTask extends BaseTask{
         if (receive.toLowerCase().contains("ok") && receive.trim().length() == 2) {
             if (getTaskType() == TaskEntiy.TASK_TYPE_GID) {
                 LogUtils.e(TAG, "写入项目gid 正常 =======");
-                TaskManger.getInstance().doNextTask();
+                finishTask();
             }else if (getTaskType() == TaskEntiy.TASK_TYPE_BID) {
                 LogUtils.e(TAG, "写入项目bid 正常 =======");
-                TaskManger.getInstance().doNextTask();
+                finishTask();
             }
         }else {
             if (getTaskCount() == 2) {

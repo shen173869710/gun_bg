@@ -45,9 +45,8 @@ public class FragmentTab6 extends BaseFragment {
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-		 List<User> userList = UserSql.queryUserList();
+	public void refreshData() {
+		List<User> userList = UserSql.queryUserList();
 		if (userList != null && userList.size() > 0) {
 			users.clear();
 			users.addAll(userList);

@@ -1,7 +1,6 @@
 package com.auto.di.guan.jobqueue.task;
 
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.jobqueue.TaskManger;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.SendUtils;
 
@@ -21,7 +20,7 @@ public class CloseTask extends BaseTask{
 
     @Override
     public void startTask() {
-        LogUtils.e(TAG, "关阀 开始=======  cmd =="+getTaskCmd());
+        LogUtils.e(TAG, "关阀 开始==================================================  cmd =="+getTaskCmd());
         SendUtils.sendClose(getTaskCmd(), getTaskInfo());
         writeCmd(getTaskCmd());
     }
@@ -70,7 +69,7 @@ public class CloseTask extends BaseTask{
         String receive = getReceive();
         if(getTaskCount() == 2) {
             setTaskCount(1);
-            SendUtils.sendCloseEnd("关阀数据异常,重新通信\n"+receive, getTaskInfo());
+            SendUtils.sendCloseRet(receive, getTaskInfo());
             writeCmd(getTaskCmd());
         }else {
             errorTask();

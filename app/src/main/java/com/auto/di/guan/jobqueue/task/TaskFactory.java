@@ -1,6 +1,4 @@
 package com.auto.di.guan.jobqueue.task;
-
-
 import com.auto.di.guan.BaseApp;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DeviceInfo;
@@ -9,9 +7,8 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.jobqueue.TaskEntiy;
-import com.auto.di.guan.jobqueue.TaskManger;
+import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.utils.LogUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,18 +22,18 @@ public class TaskFactory {
      *  创建写入和读取gid  task
      */
     public static void createGidTak(){
-        TaskManger.getInstance().addTask(new BindIdTask(TaskEntiy.TASK_TYPE_GID,Entiy.writeGid(BaseApp.getProjectId())));
-        TaskManger.getInstance().addTask(new ReadIdTask(TaskEntiy.TASK_READ_GID,"rgid"));
-        TaskManger.getInstance().startTask();
+        TaskManager.getInstance().addTask(new BindIdTask(TaskEntiy.TASK_TYPE_GID,Entiy.writeGid(BaseApp.getProjectId())));
+        TaskManager.getInstance().addTask(new ReadIdTask(TaskEntiy.TASK_READ_GID,"rgid"));
+        TaskManager.getInstance().startTask();
     }
 
     /**
      *  创建写入和读取gid  task
      */
     public static void createBidTak(String bid){
-        TaskManger.getInstance().addTask(new BindIdTask(TaskEntiy.TASK_TYPE_BID,Entiy.writeBid(bid)));
-        TaskManger.getInstance().addTask(new ReadIdTask(TaskEntiy.TASK_READ_BID,"rbid"));
-        TaskManger.getInstance().startTask();
+        TaskManager.getInstance().addTask(new BindIdTask(TaskEntiy.TASK_TYPE_BID,Entiy.writeBid(bid)));
+        TaskManager.getInstance().addTask(new ReadIdTask(TaskEntiy.TASK_READ_BID,"rbid"));
+        TaskManager.getInstance().startTask();
     }
 
     /**
@@ -45,7 +42,7 @@ public class TaskFactory {
      */
     public static void createOpenTask(ControlInfo info) {
         final String cmd = Entiy.cmdOpen(BaseApp.getProjectId(), info.getDeviceProtocalId(), info.getProtocalId());
-        TaskManger.getInstance().addTask(new OpenTask(TaskEntiy.TASK_OPTION_OPEN, cmd,info));
+        TaskManager.getInstance().addTask(new OpenTask(TaskEntiy.TASK_OPTION_OPEN, cmd,info));
     }
 
     /**
@@ -54,7 +51,7 @@ public class TaskFactory {
      */
     public static void createCloseTask(ControlInfo info) {
         final String cmd = Entiy.cmdClose(BaseApp.getProjectId(), info.getDeviceProtocalId(), info.getProtocalId());
-        TaskManger.getInstance().addTask(new CloseTask(TaskEntiy.TASK_OPTION_ClOSE, cmd,info));
+        TaskManager.getInstance().addTask(new CloseTask(TaskEntiy.TASK_OPTION_ClOSE, cmd,info));
     }
 
     /**
@@ -63,7 +60,14 @@ public class TaskFactory {
      */
     public static void createReadTask(ControlInfo info,int type) {
         final String cmd = Entiy.cmdRead(BaseApp.getProjectId(), info.getDeviceProtocalId());
-        TaskManger.getInstance().addTask(new ReadTask(type, cmd,info));
+        TaskManager.getInstance().addTask(new ReadTask(type, cmd,info));
+    }
+
+    /**
+     *        创建读取结束标志位
+     */
+    public static void createReadEndTask() {
+        TaskManager.getInstance().addTask(new SingleEndTask(0, ""));
     }
 
     /**
@@ -72,7 +76,7 @@ public class TaskFactory {
      * @param type      类型
      */
     public static void createGroupReadEndTask(int type,GroupInfo groupInfo) {
-        TaskManger.getInstance().addTask(new ReadGroupTask(type, "",groupInfo));
+        TaskManager.getInstance().addTask(new GroupEndTask(type, "",groupInfo));
     }
 
 
@@ -101,6 +105,8 @@ public class TaskFactory {
                 closeGroupId = closeGroupInfo.getGroupId();
             }
         }
+
+        LogUtils.e(TAG, "********************单组操作开始****************");
         //  1. 获取所有组的设备
         ArrayList<ControlInfo> openList = new ArrayList<>();
         ArrayList<ControlInfo> closeList = new ArrayList<>();
@@ -139,15 +145,17 @@ public class TaskFactory {
         createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_OPEN_READ_END,groupInfo);
 
         if (closeGroupId > 0 && closeList.size() > 0) {
+
+            LogUtils.e(TAG, "********************单组操作有需要关闭的组****************");
             // 1 添加关闭其他组task
-            addOpenGroupTask(openList,false);
+            addOpenGroupTask(closeList,false);
             // 1 添加关闭状态查询task
-            addReadGroupTask(openList,TaskEntiy.TASK_OPTION_CLOSE_READ);
+            addReadGroupTask(closeList,TaskEntiy.TASK_OPTION_CLOSE_READ);
             // 4. 添加关闭结束标志位
             createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_CLOSE_READ_END,closeGroupInfo);
         }
         // 添加完成之后启动任务
-        TaskManger.getInstance().startTask();
+        TaskManager.getInstance().startTask();
     }
 
     /**
@@ -204,6 +212,39 @@ public class TaskFactory {
         // 4. 添加关闭结束标志位
         createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_CLOSE_READ_END,groupInfo);
         // 添加完成之后启动任务
-        TaskManger.getInstance().startTask();
+        TaskManager.getInstance().startTask();
+    }
+
+    /**
+     *   自动轮灌开启
+     *
+     *
+     */
+    public static  void createAutoGroupOpenTask() {
+        List<GroupInfo> groupInfos = GroupInfoSql.queryGrouplList();
+    }
+
+
+    /**
+     *   自动轮灌关闭
+     *
+     *
+     */
+    public static  void createAutoGroupCloseTask() {
+        List<GroupInfo> groupInfos = GroupInfoSql.queryGrouplList();
+    }
+
+    /**
+     *   自动轮灌暂停
+     */
+    public static  void createAutoGroupPauseTask(GroupInfo groupInfo) {
+        List<GroupInfo> groupInfos = GroupInfoSql.queryGrouplList();
+    }
+
+    /**
+     *   自动轮灌开启下一组
+     */
+    public static  void createAutoGroupNextTask(GroupInfo groupInfo) {
+        List<GroupInfo> groupInfos = GroupInfoSql.queryGrouplList();
     }
 }

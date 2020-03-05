@@ -11,6 +11,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.MyFragmentAdapter;
+import com.auto.di.guan.utils.LogUtils;
+
 import java.util.ArrayList;
 /**
 
@@ -74,4 +76,16 @@ public class FragmentTab3 extends BaseFragment {
 		return view;
 	}
 
+
+	@Override
+	public void refreshData() {
+		LogUtils.e("-------------", "333333");
+		int size = fragments.size();
+		if (size == 2) {
+			FragmentTab31 fragmentTab31 = (FragmentTab31) fragments.get(0);
+			fragmentTab31.refreshData();
+			FragmentTab32 fragmentTab32 = (FragmentTab32) fragments.get(1);
+			fragmentTab32.refreshData();
+		}
+	}
 }
