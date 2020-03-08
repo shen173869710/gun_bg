@@ -124,7 +124,7 @@ public class GroupExpandableListViewaAdapter31 extends BaseExpandableListAdapter
     }
 
     private void bindGroupView(GroupHolder holder, final int groupPosition) {
-        holder.expand_list_group_num.setText("第 "+groupLists.get(groupPosition).groupInfo.groupName+"组");
+        holder.expand_list_group_num.setText("第 "+groupLists.get(groupPosition).groupInfo.getGroupName()+"组");
         if(groupLists.get(groupPosition).groupInfo.getGroupStatus() == 0) {
             holder.expand_list_group_state.setText("开启轮灌");
             holder.expand_list_group_state.setOnClickListener(new View.OnClickListener() {

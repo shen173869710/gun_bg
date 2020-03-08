@@ -205,7 +205,7 @@ public class BaseApp extends Application {
 
 
     public static boolean isGroupStart() {
-        List<GroupInfo> groupInfos = GroupInfoSql.queryGrouplList();
+        List<GroupInfo> groupInfos = GroupInfoSql.queryGroupList();
         if (groupInfos != null && groupInfos.size() > 0) {
             int size = groupInfos.size();
             for (int i = 0; i < size; i++) {
@@ -219,7 +219,7 @@ public class BaseApp extends Application {
     }
 
     public static GroupInfo isGroupInfoStart() {
-        List<GroupInfo> groupInfos = GroupInfoSql.queryGrouplList();
+        List<GroupInfo> groupInfos = GroupInfoSql.queryGroupList();
         if (groupInfos != null && groupInfos.size() > 0) {
             int size = groupInfos.size();
             for (int i = 0; i < size; i++) {

@@ -29,17 +29,17 @@ public class ActionUtil {
 		int actionType =0;
 		String userName = BaseApp.getUser().getUserName();
 
-		if (optionType == MainActivity.FRAGMENT_4) {
+		if (optionType == Entiy.FRAGMENT_4) {
 			action.setUserName(userName);
 			actionType = Entiy.ACTION_TYPE_4;
 			action.setUserAccount("手动单个操作");
 			operateType = 2;
-		}else if (optionType == MainActivity.FRAGMENT_31) {
+		}else if (optionType == Entiy.FRAGMENT_31) {
 			action.setUserName(userName);
 			actionType = Entiy.ACTION_TYPE_31;
 			action.setUserAccount("手动分组操作");
 			operateType = 1;
-		}else if (optionType == MainActivity.FRAGMENT_32){
+		}else if (optionType == Entiy.FRAGMENT_32){
 			action.setUserName(userName);
 			actionType = Entiy.ACTION_TYPE_32;
 			action.setUserAccount("自动轮灌操作");

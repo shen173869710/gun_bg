@@ -75,7 +75,7 @@ public class FragmentTab2 extends BaseFragment {
 							deviceInfo.getValveDeviceSwitchList().get(1).setSelect(false);
 						}
 						DeviceInfoSql.updateDeviceList(deviceInfos);
-						groupInfos = GroupInfoSql.queryGrouplList();
+						groupInfos = GroupInfoSql.queryGroupList();
 						int count = groupInfos.size();
 						for (int i = 0; i < count; i++) {
 							GroupInfoSql.deleteGroup(groupInfos.get(i));
@@ -85,7 +85,7 @@ public class FragmentTab2 extends BaseFragment {
 						LevelInfoSql.delLevelInfoList();
 						if (LevelInfoSql.queryLevelInfoList().size() == 0) {
 							List<LevelInfo> levelInfos = new ArrayList<>();
-							for (int i = 1; i < 100; i++) {
+							for (int i = 1; i < 200; i++) {
 								LevelInfo info = new LevelInfo();
 								info.setLevelId(i);
 								info.setIsGroupUse(false);
@@ -106,7 +106,7 @@ public class FragmentTab2 extends BaseFragment {
 
 	private void initData() {
 		groupLists.clear();
-		groupInfos = GroupInfoSql.queryGrouplList();
+		groupInfos = GroupInfoSql.queryGroupList();
 		deviceInfos = DeviceInfoSql.queryDeviceList();
 		int size = deviceInfos.size();
 		controlInfos.clear();

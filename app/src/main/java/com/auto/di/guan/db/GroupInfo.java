@@ -12,16 +12,23 @@ import org.greenrobot.greendao.annotation.Generated;
 public class GroupInfo {
     @Id(autoincrement = true)
     private Long id;
-    public int groupId;
-    public String groupName;
-    public int groupStatus;
-    public int groupImage;
-    public int groupLevel;
-    public int groupTime;
-    public int groupRunTime;
-    @Generated(hash = 789287909)
+    private int groupId;
+    private String groupName;
+    private int groupStatus;
+    private int groupImage;
+    private int groupLevel;
+    private int groupTime;
+    private int groupRunTime;
+    // 是否参与轮灌设置
+    private boolean groupIsJoin;
+
+
+
+
+    @Generated(hash = 2142790823)
     public GroupInfo(Long id, int groupId, String groupName, int groupStatus,
-            int groupImage, int groupLevel, int groupTime, int groupRunTime) {
+            int groupImage, int groupLevel, int groupTime, int groupRunTime,
+            boolean groupIsJoin) {
         this.id = id;
         this.groupId = groupId;
         this.groupName = groupName;
@@ -30,6 +37,7 @@ public class GroupInfo {
         this.groupLevel = groupLevel;
         this.groupTime = groupTime;
         this.groupRunTime = groupRunTime;
+        this.groupIsJoin = groupIsJoin;
     }
     @Generated(hash = 1250265142)
     public GroupInfo() {
@@ -81,6 +89,12 @@ public class GroupInfo {
     }
     public void setGroupRunTime(int groupRunTime) {
         this.groupRunTime = groupRunTime;
+    }
+    public boolean getGroupIsJoin() {
+        return this.groupIsJoin;
+    }
+    public void setGroupIsJoin(boolean groupIsJoin) {
+        this.groupIsJoin = groupIsJoin;
     }
 
 }

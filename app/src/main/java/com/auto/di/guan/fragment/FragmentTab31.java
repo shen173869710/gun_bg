@@ -16,6 +16,7 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.dialog.Main31Dialog;
 import com.auto.di.guan.jobqueue.event.Fragment31Event;
+import com.auto.di.guan.jobqueue.event.GroupStatusEvent;
 import com.auto.di.guan.jobqueue.task.TaskFactory;
 import com.auto.di.guan.utils.LogUtils;
 
@@ -75,7 +76,7 @@ public class FragmentTab31 extends BaseFragment {
 	public void initData() {
 		groupInfos.clear();
 		groupLists.clear();
-		groupInfos = GroupInfoSql.queryGrouplList();
+		groupInfos = GroupInfoSql.queryGroupList();
 		int size = groupInfos.size();
 		if (size > 0) {
 			for (int i = 0; i < size; i++) {
@@ -123,5 +124,16 @@ public class FragmentTab31 extends BaseFragment {
 			initData();
 		}
 	}
+
+	/**
+	 *        自动轮灌组状态更新
+	 * @param event
+	 */
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onGroupStatusEvent(GroupStatusEvent event) {
+		if (adapter != null) {
+			initData();
+		}
+	};
 
 }

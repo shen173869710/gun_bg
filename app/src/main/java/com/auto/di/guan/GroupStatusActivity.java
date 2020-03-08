@@ -1,11 +1,9 @@
 package com.auto.di.guan;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,24 +15,25 @@ import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.sql.ControlInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
-import com.auto.di.guan.entity.AdapterEvent;
 import com.auto.di.guan.entity.Entiy;
-import com.auto.di.guan.entity.MessageEvent;
-import com.auto.di.guan.entity.UpdateEvent;
-import com.auto.di.guan.utils.FloatWindowUtil;
+import com.auto.di.guan.jobqueue.TaskManager;
+import com.auto.di.guan.jobqueue.event.AutoCountEvent;
+import com.auto.di.guan.jobqueue.event.GroupStatusEvent;
+import com.auto.di.guan.jobqueue.task.TaskFactory;
+import com.auto.di.guan.utils.DiffStatusCallback;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.PollingUtils;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
-
+ *   轮灌设置
  */
 public class GroupStatusActivity extends FragmentActivity  {
     private View view;
@@ -44,38 +43,34 @@ public class GroupStatusActivity extends FragmentActivity  {
     private List<GroupInfo> groupInfos = new ArrayList<>();
     private GroupStatusAdapter adapter;
 
-    private StatusAdapter myGridAdapter;
-    private GridView gridView;
-    private List<ControlInfo> controlInfos = new ArrayList<>();
+    private StatusAdapter openAdapter;
+    private RecyclerView openList;
+    private StatusAdapter closeAdapter;
+    private RecyclerView closeList;
 
-
+    private List<ControlInfo> openInfos = new ArrayList<>();
+    private List<ControlInfo> closeInfos = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_status_layout);
         view = findViewById(R.id.title_bar);
         EventBus.getDefault().register(this);
-        groupInfos = GroupInfoSql.queryGrouplList();
-        Iterator<GroupInfo> iterator = groupInfos.iterator();
-        while (iterator.hasNext()) {
-            GroupInfo info = iterator.next();
-            if (info.getGroupTime() == 0) {
-                iterator.remove();
-            }
-        }
+        groupInfos = GroupInfoSql.queryGroupSettingList();
 
         textView = (TextView) view.findViewById(R.id.title_bar_title);
-        textView.setText("关闭轮灌");
-        textView.setTextColor(Color.parseColor("#FF0000"));
+        textView.setText("轮灌设置");
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                groupInfos = GroupInfoSql.queryGrouplList();
+                groupInfos = GroupInfoSql.queryGroupList();
                 for (int i = 0; i < groupInfos.size(); i++) {
-                    groupInfos.get(i).setGroupRunTime(0);
-                    groupInfos.get(i).setGroupTime(0);
-                    groupInfos.get(i).setGroupLevel(0);
-                    groupInfos.get(i).setGroupStatus(Entiy.GROUP_STATUS_COLSE);
+                    GroupInfo info = groupInfos.get(i);
+                    info.setGroupRunTime(0);
+                    info.setGroupTime(0);
+                    info.setGroupLevel(0);
+                    info.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
                 }
                 GroupInfoSql.updateGroupList(groupInfos);
             }
@@ -104,7 +99,6 @@ public class GroupStatusActivity extends FragmentActivity  {
             }
         });
 
-
         title_bar_status = (TextView) view.findViewById(R.id.title_bar_status);
         title_bar_status.setVisibility(View.VISIBLE);
         title_bar_status.setText("开启轮灌");
@@ -112,87 +106,83 @@ public class GroupStatusActivity extends FragmentActivity  {
             @Override
             public void onClick(View v) {
                 if (groupInfos != null && groupInfos.size() > 0) {
-//					if(MyApplication.getInstance().isGroupStart()) {
-//						showToastLongMsg("设备运行中");
-//						return;
-//					}
-                    EventBus.getDefault().post(new MessageEvent(Entiy.GROUP_START, groupInfos.get(0)));
+                    TaskFactory.createAutoGroupOpenTask(groupInfos.get(0));
+                    TaskManager.getInstance().startTask();
                 }
             }
         });
-
         view.findViewById(R.id.title_bar_back_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GroupStatusActivity.this.finish();
             }
         });
+
         recyclerView = (RecyclerView) findViewById(R.id.group_option_view);
         adapter = new GroupStatusAdapter(groupInfos);
+        adapter.setDiffCallback(new DiffStatusCallback());
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        openList = findViewById(R.id.group_option_open);
+        openList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+        openAdapter = new StatusAdapter(openInfos);
+        openList.setAdapter(openAdapter);
 
-        gridView = (GridView) findViewById(R.id.group_option_gridview);
-        myGridAdapter = new StatusAdapter(this, controlInfos);
-        gridView.setNumColumns(Entiy.GRID_COLUMNS);
-        gridView.setAdapter(myGridAdapter);
+        closeList = findViewById(R.id.group_option_close);
+        closeList.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+        closeAdapter = new StatusAdapter(closeInfos);
+        closeList.setAdapter(closeAdapter);
+
     }
 
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(UpdateEvent event) {
-        if (adapter != null) {
-            List<GroupInfo> infos = GroupInfoSql.queryGrouplList();
-            int size = infos.size();
-            for (int i = 0; i < size; i++) {
-                int gSize = groupInfos.size();
-                for (int m =  0; m < gSize; m++) {
-                    if (infos.get(i).groupId == groupInfos.get(m).groupId) {
-                        groupInfos.get(m).groupRunTime = infos.get(i).groupRunTime;
-                        groupInfos.get(m).groupStatus = infos.get(i).groupStatus;
-                        groupInfos.get(m).groupLevel = infos.get(i).groupLevel;
-                        groupInfos.get(m).groupTime = infos.get(i).groupTime;
-                    }
-                }
-            }
-            adapter.setData(groupInfos);
-        }
-    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 
-    /**
-     * 显示字符串类型数据
-     *
-     * @param msg
-     */
-    public void showToastLongMsg(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
+        @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAutoCountEvent(AutoCountEvent event) {
+        if (adapter != null && event != null && event.getGroupInfo() != null) {
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAdapterUpdate(AdapterEvent event) {
-        List<GroupInfo> datas = GroupInfoSql.queryGrouplList();
-        int size = datas.size();
-        LogUtils.e("------", "GroupStatusActivity"+size);
-        if (size > 0) {
+            GroupInfo groupInfo = event.getGroupInfo();
+            int groupId = groupInfo.getGroupId();
+            int size = groupInfos.size();
+            int positin = 0;
             for (int i = 0; i < size; i++) {
-                if (datas.get(i).groupId == event.groupId ) {
-                    List<ControlInfo> clist = ControlInfoSql.queryControlList(datas.get(i).getGroupId());
-                    if (clist != null && clist.size() > 0) {
-                        ArrayList<ControlInfo> infos = new ArrayList<>();
-                        infos.addAll(ControlInfoSql.queryControlList(datas.get(i).getGroupId()));
-                        myGridAdapter.setData(infos);
-                    }
+                if (groupId == groupInfos.get(i).getGroupId()) {
+                    positin = i;
                 }
             }
+            adapter.getData().set(positin, groupInfo);
+            adapter.notifyItemChanged(positin, positin);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGroupStatusEvent(GroupStatusEvent event) {
+        LogUtils.e("GroupStatusActivity",  "更新设备-----------------------------\n"+(new Gson().toJson(event)));
+//        List<GroupInfo> groupInfo = GroupInfoSql.queryOpenGroupList();
+//        if (groupInfo != null && groupInfo.size() > 0) {
+//            List<ControlInfo> controlInfos = ControlInfoSql.queryControlList(groupInfo.get(0).getGroupId());
+//            if (myGridAdapter != null) {
+//                myGridAdapter.setData(controlInfos);
+//            }
+//        }
+        if (event != null && event.getGroupInfo() != null) {
+            GroupInfo info = event.getGroupInfo();
+            int status = info.getGroupStatus();
+            int groupId = info.getGroupId();
+            List<ControlInfo> infos = ControlInfoSql.queryControlList(groupId);
+            if (status == 1) {
+                openAdapter.setData(infos);
+            }else {
+                closeAdapter.setData(infos);
+            }
+        }else {
+            LogUtils.e("GroupStatusActivity",  "更新设备失败     设备信息为空-----------------------------");
         }
     }
 }

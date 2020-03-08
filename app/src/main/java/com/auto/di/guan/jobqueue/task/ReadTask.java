@@ -1,6 +1,7 @@
 package com.auto.di.guan.jobqueue.task;
 
 import android.text.TextUtils;
+
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DeviceInfo;
@@ -13,6 +14,7 @@ import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.OptionUtils;
 import com.auto.di.guan.utils.SendUtils;
 import com.google.gson.Gson;
+
 import org.greenrobot.eventbus.EventBus;
 
 /**

@@ -124,7 +124,7 @@ public class GroupExpandableListViewaAdapter2 extends BaseExpandableListAdapter 
     }
 
     private void bindGroupView(GroupHolder holder, final int groupPosition) {
-        holder.expand_list_group_num.setText("第 "+groupLists.get(groupPosition).groupInfo.groupName+"组");
+        holder.expand_list_group_num.setText("第 "+groupLists.get(groupPosition).groupInfo.getGroupName()+"组");
 
 //        String txt = "    轮灌优先级第"+groupLists.get(groupPosition).groupInfo.getGroupLevel()+
 //                     "    轮灌时长"+groupLists.get(groupPosition).groupInfo.getGroupTime()+"分钟";

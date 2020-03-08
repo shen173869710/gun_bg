@@ -8,6 +8,25 @@ import com.auto.di.guan.BaseApp;
 
 public class Entiy {
 
+
+    /**
+     * 操作的页面
+     * <p>
+     * 400  单个手动操作
+     * 310  单个分组操作
+     * 320  自动分组操作
+     */
+    public static int FRAGMENT_4 = 400;
+    public static int FRAGMENT_31 = 310;
+    public static int FRAGMENT_32 = 320;
+    public static int FRAGMENT_0 = 1000;
+    /**
+     *   设置轮灌时间比例时间
+     */
+    public static final int RUN_TIME = 60;
+    public static final int RUN_TIME_COUNT = 1000;
+
+    public static final int RUN_DO_NEXT = 1;
     /**
      *  报警信息
      */
@@ -17,11 +36,6 @@ public class Entiy {
     public static final int VIDEO_CLOSE_ERROR =2;
     //  查询异常
     public static final int VIDEO_READ_ERROR = 5;
-
-
-    public static final int TIME_DIVIDE = 6000;
-//    public static final int HAND_OPEN = 10000;
-//    public static final int HAND_CLOSE = 20000;
 
     public static String ALERM_ACTION = "com.auto.di.guan.utils.LongRunningService";
     public static int GROUP_START = 100000;
@@ -80,6 +94,8 @@ public class Entiy {
      *    群组状态 开启
      */
     public static final int GROUP_STATUS_OPEN = 1;
+
+
     /**
      *    设备是否添加
      */

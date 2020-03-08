@@ -23,7 +23,14 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.jobqueue.event.Fragment31Event;
+import com.auto.di.guan.jobqueue.event.Fragment32Event;
+import com.auto.di.guan.jobqueue.event.GroupStatusEvent;
 import com.auto.di.guan.utils.LogUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,8 +99,8 @@ public class FragmentTab32 extends BaseFragment {
 
 			}
 		});
-
 		initData();
+		EventBus.getDefault().register(this);
 		return view;
 	}
 
@@ -137,7 +144,7 @@ public class FragmentTab32 extends BaseFragment {
 	private void initData() {
 		groupInfos.clear();
 		groupLists.clear();
-		groupInfos = GroupInfoSql.queryGrouplList();
+		groupInfos = GroupInfoSql.queryGroupSettingList();
 		int size = groupInfos.size();
 		if (size > 0) {
 			for (int i = 0; i < size; i++) {
@@ -167,4 +174,27 @@ public class FragmentTab32 extends BaseFragment {
 		LogUtils.e("-------------", "323232");
 		initData();
 	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		EventBus.getDefault().unregister(this);
+	}
+
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onFragment32Update(Fragment32Event event) {
+		if (adapter != null) {
+			initData();
+		}
+	};
+	/**
+	 *        自动轮灌组状态更新
+	 * @param event
+	 */
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onGroupStatusEvent(GroupStatusEvent event) {
+		if (adapter != null) {
+			initData();
+		}
+	};
 }

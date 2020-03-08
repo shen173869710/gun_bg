@@ -47,20 +47,16 @@ public class TaskEntiy {
      */
     public static final int TASK_OPTION_GROUP_CLOSE_READ_END = 11;
     /**
-     *   手动单个操作结束标志位
+     *   自动轮灌开启结束标志位
      */
-    public static final int TASK_OPTION_SINGLE_READ_END = 12;
-
-
+    public static final int TASK_OPTION_AUTO_OPEN = 12;
     /**
-     *        是否绑定设备成功
-     * @param receive  ok
-     * @return
+     *   自动轮灌关闭结束标志位
      */
-    public static boolean isBindGidSuccess(String receive) {
-        if(receive.toLowerCase().contains("ok") && receive.length() == 2) {
-            return true;
-        }
-        return false;
-    }
+    public static final int TASK_OPTION_AUTO_CLOSE = 13;
+    /**
+     *   自动轮灌关闭执行下一组
+     */
+    public static final int TASK_OPTION_AUTO_NEXT = 14;
+
 }

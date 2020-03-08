@@ -55,7 +55,6 @@ public class TaskManager {
      */
     public  void doNextTask() {
         LogUtils.e("BaseTask == ", "doNextTask() 执行下一个");
-        setmTask(null);
         startTask();
     }
 

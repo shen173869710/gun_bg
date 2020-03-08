@@ -2,7 +2,6 @@ package com.auto.di.guan.db.sql;
 
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DeviceInfo;
-import com.auto.di.guan.entity.Entiy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,25 +59,22 @@ public class ControlInfoSql extends BaseSql {
         for (int i = 0; i < size; i++) {
             controlInfos.add(deviceInfos.get(i).getValveDeviceSwitchList().get(0));
             controlInfos.add(deviceInfos.get(i).getValveDeviceSwitchList().get(1));
-
         }
         return controlInfos;
     }
 
 
     /**
-     * 查询分组列表
+     * 查询已经开启的设备
      */
-    public static List<ControlInfo> queryBindControlList() {
+    public static List<ControlInfo> queryControlRunList() {
         ArrayList<ControlInfo>controlInfos = new ArrayList<>();
         List<DeviceInfo>deviceInfos = DeviceInfoSql.queryDeviceList();
         int size =  deviceInfos.size();
         for (int i = 0; i < size; i++) {
-            DeviceInfo deviceInfo = deviceInfos.get(i);
-            if (deviceInfo.getDeviceStatus()== Entiy.DEVEICE_BIND) {
-                controlInfos.add(deviceInfo.getValveDeviceSwitchList().get(0));
-                controlInfos.add(deviceInfo.getValveDeviceSwitchList().get(1));
-            }
+
+
+
         }
         return controlInfos;
     }
