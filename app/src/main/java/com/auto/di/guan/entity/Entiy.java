@@ -11,15 +11,11 @@ public class Entiy {
 
     /**
      * 操作的页面
-     * <p>
      * 400  单个手动操作
      * 310  单个分组操作
      * 320  自动分组操作
      */
-    public static int FRAGMENT_4 = 400;
-    public static int FRAGMENT_31 = 310;
-    public static int FRAGMENT_32 = 320;
-    public static int FRAGMENT_0 = 1000;
+
     /**
      *   设置轮灌时间比例时间
      */
@@ -38,9 +34,6 @@ public class Entiy {
     public static final int VIDEO_READ_ERROR = 5;
 
     public static String ALERM_ACTION = "com.auto.di.guan.utils.LongRunningService";
-    public static int GROUP_START = 100000;
-    public static int GROUP_STOP = 100001;
-    public static int  GROUP_NEXT = 100002;
     public static int GEID_ALL_ITEM = BaseApp.getUser().getPileOutNum() * BaseApp.getUser().getTrunkPipeNum();
     public static int GRID_COLUMNS = BaseApp.getUser().getPileOutNum();
     public static int GRID_ROW = BaseApp.getUser().getTrunkPipeNum();
@@ -207,10 +200,12 @@ public class Entiy {
         return "gf"+" "+groupId+" "+deviceId+" "+deveiceName;
     }
 
-    public static String LOG_OPEN_START = "开启---";
-    public static String LOG_CLOSE_START = "关闭---";
-
-
+    /**
+     * 操作的页面
+     * 400  单个手动操作
+     * 310  单个分组操作
+     * 320  自动分组操作
+     */
     public static int ACTION_TYPE_4 = 100;
     public static int ACTION_TYPE_31 = 31;
     public static int ACTION_TYPE_32 = 32;

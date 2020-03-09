@@ -6,6 +6,11 @@ import com.auto.di.guan.entity.CmdStatus;
 import org.greenrobot.eventbus.EventBus;
 
 public class SendUtils {
+
+    public static final String HTML_GREEN_START ="<b><font color=\"#37b660\">";
+    public static final String HTML_BLACK_START ="<b><font color=\"#000000\">";
+    public static final String HTML_END="</font></b>";
+
     private static String TAG = SendUtils.class.getSimpleName()+"----";
     public static String LOG_READ_START = "读取开始\n";
     public static String LOG_OPEN_START = "开启开始\n";
@@ -81,9 +86,9 @@ public class SendUtils {
      */
     public static  void sendopen(String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.controlName = info.getValve_alias();
-        cmdStatus.cmd_start =LOG_OPEN_START+desc;
-        cmdStatus.control_id = info.getValve_id();
+        cmdStatus.setControlName(info.getValve_alias());
+        cmdStatus.setCmd_start(LOG_OPEN_START+desc);
+        cmdStatus.setControl_id(info.getValve_id());
         EventBus.getDefault().post(cmdStatus);
     }
 
@@ -94,9 +99,9 @@ public class SendUtils {
      */
     public static  void sendClose( String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.cmd_start =LOG_CLOSE_START+desc;
-        cmdStatus.controlName =info.getValve_alias();
-        cmdStatus.control_id = info.getValve_id();
+        cmdStatus.setCmd_start(LOG_CLOSE_START+desc);
+        cmdStatus.setControlName(info.getValve_alias());
+        cmdStatus.setControl_id(info.getValve_id());
         EventBus.getDefault().post(cmdStatus);
     }
 
@@ -107,9 +112,9 @@ public class SendUtils {
      */
     public static  void sendOpenEnd(String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.cmd_end = LOG_OPEN_SUC+desc ;
-        cmdStatus.controlName = info.getValve_alias();
-        cmdStatus.control_id = info.getValve_id();
+        cmdStatus.setCmd_end(LOG_OPEN_SUC+desc);
+        cmdStatus.setControlName(info.getValve_alias());
+        cmdStatus.setControl_id(info.getValve_id());
         EventBus.getDefault().post(cmdStatus);
     }
 
@@ -120,9 +125,9 @@ public class SendUtils {
      */
     public static  void sendOpenRet(String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.cmd_end = LOG_OPEN_RET+desc ;
-        cmdStatus.controlName = info.getValve_alias();
-        cmdStatus.control_id = info.getValve_id();
+        cmdStatus.setCmd_end(LOG_OPEN_RET+desc);
+        cmdStatus.setControlName(info.getValve_alias());
+        cmdStatus.setControl_id(info.getValve_id());
         EventBus.getDefault().post(cmdStatus);
     }
 
@@ -133,9 +138,9 @@ public class SendUtils {
      */
     public static  void sendCloseEnd(String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.cmd_end = LOG_CLOSE_SUC+desc ;
-        cmdStatus.controlName = info.getValve_alias();
-        cmdStatus.control_id = info.getValve_id();
+        cmdStatus.setCmd_end(LOG_CLOSE_SUC+desc);
+        cmdStatus.setControlName(info.getValve_alias());
+        cmdStatus.setControl_id(info.getValve_id());
         EventBus.getDefault().post(cmdStatus);
     }
 
@@ -146,25 +151,25 @@ public class SendUtils {
      */
     public static  void sendCloseRet(String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.cmd_end = LOG_CLOSE_RET+desc ;
-        cmdStatus.controlName = info.getValve_alias();
-        cmdStatus.control_id = info.getValve_id();
+        cmdStatus.setCmd_end(LOG_CLOSE_RET+desc );
+        cmdStatus.setControlName(info.getValve_alias());
+        cmdStatus.setControl_id(info.getValve_id());
         EventBus.getDefault().post(cmdStatus);
     }
 
     public static  void sendOpenError(String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.cmd_end = LOG_OPEN_FALIE+desc;
-        cmdStatus.control_id = info.getValve_id();
-        cmdStatus.controlName = info.getValve_alias();
+        cmdStatus.setCmd_end(LOG_OPEN_FALIE+desc);
+        cmdStatus.setControl_id(info.getValve_id());
+        cmdStatus.setControlName(info.getValve_alias());
         EventBus.getDefault().post(cmdStatus);
     }
 
     public static  void sendCloseError(String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.cmd_end = LOG_CLOSE_FALIE+desc;
-        cmdStatus.control_id = info.getValve_id();
-        cmdStatus.controlName = info.getValve_alias();
+        cmdStatus.setCmd_end(LOG_CLOSE_FALIE+desc);
+        cmdStatus.setControl_id(info.getValve_id());
+        cmdStatus.setControlName(info.getValve_alias());
         EventBus.getDefault().post(cmdStatus);
     }
 
@@ -176,9 +181,9 @@ public class SendUtils {
      */
     public static  void sendReadStart( String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.controlName = info.getValve_alias();
-        cmdStatus.cmd_read_start = LOG_READ_START+desc;
-        cmdStatus.control_id = info.getValve_id();
+        cmdStatus.setControlName(info.getValve_alias());
+        cmdStatus.setCmd_read_start(LOG_READ_START+desc);
+        cmdStatus.setControl_id(info.getValve_id());
         EventBus.getDefault().post(cmdStatus);
     }
 
@@ -190,9 +195,9 @@ public class SendUtils {
      */
     public static  void sendReadMiddle( String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.controlName = info.getValve_alias();
-        cmdStatus.cmd_read_middle =LOG_READ_SUC+desc;
-        cmdStatus.control_id = info.getValve_id();
+        cmdStatus.setControlName(info.getValve_alias());
+        cmdStatus.setCmd_read_middle(LOG_READ_SUC+desc);
+        cmdStatus.setControl_id(info.getValve_id());
         EventBus.getDefault().post(cmdStatus);
     }
 
@@ -203,9 +208,9 @@ public class SendUtils {
      */
     public static  void sendReadTryMiddle( String desc, ControlInfo info) {
         CmdStatus cmdStatus = new CmdStatus();
-        cmdStatus.controlName = info.getValve_alias();
-        cmdStatus.cmd_read_middle =LOG_READ_RET+desc;
-        cmdStatus.control_id = info.getValve_id();
+        cmdStatus.setControlName(info.getValve_alias());
+        cmdStatus.setCmd_read_middle(LOG_READ_RET+desc);
+        cmdStatus.setControl_id(info.getValve_id());
         EventBus.getDefault().post(cmdStatus);
     }
 
@@ -214,13 +219,15 @@ public class SendUtils {
      * @param type
      * @param info
      */
-    public static void  sendReadEnd(int type, ControlInfo info) {
+    public static void  sendReadEnd( ControlInfo info, int cmd_type, int optionType, int type) {
         CmdStatus cmdStatus = new CmdStatus();
         String name = info.getValve_alias();
         int controlId = info.getValve_id();
         String desc = "";
+        boolean isNormal = false;
         switch (type) {
             case OPTION_OPEN_SUCESS:
+                isNormal = true;
                 desc = OPTION_OPEN_SUCESS_VALUE;
                 break;
             case OPTION_OPEN_FAILE:
@@ -236,6 +243,7 @@ public class SendUtils {
                 desc = OPTION_OPEN_OTHER_VALUE;
                 break;
             case OPTION_CLOSE_SUCESS:
+                isNormal = true;
                 desc = OPTION_CLOSE_SUCESS_VALUE;
                 break;
             case OPTION_CLOSE_FAILE:
@@ -266,19 +274,10 @@ public class SendUtils {
                 desc = OPTION_READ_DIS_VALUE;
                 break;
         }
-//        if (type == OPTION_OPEN_SUCESS) {
-//            cmdStatus.cmd_read_end = LOG_NAME+name+"开启操作正常";
-//        }else if (type == TYPE_DISCONTENT) {
-//            cmdStatus.cmd_read_end = LOG_NAME+name+"通信正常,阀门线断开";
-//        }else if (type == TYPE_CONTENT) {
-//            cmdStatus.cmd_read_end = LOG_NAME+name+"通信异常,阀门未打开";
-//        }else if (type == TYPE_NOT_CLOSE) {
-//            cmdStatus.cmd_read_end = LOG_NAME+name+"通信异常,阀门未关闭";
-//        }
-
-        cmdStatus.cmd_read_end = LOG_NAME + name + desc;
-        cmdStatus.controlName = name;
-        cmdStatus.control_id = controlId;
+        cmdStatus.setCmd_read_end(LOG_NAME + name + desc);
+        cmdStatus.setControlName(name);
+        cmdStatus.setControl_id(controlId);
         EventBus.getDefault().post(cmdStatus);
+        ActionUtil.saveAction(info,cmd_type,optionType, desc, isNormal);
     }
 }

@@ -220,67 +220,21 @@ public class MyGridOpenAdapter extends BaseAdapter {
                  *    index = 2  关阀
                  */
                 if (index == 0) {
-                    TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_READ);
+                    TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_READ ,Entiy.ACTION_TYPE_4);
                     TaskFactory.createReadEndTask();
                     TaskManager.getInstance().startTask();
                 }else if (index == 1) {
                     TaskFactory.createOpenTask(controlInfo);
-                    TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_OPEN_READ);
+                    TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_OPEN_READ ,Entiy.ACTION_TYPE_4);
                     TaskFactory.createReadEndTask();
                     TaskManager.getInstance().startTask();
                 }else if (index == 2) {
                     TaskFactory.createCloseTask(controlInfo);
-                    TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_CLOSE_READ);
+                    TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_CLOSE_READ ,Entiy.ACTION_TYPE_4);
                     TaskFactory.createReadEndTask();
                     TaskManager.getInstance().startTask();
                 }
-
-
             }
         });
-
-//
-//        if (controlInfo.status == Entiy.CONTROL_STATUS＿ERROR) {
-//            MainShowDialog.ShowDialog((Activity) context, "查询状态", "读取阀门异常状态是的修复", new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    EventBus.getDefault().post(new ControlOptionEvent(controlInfo, true));
-//                }
-//            });
-//            return;
-//        }
-//
-//        if (!isStart) {
-//            MainShowDialog.ShowDialog((Activity) context, "手动开启", "是否开启当前阀门", new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-////                    if (MyApplication.getInstance().isGroupStart()) {
-////                        return;
-////                    }
-//                    EventBus.getDefault().post(new ControlOptionEvent(controlInfo, true));
-////                    controlInfo.imageId = R.mipmap.lighe_2;
-////                    controlInfo.status = Entiy.CONTROL_STATUS＿2;
-////                    DBManager.getInstance(context).updateDeviceList(datas);
-////                    notifyDataSetChanged();
-//                }
-//            });
-//        }else {
-//            MainShowDialog.ShowDialog((Activity) context, "手动关闭", "是否关闭当前阀门", new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-////                    if (MyApplication.getInstance().isGroupStart()) {
-////                        return;
-////                    }
-//                    EventBus.getDefault().post(new ControlOptionEvent(controlInfo, false));
-////                    controlInfo.imageId = R.mipmap.lighe_1;
-////                    controlInfo.status = Entiy.CONTROL_STATUS＿1;
-////                    DBManager.getInstance(context).updateDeviceList(datas);
-////                    notifyDataSetChanged();
-//                }
-//            });
-//        }
-
     }
-
-
 }

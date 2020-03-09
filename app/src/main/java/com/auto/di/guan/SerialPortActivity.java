@@ -21,11 +21,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 
 import androidx.fragment.app.FragmentActivity;
-
-import com.auto.di.guan.dialog.CustomListViewDialog;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,7 +38,6 @@ public abstract class SerialPortActivity extends FragmentActivity {
 	private InputStream mInputStream;
 	private ReadThread mReadThread;
 
-	CustomListViewDialog dialog;
 
 	private class ReadThread extends Thread {
 		@Override

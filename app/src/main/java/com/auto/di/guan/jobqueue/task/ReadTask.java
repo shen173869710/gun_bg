@@ -24,12 +24,16 @@ import org.greenrobot.eventbus.EventBus;
  */
 public class ReadTask extends BaseTask{
     private final String TAG = BASETAG+"ReadTask";
+
+    private int actionType;
+
     public ReadTask(int taskType, String taskCmd) {
         super(taskType, taskCmd);
     }
 
-    public ReadTask(int taskType, String taskCmd, ControlInfo taskInfo) {
+    public ReadTask(int taskType, String taskCmd, ControlInfo taskInfo, int actionType) {
         super(taskType, taskCmd, taskInfo);
+        this.actionType = actionType;
     }
 
     @Override
@@ -42,7 +46,7 @@ public class ReadTask extends BaseTask{
     @Override
     public void errorTask() {
         LogUtils.e(TAG, "读取状态 错误 ======="+"errorTask()");
-        SendUtils.sendReadEnd(SendUtils.OPTION_READ_FAILE, getTaskInfo());
+        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),SendUtils.OPTION_READ_FAILE);
         finishTask();
     }
 
@@ -58,11 +62,6 @@ public class ReadTask extends BaseTask{
             LogUtils.e(TAG, "读取状态 通信成功 过滤回显");
             return;
         }
-        /**
-         *  未知的命令 如果count == 2 重试一次
-         *                   如果count == 1 进入错误
-         */
-
         setReceive(receive);
         if (!receive.toLowerCase().contains("zt")) {
             /**
@@ -90,6 +89,10 @@ public class ReadTask extends BaseTask{
     @Override
     public void retryTask() {
         LogUtils.e(TAG, "读取状态 重试======="+"retryTask()  cmd =="+getTaskCmd()+ " 当前重试次数 = "+getTaskCount());
+        /**
+         *  未知的命令 如果count == 2 重试一次
+         *                   如果count == 1 进入错误
+         */
         if(getTaskCount() == 2) {
             setTaskCount(1);
             SendUtils.sendReadTryMiddle(getReceive(), getTaskInfo());
@@ -285,16 +288,22 @@ public class ReadTask extends BaseTask{
             }
         }
         /**
-         *  发送通信结束
-         */
-        SendUtils.sendReadEnd(type, taskInfo);
-        /**
          *  更新设备信息
          */
         LogUtils.e(TAG, "更新设备信息"+(new Gson().toJson(deviceInfo)));
         DeviceInfoSql.updateDevice(deviceInfo);
+        /**
+         *  发送通信结束
+         */
+        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),type);
     }
 
 
+    public int getActionType() {
+        return actionType;
+    }
 
+    public void setActionType(int actionType) {
+        this.actionType = actionType;
+    }
 }

@@ -5,7 +5,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
+
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.sql.GroupInfoSql;
@@ -14,11 +16,9 @@ import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.event.AutoTaskEvent;
 import com.auto.di.guan.jobqueue.task.TaskFactory;
-import com.auto.di.guan.utils.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.daimajia.numberprogressbar.NumberProgressBar;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.annotation.NotNull;
@@ -54,6 +54,7 @@ public class GroupStatusAdapter extends BaseQuickAdapter<GroupInfo, BaseViewHold
         TextView status_cur_time = holder.getView(R.id.status_cur_time);
         TextView status_set_time = holder.getView(R.id.status_set_time);
         TextView status_status = holder.getView(R.id.status_status);
+
         if (info.getGroupStatus() == 0) {
             status_stop.setVisibility(View.GONE);
             status_next.setVisibility(View.GONE);

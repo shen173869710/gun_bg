@@ -74,9 +74,9 @@ public class TaskFactory {
      *
      * @param info
      */
-    public static void createReadTask(ControlInfo info, int type) {
+    public static void createReadTask(ControlInfo info, int type, int actionType) {
         final String cmd = Entiy.cmdRead(BaseApp.getProjectId(), info.getDeviceProtocalId());
-        TaskManager.getInstance().addTask(new ReadTask(type, cmd, info));
+        TaskManager.getInstance().addTask(new ReadTask(type, cmd, info,actionType));
     }
 
     /**
@@ -168,7 +168,7 @@ public class TaskFactory {
         // 4. 添加开启task
         addOpenGroupTask(openList, true);
         // 5. 添加开启状态查询task
-        addReadGroupTask(openList, TaskEntiy.TASK_OPTION_OPEN_READ);
+        addReadGroupTask(openList, TaskEntiy.TASK_OPTION_OPEN_READ,Entiy.ACTION_TYPE_31);
         // 6. 添加开启结束标志位
         createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_OPEN_READ_END);
 
@@ -179,7 +179,7 @@ public class TaskFactory {
             // 8 添加关闭其他组task
             addOpenGroupTask(closeList, false);
             // 9 添加关闭状态查询task
-            addReadGroupTask(closeList, TaskEntiy.TASK_OPTION_CLOSE_READ);
+            addReadGroupTask(closeList, TaskEntiy.TASK_OPTION_CLOSE_READ,Entiy.ACTION_TYPE_31);
             // 10. 添加关闭结束标志位
             createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_CLOSE_READ_END);
         }
@@ -209,10 +209,10 @@ public class TaskFactory {
      *
      * @param controlInfos
      */
-    private static void addReadGroupTask(List<ControlInfo> controlInfos, int type) {
+    private static void addReadGroupTask(List<ControlInfo> controlInfos, int type, int actionType) {
         int size = controlInfos.size();
         for (int i = 0; i < size; i++) {
-            createReadTask(controlInfos.get(i), type);
+            createReadTask(controlInfos.get(i), type,actionType);
         }
     }
 
@@ -241,7 +241,7 @@ public class TaskFactory {
         }
         addOpenGroupTask(closeList, false);
         // 1 添加关闭状态查询task
-        addReadGroupTask(closeList, TaskEntiy.TASK_OPTION_CLOSE_READ);
+        addReadGroupTask(closeList, TaskEntiy.TASK_OPTION_CLOSE_READ,Entiy.ACTION_TYPE_31);
         // 4. 添加关闭结束标志位
         createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_CLOSE_READ_END);
         // 添加完成之后启动任务
@@ -283,7 +283,7 @@ public class TaskFactory {
         // 3. 添加开启task
         addOpenGroupTask(openList, true);
         // 4. 添加开启状态查询task
-        addReadGroupTask(openList, TaskEntiy.TASK_OPTION_OPEN_READ);
+        addReadGroupTask(openList, TaskEntiy.TASK_OPTION_OPEN_READ,Entiy.ACTION_TYPE_32);
         // 5. 添加开启结束标志位
         createGroupAutoEndTask(TaskEntiy.TASK_OPTION_AUTO_OPEN,groupInfo);
     }
@@ -311,7 +311,7 @@ public class TaskFactory {
         // 3. 添加开启task
         addOpenGroupTask(openList, true);
         // 4. 添加开启状态查询task
-        addReadGroupTask(openList, TaskEntiy.TASK_OPTION_OPEN_READ);
+        addReadGroupTask(openList, TaskEntiy.TASK_OPTION_OPEN_READ,Entiy.ACTION_TYPE_32);
         // 5. 添加开启结束标志位
         createGroupAutoEndTask(TaskEntiy.TASK_OPTION_AUTO_NEXT, curInfo);
     }
@@ -337,7 +337,7 @@ public class TaskFactory {
         // 3 添加关闭task
         addOpenGroupTask(closeList, false);
         // 3 添加关闭状态查询task
-        addReadGroupTask(closeList, TaskEntiy.TASK_OPTION_CLOSE_READ);
+        addReadGroupTask(closeList, TaskEntiy.TASK_OPTION_CLOSE_READ,Entiy.ACTION_TYPE_32);
         // 4. 添加关闭结束标志位
         createGroupAutoEndTask(TaskEntiy.TASK_OPTION_AUTO_CLOSE,groupInfo);
     }

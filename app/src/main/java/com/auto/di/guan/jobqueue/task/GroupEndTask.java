@@ -1,9 +1,6 @@
 package com.auto.di.guan.jobqueue.task;
 
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.GroupInfo;
-import com.auto.di.guan.db.sql.GroupInfoSql;
-import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.jobqueue.TaskEntiy;
 import com.auto.di.guan.jobqueue.event.Fragment31Event;
 import com.auto.di.guan.jobqueue.event.Fragment32Event;

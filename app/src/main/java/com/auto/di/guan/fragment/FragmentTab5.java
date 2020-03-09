@@ -26,7 +26,7 @@ import java.util.List;
  *
  */
 public class FragmentTab5 extends BaseFragment {
-	private TextView requeryByName, requeryByTime, requeryById;
+	private TextView requeryByTime, requeryById;
 	private View view;
 	private ListView listView;
 	private QuareUserAdapter adapter;
@@ -37,21 +37,20 @@ public class FragmentTab5 extends BaseFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_5, null);
-		requeryByName = (TextView) view.findViewById(R.id.querybyname);
 		requeryByTime = (TextView) view.findViewById(R.id.querybytime);
 		requeryById = (TextView) view.findViewById(R.id.querybyid);
 
 		listView = (ListView) view.findViewById(R.id.querylistview);
 		adapter = new QuareUserAdapter(getActivity(), userActions);
 		listView.setAdapter(adapter);
-		requeryByName.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showChooseDialog(requeryByName);
-			}
-
-
-		});
+//		requeryByName.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				showChooseDialog(requeryByName);
+//			}
+//
+//
+//		});
 		requeryByTime.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -190,17 +189,17 @@ public class FragmentTab5 extends BaseFragment {
 	}
 
 	private void showChooseListByName(int postion) {
-		List<UserAction>action = UserActionSql.queryUserActionlList(users.get(postion).getLoginName());
-		showEnd(action);
+//		List<UserAction>action = UserActionSql.queryUserActionlList(users.get(postion).getLoginName());
+//		showEnd(action);
 	}
 
 	private void showListByType(int type) {
 		List<UserAction>action= new ArrayList<>();
 		if (type == 0) {
-			action	= UserActionSql.queryUserActionlList(type);
+			action	= UserActionSql.queryUserActionlList();
 		}else {
 			if (type == Entiy.ACTION_TYPE_ERROR) {
-				action	= UserActionSql.queryUserActionlListByEnd("操作正常");
+				action	= UserActionSql.queryUserActionlListByEnd(false);
 			}else {
 				action	= UserActionSql.queryUserActionlListByType(type);
 			}
@@ -222,7 +221,7 @@ public class FragmentTab5 extends BaseFragment {
 
 	private void showEnd(List<UserAction>action) {
 		if (action.size() == 0) {
-			Toast.makeText(getActivity(), "暂无可以查询的信息111", Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "暂无可以查询的信息", Toast.LENGTH_LONG).show();
 			userActions.clear();
 			adapter.notifyDataSetChanged();
 		}else {

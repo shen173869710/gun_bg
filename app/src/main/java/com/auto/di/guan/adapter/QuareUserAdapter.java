@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.auto.di.guan.BaseApp;
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.UserAction;
 import com.auto.di.guan.entity.Entiy;
@@ -49,10 +50,10 @@ public class QuareUserAdapter extends BaseAdapter {
 			convertView = LayoutInflater.from(ctx).inflate(R.layout.quare_user_list_item, null);
 			vHolder.quare_user_layout = (LinearLayout) convertView.findViewById(R.id.quare_user_layout);
 			vHolder.quare_user_name = (TextView) convertView.findViewById(R.id.quare_user_name);
+			vHolder.quare_user_type = (TextView) convertView.findViewById(R.id.quare_user_type);
 			vHolder.quare_user_action = (TextView) convertView.findViewById(R.id.quare_user_desc);
 			vHolder.quare_user_end =  (TextView) convertView.findViewById(R.id.quare_user_end);
 			vHolder.quare_user_time = (TextView) convertView.findViewById(R.id.quare_user_time);
-			vHolder.quare_user_type = (TextView) convertView.findViewById(R.id.quare_user_type);
 			convertView.setTag(vHolder);
 		} else {
 			vHolder = (ViewHolder) convertView.getTag();
@@ -64,13 +65,12 @@ public class QuareUserAdapter extends BaseAdapter {
 
 	private void bindView(final int position, final ViewHolder vHolder) {
 		UserAction action = userActions.get(position);
-		vHolder.quare_user_name.setText(action.getUserName()+"");
-		vHolder.quare_user_action.setText(action.getActionDesc()+"");
-		vHolder.quare_user_end.setText(action.getActionEnd()+"");
-		vHolder.quare_user_time.setText(DateUtils.times(action.getTime()));
+		vHolder.quare_user_name.setText(BaseApp.getUser().getLoginName() +"");
+		vHolder.quare_user_type.setText(action.getActionTypeName()+"");
+		vHolder.quare_user_action.setText(action.getActionName()+"");
+		vHolder.quare_user_end.setText(action.getActionStatusName()+"");
+		vHolder.quare_user_time.setText(DateUtils.times(action.getActionTime()));
 
-
-        String desc = "";
 		int type = action.getActionType();
 		int color = 0;
 		 if (type == Entiy.ACTION_TYPE_4) {
@@ -80,12 +80,10 @@ public class QuareUserAdapter extends BaseAdapter {
 		}else if (type == Entiy.ACTION_TYPE_32) {
 			color = ctx.getResources().getColor(R.color.none_transparent);
 		}
-
-		 if (!action.getActionEnd().contains("操作正常")){
+		 if (!action.getActionStatus()){
 			 color = ctx.getResources().getColor(R.color.red);
 		 }
 
-        vHolder.quare_user_type.setText(action.getUserAccount());
 		vHolder.quare_user_layout.setBackgroundColor(color);
 	}
 	class ViewHolder {

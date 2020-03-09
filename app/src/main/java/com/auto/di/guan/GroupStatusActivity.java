@@ -2,13 +2,10 @@ package com.auto.di.guan;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.TextView;
-
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.auto.di.guan.adapter.GroupStatusAdapter;
 import com.auto.di.guan.adapter.StatusAdapter;
 import com.auto.di.guan.db.ControlInfo;
@@ -24,11 +21,9 @@ import com.auto.di.guan.utils.DiffStatusCallback;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.PollingUtils;
 import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +54,7 @@ public class GroupStatusActivity extends FragmentActivity  {
         groupInfos = GroupInfoSql.queryGroupSettingList();
 
         textView = (TextView) view.findViewById(R.id.title_bar_title);
-        textView.setText("轮灌设置");
+        textView.setText("轮灌操作");
 
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +141,6 @@ public class GroupStatusActivity extends FragmentActivity  {
         @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAutoCountEvent(AutoCountEvent event) {
         if (adapter != null && event != null && event.getGroupInfo() != null) {
-
             GroupInfo groupInfo = event.getGroupInfo();
             int groupId = groupInfo.getGroupId();
             int size = groupInfos.size();
@@ -164,13 +158,6 @@ public class GroupStatusActivity extends FragmentActivity  {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGroupStatusEvent(GroupStatusEvent event) {
         LogUtils.e("GroupStatusActivity",  "更新设备-----------------------------\n"+(new Gson().toJson(event)));
-//        List<GroupInfo> groupInfo = GroupInfoSql.queryOpenGroupList();
-//        if (groupInfo != null && groupInfo.size() > 0) {
-//            List<ControlInfo> controlInfos = ControlInfoSql.queryControlList(groupInfo.get(0).getGroupId());
-//            if (myGridAdapter != null) {
-//                myGridAdapter.setData(controlInfos);
-//            }
-//        }
         if (event != null && event.getGroupInfo() != null) {
             GroupInfo info = event.getGroupInfo();
             int status = info.getGroupStatus();

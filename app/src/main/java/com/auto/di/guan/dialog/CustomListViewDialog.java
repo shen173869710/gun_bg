@@ -64,13 +64,13 @@ public class CustomListViewDialog extends Dialog{
 
     private void initView() {
         View view = View.inflate(mContext, R.layout.dialog_listview, null);
-        mListView = (ListView) view.findViewById(R.id.listview);
-        setContentView(view);
-        EventBus.getDefault().register(this);
-        alist = new ArrayList<>();
-        adapter = new DialogListViewAdapter(mContext, alist);
-        mListView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+//        mListView = (ListView) view.findViewById(R.id.listview);
+//        setContentView(view);
+//        EventBus.getDefault().register(this);
+//        alist = new ArrayList<>();
+//        adapter = new DialogListViewAdapter(mContext, alist);
+//        mListView.setAdapter(adapter);
+//        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -119,39 +119,39 @@ public class CustomListViewDialog extends Dialog{
 //        EventBus.getDefault().unregister(this);
 //    }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onStatsuEvent(CmdStatus event) {
-        LogUtils.e("-----", "onStatsuEvent id = "+event.control_id);
-        if (event != null) {
-            int size = alist.size();
-            boolean isHas = false;
-            for (int i = 0; i < size; i++) {
-                if (alist.get(i).control_id == event.control_id) {
-                    alist.get(i).cmd_name = "控制阀"+ event.controlName+"号";
-                    if (!TextUtils.isEmpty(event.cmd_start)) {
-                        alist.get(i).cmd_start = event.cmd_start;
-                    }
-                    if (!TextUtils.isEmpty(event.cmd_end)) {
-                        alist.get(i).cmd_end = event.cmd_end;
-                    }
-                    if (!TextUtils.isEmpty(event.cmd_read_start)) {
-                        alist.get(i).cmd_read_start = event.cmd_read_start;
-                    }
-                    if (!TextUtils.isEmpty(event.cmd_read_middle)) {
-                        alist.get(i).cmd_read_start = event.cmd_read_start;
-                    }
-                    if (!TextUtils.isEmpty(event.cmd_read_end)) {
-                        alist.get(i).cmd_read_start = event.cmd_read_start;
-                    }
-                    isHas = true;
-                }
-            }
-            if (!isHas) {
-                alist.add(event);
-            }
-            adapter.notifyDataSetChanged();
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onStatsuEvent(CmdStatus event) {
+//        LogUtils.e("-----", "onStatsuEvent id = "+event.control_id);
+//        if (event != null) {
+//            int size = alist.size();
+//            boolean isHas = false;
+//            for (int i = 0; i < size; i++) {
+//                if (alist.get(i).control_id == event.control_id) {
+//                    alist.get(i).cmd_name = "控制阀"+ event.controlName+"号";
+//                    if (!TextUtils.isEmpty(event.cmd_start)) {
+//                        alist.get(i).cmd_start = event.cmd_start;
+//                    }
+//                    if (!TextUtils.isEmpty(event.cmd_end)) {
+//                        alist.get(i).cmd_end = event.cmd_end;
+//                    }
+//                    if (!TextUtils.isEmpty(event.cmd_read_start)) {
+//                        alist.get(i).cmd_read_start = event.cmd_read_start;
+//                    }
+//                    if (!TextUtils.isEmpty(event.cmd_read_middle)) {
+//                        alist.get(i).cmd_read_start = event.cmd_read_start;
+//                    }
+//                    if (!TextUtils.isEmpty(event.cmd_read_end)) {
+//                        alist.get(i).cmd_read_start = event.cmd_read_start;
+//                    }
+//                    isHas = true;
+//                }
+//            }
+//            if (!isHas) {
+//                alist.add(event);
+//            }
+//            adapter.notifyDataSetChanged();
+//        }
+//    }
 
 
     public void setListViewHeightBasedOnChildren(ListView listView, android.widget.BaseAdapter adapter) {

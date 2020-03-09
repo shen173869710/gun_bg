@@ -40,6 +40,12 @@ public class PostUtil {
     }
 
     public static class PostData{
+        /**
+         *      执行的行为
+         *      0 自动轮灌
+         *      1 手动开启
+         *      2 手动关闭
+         */
         public int operateResult;
         public int operateType;
         public String operateName;

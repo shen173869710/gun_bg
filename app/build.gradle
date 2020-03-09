@@ -40,7 +40,7 @@ android {
         }
     }
     greendao{
-        schemaVersion 2
+        schemaVersion 3
         daoPackage 'com.auto.di.guan.db.greendao'
         targetGenDir 'src/main/java'
     }
