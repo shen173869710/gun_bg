@@ -17,6 +17,7 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.db.sql.LevelInfoSql;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,9 @@ public class ChooseGroupctivity extends Activity {
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				int count = 0;
 				int size = deviceInfos.size();
 				for (int i = 0; i < size; i++) {

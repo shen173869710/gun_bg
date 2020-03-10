@@ -12,6 +12,11 @@ public class AutoTaskEvent {
         this.groupInfo = groupInfo;
     }
 
+    public AutoTaskEvent(int type, GroupInfo groupInfo) {
+        this.type = type;
+        this.groupInfo = groupInfo;
+    }
+
     public AutoTaskEvent(int type) {
         this.type = type;
     }

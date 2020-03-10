@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.auto.di.guan.R;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 
 public class ChooseTimeDialog extends Dialog {
@@ -77,6 +78,9 @@ public class ChooseTimeDialog extends Dialog {
 		dialog.setOnPositiveListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				if (listener != null) {
 					String start = dialog.choose_time_start.getText().toString().trim();
 					String end = dialog.choose_time_end.getText().toString().trim();

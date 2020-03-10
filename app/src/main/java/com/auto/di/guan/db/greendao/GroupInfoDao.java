@@ -33,6 +33,7 @@ public class GroupInfoDao extends AbstractDao<GroupInfo, Long> {
         public final static Property GroupTime = new Property(6, int.class, "groupTime", false, "GROUP_TIME");
         public final static Property GroupRunTime = new Property(7, int.class, "groupRunTime", false, "GROUP_RUN_TIME");
         public final static Property GroupIsJoin = new Property(8, boolean.class, "groupIsJoin", false, "GROUP_IS_JOIN");
+        public final static Property GroupStop = new Property(9, boolean.class, "groupStop", false, "GROUP_STOP");
     }
 
 
@@ -56,7 +57,8 @@ public class GroupInfoDao extends AbstractDao<GroupInfo, Long> {
                 "\"GROUP_LEVEL\" INTEGER NOT NULL ," + // 5: groupLevel
                 "\"GROUP_TIME\" INTEGER NOT NULL ," + // 6: groupTime
                 "\"GROUP_RUN_TIME\" INTEGER NOT NULL ," + // 7: groupRunTime
-                "\"GROUP_IS_JOIN\" INTEGER NOT NULL );"); // 8: groupIsJoin
+                "\"GROUP_IS_JOIN\" INTEGER NOT NULL ," + // 8: groupIsJoin
+                "\"GROUP_STOP\" INTEGER NOT NULL );"); // 9: groupStop
     }
 
     /** Drops the underlying database table. */
@@ -85,6 +87,7 @@ public class GroupInfoDao extends AbstractDao<GroupInfo, Long> {
         stmt.bindLong(7, entity.getGroupTime());
         stmt.bindLong(8, entity.getGroupRunTime());
         stmt.bindLong(9, entity.getGroupIsJoin() ? 1L: 0L);
+        stmt.bindLong(10, entity.getGroupStop() ? 1L: 0L);
     }
 
     @Override
@@ -107,6 +110,7 @@ public class GroupInfoDao extends AbstractDao<GroupInfo, Long> {
         stmt.bindLong(7, entity.getGroupTime());
         stmt.bindLong(8, entity.getGroupRunTime());
         stmt.bindLong(9, entity.getGroupIsJoin() ? 1L: 0L);
+        stmt.bindLong(10, entity.getGroupStop() ? 1L: 0L);
     }
 
     @Override
@@ -125,7 +129,8 @@ public class GroupInfoDao extends AbstractDao<GroupInfo, Long> {
             cursor.getInt(offset + 5), // groupLevel
             cursor.getInt(offset + 6), // groupTime
             cursor.getInt(offset + 7), // groupRunTime
-            cursor.getShort(offset + 8) != 0 // groupIsJoin
+            cursor.getShort(offset + 8) != 0, // groupIsJoin
+            cursor.getShort(offset + 9) != 0 // groupStop
         );
         return entity;
     }
@@ -141,6 +146,7 @@ public class GroupInfoDao extends AbstractDao<GroupInfo, Long> {
         entity.setGroupTime(cursor.getInt(offset + 6));
         entity.setGroupRunTime(cursor.getInt(offset + 7));
         entity.setGroupIsJoin(cursor.getShort(offset + 8) != 0);
+        entity.setGroupStop(cursor.getShort(offset + 9) != 0);
      }
     
     @Override

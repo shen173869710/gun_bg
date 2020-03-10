@@ -14,21 +14,24 @@ public class GroupInfo {
     private Long id;
     private int groupId;
     private String groupName;
+    /**轮灌的状态 **/
     private int groupStatus;
     private int groupImage;
+    /** 轮灌优先级**/
     private int groupLevel;
+    /** 运行的总时间**/
     private int groupTime;
+    /** 已经运行的时间**/
     private int groupRunTime;
     // 是否参与轮灌设置
     private boolean groupIsJoin;
+    /**轮灌是否已经暂停计时**/
+    private boolean groupStop;
 
-
-
-
-    @Generated(hash = 2142790823)
+    @Generated(hash = 2042897297)
     public GroupInfo(Long id, int groupId, String groupName, int groupStatus,
             int groupImage, int groupLevel, int groupTime, int groupRunTime,
-            boolean groupIsJoin) {
+            boolean groupIsJoin, boolean groupStop) {
         this.id = id;
         this.groupId = groupId;
         this.groupName = groupName;
@@ -38,6 +41,7 @@ public class GroupInfo {
         this.groupTime = groupTime;
         this.groupRunTime = groupRunTime;
         this.groupIsJoin = groupIsJoin;
+        this.groupStop = groupStop;
     }
     @Generated(hash = 1250265142)
     public GroupInfo() {
@@ -95,6 +99,12 @@ public class GroupInfo {
     }
     public void setGroupIsJoin(boolean groupIsJoin) {
         this.groupIsJoin = groupIsJoin;
+    }
+    public boolean getGroupStop() {
+        return this.groupStop;
+    }
+    public void setGroupStop(boolean groupStop) {
+        this.groupStop = groupStop;
     }
 
 }

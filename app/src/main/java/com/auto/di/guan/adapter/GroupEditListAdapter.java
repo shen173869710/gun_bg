@@ -9,6 +9,7 @@ import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.sql.ControlInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.utils.NoFastClickUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
@@ -38,11 +39,17 @@ public class GroupEditListAdapter extends BaseQuickAdapter<ControlInfo, BaseView
         holder.getView(R.id.group_edit_del).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
                 if (valveStatus != Entiy.CONTROL_STATUS＿RUN ||
                         valveStatus != Entiy.CONTROL_STATUS＿ERROR) {
                     MainShowDialog.ShowDialog((Activity) getContext(), "退出分组", "是退出当前分组", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if(NoFastClickUtils.isFastClick()){
+                                return;
+                            }
                             info.setValve_group_id(0);
                             info.setSelect(false);
                             getData().remove(holder.getAdapterPosition());

@@ -13,6 +13,7 @@ import com.auto.di.guan.GroupEditctivity;
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.GroupList;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.util.List;
 
@@ -138,6 +139,9 @@ public class GroupExpandableListViewaAdapter2 extends BaseExpandableListAdapter 
         holder.expand_list_group_state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
                 Intent intent = new Intent(context, GroupEditctivity.class);
                 intent.putExtra("groupId",groupLists.get(groupPosition).groupInfo.getGroupId());
                 context.startActivity(intent);

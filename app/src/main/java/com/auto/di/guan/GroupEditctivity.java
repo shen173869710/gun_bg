@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.auto.di.guan.adapter.GroupEditListAdapter;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.sql.ControlInfoSql;
+import com.auto.di.guan.utils.NoFastClickUtils;
 import com.facebook.stetho.common.LogUtil;
 import com.google.gson.Gson;
 
@@ -50,6 +51,9 @@ public class GroupEditctivity extends Activity {
 		group_edit_add.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				Intent intent = new Intent(GroupEditctivity.this, ChooseGroupctivity.class);
 				intent.putExtra("groupId", groupId);
 				startActivity(intent);

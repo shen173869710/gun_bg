@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.auto.di.guan.MainActivity;
 import com.auto.di.guan.R;
 import com.auto.di.guan.entity.ElecEvent;
+import com.auto.di.guan.utils.NoFastClickUtils;
 import com.auto.di.guan.utils.PollingUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -119,6 +120,9 @@ public class FragmentTab7 extends BaseFragment {
 		db_desc.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				String set = getExtSDCard();
 				Toast.makeText(getActivity(),"set= "+set, Toast.LENGTH_LONG).show();
 			}
@@ -128,6 +132,9 @@ public class FragmentTab7 extends BaseFragment {
 		title_bar_code.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 //				PollingUtils.startPollingService(activity, MainActivity.ALERM_TIME);
 				EventBus.getDefault().post(new ElecEvent());
 			}
@@ -169,6 +176,9 @@ public class FragmentTab7 extends BaseFragment {
 		db_load.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				String Path = getStoragePath(getActivity(), true);
 				Toast.makeText(getActivity(),"Path= "+Path, Toast.LENGTH_LONG).show();
 			}
@@ -177,6 +187,9 @@ public class FragmentTab7 extends BaseFragment {
 		db_unload.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				String[] result = null;
 				StorageManager storageManager = (StorageManager)getActivity().getSystemService(Context.STORAGE_SERVICE);
 				try {

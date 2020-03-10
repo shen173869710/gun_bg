@@ -19,7 +19,9 @@ import com.auto.di.guan.jobqueue.event.GroupStatusEvent;
 import com.auto.di.guan.jobqueue.task.TaskFactory;
 import com.auto.di.guan.utils.DiffStatusCallback;
 import com.auto.di.guan.utils.LogUtils;
+import com.auto.di.guan.utils.NoFastClickUtils;
 import com.auto.di.guan.utils.PollingUtils;
+import com.auto.di.guan.utils.ToastUtils;
 import com.google.gson.Gson;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -59,6 +61,9 @@ public class GroupStatusActivity extends FragmentActivity  {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
                 groupInfos = GroupInfoSql.queryGroupList();
                 for (int i = 0; i < groupInfos.size(); i++) {
                     GroupInfo info = groupInfos.get(i);
@@ -81,6 +86,9 @@ public class GroupStatusActivity extends FragmentActivity  {
         title_bar_pull.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
                 if(PollingUtils.isStart) {
                     PollingUtils.stopPollingService(GroupStatusActivity.this);
                 }else {
@@ -100,7 +108,14 @@ public class GroupStatusActivity extends FragmentActivity  {
         title_bar_status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
                 if (groupInfos != null && groupInfos.size() > 0) {
+                    if (GroupInfoSql.queryOpenGroupList() != null) {
+                        ToastUtils.showLongToast("自动轮灌正在运行当中, 无法再次开启自动轮灌");
+                        return;
+                    }
                     TaskFactory.createAutoGroupOpenTask(groupInfos.get(0));
                     TaskManager.getInstance().startTask();
                 }
@@ -109,6 +124,7 @@ public class GroupStatusActivity extends FragmentActivity  {
         view.findViewById(R.id.title_bar_back_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 GroupStatusActivity.this.finish();
             }
         });

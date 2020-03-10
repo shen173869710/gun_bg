@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.MyFragmentAdapter;
 import com.auto.di.guan.utils.LogUtils;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.util.ArrayList;
 /**
@@ -38,12 +39,18 @@ public class FragmentTab3 extends BaseFragment {
 		option_title_1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				option_viewpage.setCurrentItem(0);
 			}
 		});
 		option_title_2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				option_viewpage.setCurrentItem(1);
 			}
 		});

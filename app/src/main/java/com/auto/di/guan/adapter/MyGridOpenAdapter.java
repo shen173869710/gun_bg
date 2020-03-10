@@ -23,6 +23,7 @@ import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.jobqueue.TaskEntiy;
 import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.task.TaskFactory;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,6 +148,9 @@ public class MyGridOpenAdapter extends BaseAdapter {
                 holder.grid_item_left_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if(NoFastClickUtils.isFastClick()){
+                            return;
+                        }
                         openDevice(controlInfo_0);
                     }
                 });
@@ -173,6 +177,9 @@ public class MyGridOpenAdapter extends BaseAdapter {
                 holder.grid_item_right_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if(NoFastClickUtils.isFastClick()){
+                            return;
+                        }
                        openDevice(controlInfo_1);
                     }
                 });

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.auto.di.guan.R;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 public class InputDialog extends Dialog {
 
@@ -36,6 +37,9 @@ public class InputDialog extends Dialog {
         dialog_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
                 value = input_edittext.getText().toString().trim();
                 if(!TextUtils.isEmpty(value)) {
                     onDialogClick.onDialogOkClick(value);

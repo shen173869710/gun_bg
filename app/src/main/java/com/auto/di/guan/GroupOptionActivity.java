@@ -12,6 +12,7 @@ import com.auto.di.guan.adapter.RecyclerListAdapter;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.jobqueue.event.Fragment32Event;
+import com.auto.di.guan.utils.NoFastClickUtils;
 import com.auto.di.guan.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,7 +51,9 @@ public class GroupOptionActivity extends Activity  {
 		title_bar_status.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				int size = groupInfos.size();
 				HashMap<Integer, Integer> lv = new HashMap<>();
 				for (int i = 0; i < size; i++) {

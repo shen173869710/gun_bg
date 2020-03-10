@@ -20,6 +20,7 @@ import com.auto.di.guan.R;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,6 +154,9 @@ public class ChooseGridAdapter extends BaseAdapter {
                     holder.grid_item_left_layout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if(NoFastClickUtils.isFastClick()){
+                                return;
+                            }
                             deviceInfo.getValveDeviceSwitchList().get(0).setSelect(!deviceInfo.getValveDeviceSwitchList().get(0).isSelect());
                             notifyDataSetChanged();
                         }
@@ -189,6 +193,9 @@ public class ChooseGridAdapter extends BaseAdapter {
                     holder.grid_item_right_layout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if(NoFastClickUtils.isFastClick()){
+                                return;
+                            }
                             deviceInfo.getValveDeviceSwitchList().get(1).setSelect(!deviceInfo.getValveDeviceSwitchList().get(1).isSelect());
                             notifyDataSetChanged();
                         }

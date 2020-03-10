@@ -18,6 +18,7 @@ import com.auto.di.guan.db.sql.UserSql;
 import com.auto.di.guan.dialog.MainChooseDialog;
 import com.auto.di.guan.dialog.MainChooseIdDialog;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,9 @@ public class FragmentTab5 extends BaseFragment {
 		requeryByTime.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				showChooseTimeDialog(requeryByTime);
 			}
 		});
@@ -61,6 +65,9 @@ public class FragmentTab5 extends BaseFragment {
 		requeryById.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				showChooseIdDialog(requeryById);
 			}
 		});
@@ -87,6 +94,9 @@ public class FragmentTab5 extends BaseFragment {
 		chooseDialog.setOnPositiveListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				showChooseListByTime(chooseDialog.currentItem);
 				chooseDialog.dismiss();
 			}
@@ -112,6 +122,9 @@ public class FragmentTab5 extends BaseFragment {
 		chooseDialog.setOnPositiveListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				if (chooseDialog.currentItem >= 0) {
 					String name = users.get(chooseDialog.currentItem).getUserName();
 					tv.setText(name);
@@ -155,6 +168,9 @@ public class FragmentTab5 extends BaseFragment {
 		chooseDialog.setOnPositiveListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				int type = 0;
 				switch (chooseDialog.currentItem) {
 					case 0:

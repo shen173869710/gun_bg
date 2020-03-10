@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.auto.di.guan.R;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.utils.NoFastClickUtils;
 import com.auto.di.guan.utils.ShareUtil;
 
 
@@ -79,6 +80,9 @@ public class ShowMessageDialog extends Dialog {
 		dialog.setOnPositiveListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				if (listener != null) {
 					String tag = dialog.sure_load_count_value.getText().toString().trim();
 					String group = dialog.sure_load_group_value.getText().toString().trim();

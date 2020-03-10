@@ -1,6 +1,5 @@
 package com.auto.di.guan;
 
-
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,10 +7,8 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.LevelInfo;
 import com.auto.di.guan.db.sql.GroupInfoSql;
@@ -29,11 +26,9 @@ import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.PollingUtils;
 import com.auto.di.guan.utils.ToastUtils;
 import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +40,6 @@ public class MainActivity extends SerialPortActivity {
     private FragmentManager manager;
     private FragmentTransaction transaction;
     private TextView textView;
-
-    private List<GroupInfo> groupInfos;
     /**
      * 定时任务时间   你自己在这里修改
      * 5 分钟
@@ -54,15 +47,6 @@ public class MainActivity extends SerialPortActivity {
     public static final int ALERM_TIME = 2 * 60 * 1000;
     private static final int HANDLER_WHAT_FALG = 1;
     private MediaPlayer mp;
-
-    /**
-     * 当前执行的操作
-     **/
-    public int CMD_TYPE;
-    public static final int TYPE_READ = 0;
-    public static final int TYPE_OPEN = 1;
-    public static final int TYPE_CLOSE = 2;
-
     /**
      * 当前运行的剩余时间
      ***/
@@ -82,12 +66,12 @@ public class MainActivity extends SerialPortActivity {
                     /**
                      *   如果运行时间到呢, 就执行下一组
                      */
-                    EventBus.getDefault().post(new AutoCountEvent(groupInfo));
                     TaskFactory.createAutoGroupNextTask(groupInfo);
+                    EventBus.getDefault().post(new AutoCountEvent(groupInfo));
                 } else {
                     Message message = new Message();
                     message.obj = groupInfo;
-                    message.what = 1;
+                    message.what = HANDLER_WHAT_FALG;
                     sendMessageDelayed(message, Entiy.RUN_TIME_COUNT);
                     /**
                      *   每隔 1秒保存一次数据
@@ -105,7 +89,6 @@ public class MainActivity extends SerialPortActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//		PollingUtils.startPollingService(this, ALERM_TIME);
         EventBus.getDefault().register(this);
         textView = (TextView) findViewById(R.id.title_bar_title);
         textView.setText(BaseApp.getUser().getProjectName());
@@ -115,7 +98,6 @@ public class MainActivity extends SerialPortActivity {
         transaction.add(R.id.center, articleListFragment, "center");
         transaction.commitAllowingStateLoss();
         windowTop = getStatusBarHeight();
-
         if (LevelInfoSql.queryLevelInfoList().size() == 0) {
             List<LevelInfo> levelInfos = new ArrayList<>();
             for (int i = 1; i < 200; i++) {
@@ -597,10 +579,8 @@ public class MainActivity extends SerialPortActivity {
             e.printStackTrace();
         }
     }
-
     /**
      * 异常报警
-     *
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -614,9 +594,19 @@ public class MainActivity extends SerialPortActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAutoTaskEvent(AutoTaskEvent event) {
         if(handler != null && event != null) {
-            if (event.getType() == Entiy.RUN_DO_NEXT) {
+            /**
+             *  停止计时
+             */
+            if (event.getType() == Entiy.RUN_DO_STOP) {
                 handler.removeMessages(HANDLER_WHAT_FALG);
-                LogUtils.e(TAG, "---------暂停轮灌--------- ");
+                LogUtils.e(TAG, "---------暂停轮灌计时--------- ");
+            }else if (event.getType() == Entiy.RUN_DO_START){
+                LogUtils.e(TAG, "---------开启轮灌计时--------- ");
+                handler.removeMessages(HANDLER_WHAT_FALG);
+                Message message = new Message();
+                message.obj = event.getGroupInfo();
+                message.what = HANDLER_WHAT_FALG;
+                handler.sendMessage(message);
             }else {
                 handler.removeMessages(HANDLER_WHAT_FALG);
                 Message message = new Message();

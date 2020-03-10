@@ -116,6 +116,24 @@ public class GroupInfoSql extends BaseSql {
     }
 
     /**
+     *   查询下一组需要执行的分组
+     */
+    public static List<GroupInfo> queryNextGroupList(int groupId) {
+        DaoSession daoSession = getDaoWriteSession();
+        GroupInfoDao dao = daoSession.getGroupInfoDao();
+        QueryBuilder<GroupInfo> qb = dao.queryBuilder();
+        qb.where(GroupInfoDao.Properties.GroupTime.gt(0));
+        qb.where(GroupInfoDao.Properties.GroupId.notEq(groupId));
+        qb.where(GroupInfoDao.Properties.GroupIsJoin.eq(true));
+        qb.orderAsc(GroupInfoDao.Properties.GroupLevel);
+        List<GroupInfo> list = qb.list();
+        if(list != null && list.size() > 0) {
+            return list;
+        }
+        return null;
+    }
+
+    /**
      *   更新当前的group
      */
     public static void updateRunGroup (GroupInfo groupInfo){

@@ -15,6 +15,7 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.utils.LogUtils;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,9 @@ public class FragmentTab0 extends BaseFragment {
                     MainShowDialog.ShowDialog(getActivity(), "删除阀控器", "是删除当前区域阀控器", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if(NoFastClickUtils.isFastClick()){
+                                return;
+                            }
                             LogUtils.e("-----","----------------position ==="+position);
                             info.unBindDevice();
                             DeviceInfoSql.updateDevice(info);

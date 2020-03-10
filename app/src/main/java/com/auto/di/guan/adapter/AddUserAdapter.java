@@ -15,6 +15,7 @@ import com.auto.di.guan.R;
 import com.auto.di.guan.db.User;
 import com.auto.di.guan.db.sql.UserSql;
 import com.auto.di.guan.dialog.MainShowDialog;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.util.List;
 
@@ -69,6 +70,9 @@ public class AddUserAdapter extends BaseAdapter {
 		viewHolder.user_del.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				MainShowDialog.ShowDialog((Activity) ctx, "删除用户","是否删除当前用户", new View.OnClickListener(){
 					@Override
 					public void onClick(View v) {
@@ -83,6 +87,9 @@ public class AddUserAdapter extends BaseAdapter {
 		viewHolder.user_level.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				Intent intent = new Intent(ctx, AddUserActivity.class);
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("user", user);

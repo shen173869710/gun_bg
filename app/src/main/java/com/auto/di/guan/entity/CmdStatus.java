@@ -1,7 +1,8 @@
 package com.auto.di.guan.entity;
 
 /**
- * Created by Administrator on 2018/7/31.
+ * Created by Administrator on 2018/7/3
+ * 更新命令的通信状态
  */
 
 public class CmdStatus {

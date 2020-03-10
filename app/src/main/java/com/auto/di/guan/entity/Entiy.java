@@ -21,8 +21,14 @@ public class Entiy {
      */
     public static final int RUN_TIME = 60;
     public static final int RUN_TIME_COUNT = 1000;
-
-    public static final int RUN_DO_NEXT = 1;
+    /**
+     *    暂停轮灌计时
+     */
+    public static final int RUN_DO_STOP = 1;
+    /**
+     *    开启轮灌时间
+     */
+    public static final int RUN_DO_START = 2;
     /**
      *  报警信息
      */

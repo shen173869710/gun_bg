@@ -12,6 +12,7 @@ import com.auto.di.guan.fragment.FragmentTab31;
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.GroupList;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.util.List;
 
@@ -130,6 +131,9 @@ public class GroupExpandableListViewaAdapter31 extends BaseExpandableListAdapter
             holder.expand_list_group_state.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(NoFastClickUtils.isFastClick()){
+                        return;
+                    }
                     fragmentTab31.startWork(groupLists.get(groupPosition).groupInfo);
                 }
             });
@@ -138,6 +142,9 @@ public class GroupExpandableListViewaAdapter31 extends BaseExpandableListAdapter
             holder.expand_list_group_state.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(NoFastClickUtils.isFastClick()){
+                        return;
+                    }
                     fragmentTab31.startWork(groupLists.get(groupPosition).groupInfo);
                 }
             });

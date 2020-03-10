@@ -27,6 +27,7 @@ import com.auto.di.guan.jobqueue.event.Fragment31Event;
 import com.auto.di.guan.jobqueue.event.Fragment32Event;
 import com.auto.di.guan.jobqueue.event.GroupStatusEvent;
 import com.auto.di.guan.utils.LogUtils;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -67,9 +68,15 @@ public class FragmentTab32 extends BaseFragment {
 		fragment_3_2_start.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				MainShowDialog.ShowDialog(getActivity(), "开启轮灌组", "是否开启轮灌组轮灌操作", new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						if(NoFastClickUtils.isFastClick()){
+							return;
+						}
                         int size = groupInfos.size();
                         for (int i = 0; i < size; i++) {
                             doRun(true,groupInfos.get(i));
@@ -86,6 +93,9 @@ public class FragmentTab32 extends BaseFragment {
 //				if (MyApplication.getInstance().isGroupStart()) {
 //					return;
 //				}
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				activity.startActivity(new Intent(activity, GroupOptionActivity.class));
 
 			}
@@ -95,6 +105,9 @@ public class FragmentTab32 extends BaseFragment {
 		fragment_3_2_stop.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				activity.startActivity(new Intent(activity, GroupStatusActivity.class));
 
 			}

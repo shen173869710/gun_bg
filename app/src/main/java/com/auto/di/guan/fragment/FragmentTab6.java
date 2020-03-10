@@ -13,6 +13,7 @@ import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.AddUserAdapter;
 import com.auto.di.guan.db.User;
 import com.auto.di.guan.db.sql.UserSql;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,9 @@ public class FragmentTab6 extends BaseFragment {
 		user_add.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				getActivity().startActivity(new Intent(getActivity(), AddUserActivity.class));
 			}
 		});

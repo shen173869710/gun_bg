@@ -9,8 +9,11 @@ import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.jobqueue.TaskEntiy;
 import com.auto.di.guan.jobqueue.TaskManager;
+import com.auto.di.guan.jobqueue.event.AutoTaskEvent;
 import com.auto.di.guan.utils.LogUtils;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,6 +137,7 @@ public class TaskFactory {
         LogUtils.e(TAG, "********************单组操作开始****************");
         //  2. 更新当前组的状态
             groupInfo.setGroupStatus(Entiy.GROUP_STATUS_OPEN);
+            groupInfo.setGroupStop(false);
             GroupInfoSql.updateGroup(groupInfo);
         //  3. 获取所有组的设备
         ArrayList<ControlInfo> openList = new ArrayList<>();
@@ -175,6 +179,7 @@ public class TaskFactory {
         if (closeGroupId > 0 && closeList.size() > 0) {
             // 7 修改需要关闭组的状态为关闭
             closeGroupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
+            closeGroupInfo.setGroupStop(false);
             LogUtils.e(TAG, "********************单组操作有需要关闭的组****************");
             // 8 添加关闭其他组task
             addOpenGroupTask(closeList, false);
@@ -273,6 +278,7 @@ public class TaskFactory {
         LogUtils.e(TAG, "**********************************自动轮灌开启****************************");
         //  1. 更新当前组的状态为运行
         groupInfo.setGroupStatus(Entiy.GROUP_STATUS_OPEN);
+        groupInfo.setGroupStop(false);
         GroupInfoSql.updateGroup(groupInfo);
         //  2. 获取所有组的设备
         ArrayList<ControlInfo> openList = getControlInfo(groupInfo);
@@ -301,6 +307,7 @@ public class TaskFactory {
         LogUtils.e(TAG, "**********************************自动轮灌开启****************************");
         //  1. 更新当前组的状态为运行
         curInfo.setGroupStatus(Entiy.GROUP_STATUS_OPEN);
+        curInfo.setGroupStop(false);
         GroupInfoSql.updateGroup(curInfo);
         //  2. 获取所有组的设备
         ArrayList<ControlInfo> openList = getControlInfo(curInfo);
@@ -327,6 +334,7 @@ public class TaskFactory {
         LogUtils.e(TAG, "*********************************自动轮灌关闭当前组*****************************");
         //  1. 更新当前组的状态为运行
         groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
+        groupInfo.setGroupStop(false);
         GroupInfoSql.updateGroup(groupInfo);
         //  2. 获取组的设备信息
         ArrayList<ControlInfo> closeList  = getControlInfo(groupInfo);
@@ -355,24 +363,20 @@ public class TaskFactory {
      */
     public static void createAutoGroupNextTask(GroupInfo groupInfo) {
         LogUtils.e(TAG, "*********************************自动轮灌 是否有下一组需要操作*****************************");
-        groupInfo.setGroupTime(0);
-        groupInfo.setGroupRunTime(0);
-        groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
-        GroupInfoSql.updateGroup(groupInfo);
         //查看是否有下一组
-        GroupInfo nextInfo = GroupInfoSql.queryNextGroup();
-        if(nextInfo != null) {
-            LogUtils.e(TAG, "*********************************自动轮灌 下一组信息*****************************");
-            LogUtils.e(TAG, "info = "+ (new Gson().toJson(nextInfo)));
-            createAutoGroupOpenNextTask(nextInfo);
+        List<GroupInfo> groupList = GroupInfoSql.queryNextGroupList(groupInfo.getGroupId());
+        if (groupList == null) {
+            groupInfo.setGroupTime(0);
+            groupInfo.setGroupRunTime(0);
+            groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
+            groupInfo.setGroupStop(false);
+            GroupInfoSql.updateGroup(groupInfo);
+            createAutoGroupOpenNextTask(groupList.get(0));
             createAutoGroupCloseTask(groupInfo);
             TaskManager.getInstance().startTask();
-        }else {
-            // 轮灌完成
-            LogUtils.e(TAG, "*********************************自动轮灌 轮灌完成*****************************");
-            createAutoGroupCloseTask(groupInfo);
-            TaskManager.getInstance().startTask();
-
+        } else {
+            LogUtils.e(TAG, "*********************************自动轮灌完成 停止计时*****************************");
+            EventBus.getDefault().post(new AutoTaskEvent(Entiy.RUN_DO_STOP));
         }
     }
 

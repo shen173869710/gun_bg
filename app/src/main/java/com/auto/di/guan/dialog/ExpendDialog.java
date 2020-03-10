@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.ImageExpandableListViewaAdapter;
 import com.auto.di.guan.entity.ImageInfo;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.util.List;
 
@@ -103,6 +104,9 @@ public class ExpendDialog extends Dialog {
 		dialog.setOnPositiveListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				if(listener != null)
 					listener.onClick(v);
 				dialog.dismiss();

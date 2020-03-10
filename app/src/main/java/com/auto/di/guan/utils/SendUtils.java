@@ -186,8 +186,6 @@ public class SendUtils {
         cmdStatus.setControl_id(info.getValve_id());
         EventBus.getDefault().post(cmdStatus);
     }
-
-
     /**
      *        读取获取数据
      * @param desc
@@ -200,7 +198,6 @@ public class SendUtils {
         cmdStatus.setControl_id(info.getValve_id());
         EventBus.getDefault().post(cmdStatus);
     }
-
     /**
      *        读取获取数据
      * @param desc

@@ -19,6 +19,7 @@ import com.auto.di.guan.entity.ElecEvent;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.mqtt.MqttSimple;
 import com.auto.di.guan.utils.LogUtils;
+import com.auto.di.guan.utils.NoFastClickUtils;
 import com.auto.di.guan.view.XEditText;
 import com.trello.rxlifecycle3.LifecycleTransformer;
 
@@ -61,6 +62,9 @@ public class ActivationActivity extends IBaseActivity<LoginPresenter> implements
 		activiation.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				String name = loginName.getText().toString().trim();
 				name = "18675570796";
 				if (name == null && TextUtils.isEmpty(name)) {

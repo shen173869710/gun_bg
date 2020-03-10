@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.utils.NoFastClickUtils;
 import com.auto.di.guan.utils.ShareUtil;
 
 
@@ -69,6 +70,9 @@ public class Main31Dialog extends Dialog {
 		dialog.main_option_open.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				listener.onItemClick(1);
 				dialog.dismiss();
 			}
@@ -76,6 +80,9 @@ public class Main31Dialog extends Dialog {
 		dialog.main_option_close.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				listener.onItemClick(2);
 				dialog.dismiss();
 			}

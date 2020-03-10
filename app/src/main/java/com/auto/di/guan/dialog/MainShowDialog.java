@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.auto.di.guan.R;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 
 public class MainShowDialog extends Dialog {
@@ -113,6 +114,9 @@ public class MainShowDialog extends Dialog {
 		dialog.setOnPositiveListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				if(listener != null)
 					listener.onClick(v);
 				dialog.dismiss();

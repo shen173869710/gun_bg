@@ -26,6 +26,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.auto.di.guan.R;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 public class DialogManager {
 
@@ -145,6 +146,9 @@ public class DialogManager {
 		btn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				showToast("按下自定义视图的按钮了~");
 			}
 		});
@@ -248,6 +252,9 @@ public class DialogManager {
 		btn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				showToast("按下PopupWindow中的按钮了~");
 				pWindow.dismiss();
 			}

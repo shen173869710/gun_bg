@@ -21,6 +21,7 @@ import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.db.sql.LevelInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.utils.LogUtils;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,9 @@ public class FragmentTab2 extends BaseFragment {
 		addBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				getActivity().startActivity(new Intent(getActivity(), ChooseGroupctivity.class));
 			}
 		});
@@ -62,9 +66,15 @@ public class FragmentTab2 extends BaseFragment {
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if(NoFastClickUtils.isFastClick()){
+					return;
+				}
 				MainShowDialog.ShowDialog(getActivity(), "删所有分组除", "当前操作会删除所有的分组", new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						if(NoFastClickUtils.isFastClick()){
+							return;
+						}
 						List<DeviceInfo> deviceInfos = DeviceInfoSql.queryDeviceList();
 						int size = deviceInfos.size();
 						for (int i = 0; i < size; i++) {

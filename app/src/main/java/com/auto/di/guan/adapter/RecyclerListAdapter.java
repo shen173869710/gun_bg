@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.utils.NoFastClickUtils;
 import com.auto.di.guan.utils.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
@@ -148,6 +149,9 @@ public class RecyclerListAdapter extends BaseQuickAdapter<GroupInfo, BaseViewHol
         option_switch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
                 if (info.getGroupRunTime() > 0) {
                     ToastUtils.showLongToast("设备处于运行状态,无法关闭");
                     return;

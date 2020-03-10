@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.auto.di.guan.R;
 import com.auto.di.guan.entity.ImageInfo;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.util.List;
 
@@ -95,12 +96,18 @@ public class ImageExpandableListViewaAdapter extends BaseExpandableListAdapter {
         holder.expand_list_child_item_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
                 upData(groupPosition, 0);
             }
         });
         holder.expand_list_child_item_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
                 upData(groupPosition, 1);
             }
         });
@@ -108,12 +115,18 @@ public class ImageExpandableListViewaAdapter extends BaseExpandableListAdapter {
         holder.expand_list_child_item_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
                 upData(groupPosition, 2);
             }
         });
         holder.expand_list_child_item_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
                 upData(groupPosition, 3);
             }
         });

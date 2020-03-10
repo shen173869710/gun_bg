@@ -29,9 +29,8 @@ public class CustomShowDialog extends Dialog {
 		setCustomView();
 	}
 
-	public CustomShowDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+	public CustomShowDialog(Context context, OnCancelListener cancelListener) {
 		super(context, R.style.UpdateDialog);
-		this.setCancelable(cancelable);
 		this.setOnCancelListener(cancelListener);
 		this.context = context;
 		setCustomView();
@@ -93,7 +92,6 @@ public class CustomShowDialog extends Dialog {
 	
 	public static void ShowCustomDialog(final Activity context,String msg, final String url, int uptate) {
 		final CustomShowDialog dialog = new CustomShowDialog(context);
-		dialog.setCanceledOnTouchOutside(false);
 		dialog.setMsgHintText(msg);
 		LayoutParams lay = dialog.getWindow().getAttributes();
 		DisplayMetrics dm = new DisplayMetrics();//获取屏幕分辨率
@@ -101,7 +99,7 @@ public class CustomShowDialog extends Dialog {
 		Rect rect = new Rect();
 		View view = context.getWindow().getDecorView();
 		view.getWindowVisibleDisplayFrame(rect);
-		lay.width = dm.widthPixels * 9/10;
+		lay.width = dm.widthPixels * 9 / 10;
 		dialog.show();
 	}
 }

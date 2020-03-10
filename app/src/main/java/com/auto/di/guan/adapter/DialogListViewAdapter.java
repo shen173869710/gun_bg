@@ -16,7 +16,6 @@ public class DialogListViewAdapter extends BaseQuickAdapter<CmdStatus, BaseViewH
 
     @Override
     protected void convert(BaseViewHolder holder, CmdStatus cmdStatus) {
-
         if (!TextUtils.isEmpty(cmdStatus.getControlName())) {
             holder.setText(R.id.cmd_name, "控制阀"+ cmdStatus.getControlName());
         }
@@ -37,11 +36,5 @@ public class DialogListViewAdapter extends BaseQuickAdapter<CmdStatus, BaseViewH
         if (!TextUtils.isEmpty(cmdStatus.getCmd_read_end())) {
             holder.setText(R.id.cmd_read_end, Html.fromHtml(cmdStatus.getCmd_read_end()+""));
         }
-
-
-
-
-
-
     }
 }

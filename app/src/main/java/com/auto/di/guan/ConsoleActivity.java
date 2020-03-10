@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.utils.LogUtils;
+import com.auto.di.guan.utils.NoFastClickUtils;
 
 import java.io.IOException;
 
@@ -87,6 +88,9 @@ public class ConsoleActivity extends SerialPortActivity {
 		rbid.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
 				try {
 					mOutputStream.write(new String("rbid").getBytes());
 					mOutputStream.write('\n');
@@ -100,6 +104,9 @@ public class ConsoleActivity extends SerialPortActivity {
 		rgid.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
 				try {
 					mOutputStream.write(new String("rgid").getBytes());
 					mOutputStream.write('\n');
@@ -112,6 +119,9 @@ public class ConsoleActivity extends SerialPortActivity {
 		rs.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
 				try {
 
 					mOutputStream.write(new String("rs 001 001 0 00").getBytes());
@@ -125,6 +135,9 @@ public class ConsoleActivity extends SerialPortActivity {
 		kf.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
 
 //				runOnUiThread(new Runnable() {
 //					@Override
@@ -146,6 +159,9 @@ public class ConsoleActivity extends SerialPortActivity {
 		gf.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
 				try {
 
 					mOutputStream.write(new String("gf 001 001 0 00").getBytes());
@@ -159,6 +175,9 @@ public class ConsoleActivity extends SerialPortActivity {
 		sbid.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
 				try {
 					mOutputStream.write(new String("sbid001").getBytes());
 					mOutputStream.write('\n');
@@ -171,6 +190,9 @@ public class ConsoleActivity extends SerialPortActivity {
 		sgid.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+                if(NoFastClickUtils.isFastClick()){
+                    return;
+                }
 				try {
 					mOutputStream.write(new String("sgid001").getBytes());
 					mOutputStream.write('\n');
