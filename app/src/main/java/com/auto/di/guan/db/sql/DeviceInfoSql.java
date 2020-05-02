@@ -3,6 +3,7 @@ package com.auto.di.guan.db.sql;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.greendao.DaoSession;
 import com.auto.di.guan.db.greendao.DeviceInfoDao;
+
 import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
@@ -11,23 +12,20 @@ import java.util.List;
 public class DeviceInfoSql extends BaseSql {
     private final static String TAG = "DeviceInfoSql";
 
-    public static List<DeviceInfo>deviceInfos = new ArrayList<>();
+    public static List<DeviceInfo> deviceInfos = new ArrayList<>();
 
     /**
      * 获取所有设备列表
      */
     public static List<DeviceInfo> queryDeviceList() {
-        if (deviceInfos.size() == 0) {
-            DaoSession daoSession = getDaoWriteSession();
-            DeviceInfoDao userDao = daoSession.getDeviceInfoDao();
-            QueryBuilder<DeviceInfo> qb = userDao.queryBuilder();
-            deviceInfos = qb.list();
-        }
-        return deviceInfos;
+        DaoSession daoSession = getDaoWriteSession();
+        DeviceInfoDao userDao = daoSession.getDeviceInfoDao();
+        QueryBuilder<DeviceInfo> qb = userDao.queryBuilder();
+        return qb.list();
     }
 
     /**
-     *  通过ID查询设备
+     * 通过ID查询设备
      */
     public static DeviceInfo queryDeviceById(int deviceId) {
         DaoSession daoSession = getDaoWriteSession();
@@ -36,8 +34,10 @@ public class DeviceInfoSql extends BaseSql {
         qb.where(DeviceInfoDao.Properties.DeviceId.eq(deviceId));
         return qb.unique();
     }
+
     /**
      * 更新所有设备
+     *
      * @param infos
      */
     public static void updateDeviceList(List<DeviceInfo> infos) {
@@ -46,8 +46,10 @@ public class DeviceInfoSql extends BaseSql {
         userDao.updateInTx(infos);
         upDateList();
     }
+
     /**
      * 插入
+     *
      * @param deviceInfos
      */
     public static void insertDeviceInfoList(List<DeviceInfo> deviceInfos) {
@@ -58,8 +60,10 @@ public class DeviceInfoSql extends BaseSql {
         DeviceInfoDao userDao = daoSession.getDeviceInfoDao();
         userDao.insertInTx(deviceInfos);
     }
+
     /**
      * 更新一条记录
+     *
      * @param deviceInfo
      */
     public static void updateDevice(DeviceInfo deviceInfo) {
@@ -80,7 +84,7 @@ public class DeviceInfoSql extends BaseSql {
     }
 
     /**
-     *  更新缓存的list
+     * 更新缓存的list
      */
     private static void upDateList() {
         DaoSession daoSession = getDaoWriteSession();

@@ -44,7 +44,7 @@ public class ControlInfo implements Serializable {
     private String update_by;
     //更新时间
     private String update_time;
-    //通信协议ID
+    //通信协议项目ID
     private String protocalId;
     //通信协议ID
     private String deviceProtocalId;

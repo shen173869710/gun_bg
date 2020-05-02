@@ -51,7 +51,7 @@ public class GroupAutoEndTask extends BaseTask{
 
     @Override
     public void errorTask() {
-
+        finishTask();
     }
 
     @Override

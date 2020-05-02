@@ -124,14 +124,13 @@ public class ActivationActivity extends IBaseActivity<LoginPresenter> implements
 	@Override
 	public void activationFail(Throwable error, Integer code, String msg) {
         LogUtils.e("---------",""+msg);
-
 		User user = new User();
 		user.setAvatar("");
 		user.setLoginName("test");
 		user.setPhonenumber("18675570791");
 		user.setProjectName("测试项目");
-		user.setProjectId("001");
-		user.setProjectGroupId("002");
+		user.setProjectId("00002");
+		user.setProjectGroupId("00002");
 		user.setPileOutNum(10);
 		user.setTrunkPipeNum(10);
 		UserSql.insertUser(user);

@@ -8,6 +8,20 @@ import com.auto.di.guan.BaseApp;
 
 public class Entiy {
 
+    /**
+     *   绑定     上开关  右
+     *            下开关  右
+     *            按下复位  写
+     *
+     *   操作     上开关  左
+     *            按下复位
+     *            操作
+     *
+     *
+     *
+     *
+     */
+
 
     /**
      * 操作的页面
@@ -224,16 +238,5 @@ public class Entiy {
      */
     public static  String createProtocalId(int id) {
         return String.format("%03d",id);
-    }
-
-    public static  String createGid(String gid) {
-        if (gid != null) {
-            if (gid.length() == 1) {
-                gid = "00"+gid;
-            }else if (gid.length() ==2) {
-                gid = "0"+gid;
-            }
-        }
-        return "sgid"+gid;
     }
 }

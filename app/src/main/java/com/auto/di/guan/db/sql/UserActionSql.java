@@ -25,7 +25,7 @@ public class UserActionSql extends BaseSql {
         DaoSession daoSession = getDaoWriteSession();
         UserActionDao userDao = daoSession.getUserActionDao();
         QueryBuilder<UserAction> qb = userDao.queryBuilder();
-        qb.orderAsc(UserActionDao.Properties.ActionTime);
+        qb.orderDesc(UserActionDao.Properties.ActionTime);
         List<UserAction> list = qb.list();
         return list;
     }
@@ -34,7 +34,7 @@ public class UserActionSql extends BaseSql {
         DaoSession daoSession = getDaoWriteSession();
         UserActionDao userDao = daoSession.getUserActionDao();
         QueryBuilder<UserAction> qb = userDao.queryBuilder();
-        qb.where(UserActionDao.Properties.ActionType.eq(type)).orderAsc(UserActionDao.Properties.ActionTime);
+        qb.where(UserActionDao.Properties.ActionType.eq(type)).orderDesc(UserActionDao.Properties.ActionTime);
         List<UserAction> list = qb.list();
         return list;
     }
@@ -58,7 +58,7 @@ public class UserActionSql extends BaseSql {
         DaoSession daoSession = getDaoWriteSession();
         UserActionDao userDao = daoSession.getUserActionDao();
         QueryBuilder<UserAction> qb = userDao.queryBuilder();
-        qb.where(UserActionDao.Properties.ActionStatus.notEq("操作正常")).orderAsc(UserActionDao.Properties.ActionTime);
+        qb.where(UserActionDao.Properties.ActionStatus.notEq("操作正常")).orderDesc(UserActionDao.Properties.ActionTime);
         List<UserAction> list = qb.list();
         if (list != null) {
             for (int i = 0; i < list.size(); i++) {
@@ -72,7 +72,7 @@ public class UserActionSql extends BaseSql {
         DaoSession daoSession = getDaoWriteSession();
         UserActionDao userDao = daoSession.getUserActionDao();
         QueryBuilder<UserAction> qb = userDao.queryBuilder();
-        qb.where(UserActionDao.Properties.ActionStatus.notEq(type)).orderAsc(UserActionDao.Properties.ActionTime);
+        qb.where(UserActionDao.Properties.ActionStatus.eq(type)).orderDesc(UserActionDao.Properties.ActionTime);
         List<UserAction> list = qb.list();
         return list;
     }
@@ -91,7 +91,7 @@ public class UserActionSql extends BaseSql {
         DaoSession daoSession = getDaoWriteSession();
         UserActionDao userDao = daoSession.getUserActionDao();
         QueryBuilder<UserAction> qb = userDao.queryBuilder();
-        qb.where(UserActionDao.Properties.ControlId.eq(id)).orderAsc(UserActionDao.Properties.ActionTime);
+        qb.where(UserActionDao.Properties.ControlId.eq(id)).orderDesc(UserActionDao.Properties.ActionTime);
         List<UserAction> list = qb.list();
         return list;
     }

@@ -33,9 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MainActivity extends SerialPortActivity {
-
     private final String TAG = "------" + MainActivity.class.getSimpleName();
     private FragmentManager manager;
     private FragmentTransaction transaction;
@@ -141,104 +139,6 @@ public class MainActivity extends SerialPortActivity {
         textView.setText(title);
     }
 
-
-//    public void doNext(GroupInfo groupInfo) {
-//        final List<ControlInfo> infos = new ArrayList<>();
-//        List<DeviceInfo> deveiceInfo = DeviceInfoSql.queryDeviceList();
-//        int size = deveiceInfo.size();
-//
-//        for (int i = 0; i < size; i++) {
-//            if (groupInfo.getGroupId() == deveiceInfo.get(i).getValveDeviceSwitchList().get(0).getValve_group_id()) {
-//                infos.add(deveiceInfo.get(i).getValveDeviceSwitchList().get(0));
-//            }
-//            if (groupInfo.getGroupId() == deveiceInfo.get(i).getValveDeviceSwitchList().get(1).getValve_group_id()) {
-//                infos.add(deveiceInfo.get(i).getValveDeviceSwitchList().get(1));
-//            }
-//        }
-//        groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
-//        GroupInfoSql.updateGroup(groupInfo);
-//
-//        Observable.interval(0, RXJAVA_TIME, TimeUnit.SECONDS)
-//                .take(infos.size())
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new DisposableObserver<Long>() {
-//                    @Override
-//                    public void onNext(Long value) {
-//                        int count = value.intValue();
-//                        closeCmd(infos.get(count));
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
-//
-//        Observable.interval(infos.size() * RXJAVA_TIME, RXJAVA_TIME, TimeUnit.SECONDS)
-//                .take(infos.size())
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new DisposableObserver<Long>() {
-//                    @Override
-//                    public void onNext(Long value) {
-//                        int count = value.intValue();
-//                        readCmd(infos.get(count), TYPE_CLOSE);
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        LogUtils.e(TAG, "---关闭完成----" + System.currentTimeMillis());
-////                        handler.postDelayed(new Runnable() {
-////                            @Override
-////                            public void run() {
-////
-////                            }
-////                        }, RXJAVA_TIME*1000);
-//                    }
-//                });
-//    }
-
-//    /**
-//     * 关闭 或者开启设备
-//     **/
-//    private int doRun(boolean isSatrt, GroupInfo groupInfo) {
-//        List<ControlInfo> infos = new ArrayList<>();
-//        List<DeviceInfo> deveiceInfo = DeviceInfoSql.queryDeviceList();
-//        int size = deveiceInfo.size();
-//
-//        for (int i = 0; i < size; i++) {
-//            if (groupInfo.getGroupId() == deveiceInfo.get(i).getValveDeviceSwitchList().get(0).getValve_group_id()) {
-//                infos.add(deveiceInfo.get(i).getValveDeviceSwitchList().get(0));
-//            }
-//            if (groupInfo.getGroupId() == deveiceInfo.get(i).getValveDeviceSwitchList().get(1).getValve_group_id()) {
-//                infos.add(deveiceInfo.get(i).getValveDeviceSwitchList().get(1));
-//            }
-//        }
-//        int groupStatus;
-//        if (isSatrt) {
-//            groupStatus = Entiy.GROUP_STATUS_OPEN;
-//            optionContron(infos, TYPE_OPEN);
-//        } else {
-//            groupStatus = Entiy.GROUP_STATUS_COLSE;
-//            optionContron(infos, TYPE_CLOSE);
-//        }
-//        groupInfo.setGroupStatus(groupStatus);
-//        GroupInfoSql.updateGroup(groupInfo);
-//        return infos.size();
-//    }
-
     @Override
     protected void onDataReceived(byte[] buffer, int size) {
         final String receive = new String(buffer, 0, size);
@@ -246,7 +146,7 @@ public class MainActivity extends SerialPortActivity {
 //        LogUtils.e(TAG, "收到 -------------------" + receive + "    length = " + length);
 
         if (TextUtils.isEmpty(receive)) {
-            showToastLongMsg("错误命令" + receive);
+            ToastUtils.showLongToast("错误命令" + receive);
             return;
         }
         if ((receive.contains("kf")
@@ -264,168 +164,9 @@ public class MainActivity extends SerialPortActivity {
         });
     }
 
-    /**
-     * 显示字符串类型数据
-     *
-     * @param msg
-     */
-    public void showToastLongMsg(final String msg) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-
     public void showDialog() {
         FloatWindowUtil.getInstance().show();
     }
-
-//    /**
-//     * 进行批量分组操作
-//     *
-//     * @param event
-//     */
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onMessageEvent(final MessageEvent event) {
-//        isSaveDb = true;
-//        optionType = FRAGMENT_32;
-//        groupInfos = GroupInfoSql.queryGroupList();
-//        if (event.flag == Entiy.GROUP_STOP) {
-//            handler.removeMessages(HANDLER_WHAT_FALG);
-////            doRun(false, event.groupInfo);
-//        } else if (event.flag == Entiy.GROUP_NEXT) {
-//            handler.removeMessages(HANDLER_WHAT_FALG);
-//            event.groupInfo.setGroupTime(0);
-//            event.groupInfo.setGroupRunTime(0);
-//            event.groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
-//            GroupInfoSql.updateGroup(event.groupInfo);
-//            EventBus.getDefault().post(new UpdateEvent());
-//            GroupInfo groupInfo = null;
-//            for (int i = 0; i < groupInfos.size(); i++) {
-//                if (groupInfos.get(i).getGroupTime() > 0) {
-//                    groupInfo = groupInfos.get(i);
-//                    break;
-//                }
-//            }
-//
-//            int size = 0;
-//            if (groupInfo != null) {
-//                Message message = new Message();
-//                message.obj = groupInfo;
-//                message.what = HANDLER_WHAT_FALG;
-//                handler.sendMessage(message);
-//                size = doRun(true, groupInfo);
-//            } else {
-//                PollingUtils.stopPollingService(MainActivity.this);
-//                doRun(false, event.groupInfo);
-//                showToastLongMsg("轮灌结束， 关闭自动查询");
-//            }
-//
-//            if (size > 0) {
-//                Observable.timer(size * 2 * RXJAVA_TIME, TimeUnit.SECONDS).subscribe(new DisposableObserver<Long>() {
-//                    @Override
-//                    public void onNext(Long value) {
-//                        doNext(event.groupInfo);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
-//            }
-//        } else if (event.flag == Entiy.GROUP_START) {
-//            GroupInfo groupInfo = null;
-//            for (int i = 0; i < groupInfos.size(); i++) {
-//                if (groupInfos.get(i).getGroupTime() > 0) {
-//                    groupInfo = groupInfos.get(i);
-//                    break;
-//                }
-//            }
-//            if (groupInfo != null) {
-//                Message message = new Message();
-//                message.obj = groupInfo;
-//                message.what = HANDLER_WHAT_FALG;
-//                handler.sendMessage(message);
-//                doRun(true, groupInfo);
-//            } else {
-//                PollingUtils.stopPollingService(MainActivity.this);
-//                showToastLongMsg("轮灌结束， 关闭自动查询");
-//            }
-//        }
-//    }
-
-
-//    /**
-//     * 定时轮询任务
-//     **/
-//    private List<ControlInfo> temp;
-//
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onPollingEvent(PollingEvent event) {
-//        if (curRunTime < 5 * 60) {
-//            LogUtils.e(TAG, "剩余时间不够完成轮询");
-//            Toast.makeText(MainActivity.this, "剩余时间不够完成查询操作", Toast.LENGTH_LONG).show();
-//            PollingUtils.stopPollingService(this);
-//            return;
-//        }
-//        if (FloatWindowUtil.getInstance().isShow()) {
-//            LogUtils.e(TAG, "------" + FloatWindowUtil.getInstance().isShow());
-//            return;
-//        }
-//        optionType = 0;
-//        List<GroupInfo> infos = GroupInfoSql.queryGroupList();
-//        GroupInfo groupInfo = null;
-//        if (infos.size() > 0) {
-//            for (int i = 0; i < infos.size(); i++) {
-//                if (infos.get(i).getGroupStatus() == Entiy.GROUP_STATUS_OPEN) {
-//                    groupInfo = infos.get(i);
-//                    break;
-//                }
-//            }
-//        }
-//        List<ControlInfo> controlInfos = ControlInfoSql.queryControlList();
-//        int size = controlInfos.size();
-//        if (groupInfo == null) {
-//            LogUtils.e(TAG, "没有在运行的任务");
-//        } else {
-//            LogUtils.e(TAG, groupInfo.getGroupId() + "运行的任务");
-//            if (groupInfo != null) {
-//                if (controlInfos != null) {
-//                    temp = new ArrayList<>();
-//                    for (int i = 0; i < size; i++) {
-//                        if (controlInfos.get(i).getValve_group_id() == groupInfo.getGroupId()) {
-//                            temp.add(controlInfos.get(i));
-//                        }
-//                    }
-//                    if (temp.size() > 0) {
-//                        isSaveDb = false;
-//                        optionContron(temp, TYPE_READ);
-//                        return;
-//                    }
-//                }
-//            }
-//        }
-//
-//        List<ControlInfo> oneTemp = new ArrayList<>();
-//        for (int i = 0; i < size; i++) {
-//            if (controlInfos.get(i).getValve_status() == Entiy.CONTROL_STATUS＿RUN || controlInfos.get(i).getValve_status() == Entiy.CONTROL_STATUS＿ERROR) {
-//                oneTemp.add(controlInfos.get(i));
-//            }
-//        }
-//        if (oneTemp.size() > 0) {
-//            isSaveDb = false;
-//            optionContron(oneTemp, TYPE_READ);
-//        }
-//    }
 
     private void play() {
         try {
@@ -435,89 +176,6 @@ public class MainActivity extends SerialPortActivity {
             e.printStackTrace();
         }
     }
-
-
-//    public void optionContron(final List<ControlInfo> infos, final int type) {
-//        if (infos.size() == 0) {
-//            return;
-//        }
-//        if (type == TYPE_READ) {
-//            Observable.interval(0, RXJAVA_TIME, TimeUnit.SECONDS)
-//                    .take(infos.size())
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new DisposableObserver<Long>() {
-//                        @Override
-//                        public void onNext(Long value) {
-//                            int count = value.intValue();
-//                            ControlInfo controlInfo = infos.get(count);
-//                            Gson gson = new Gson();
-//                            String str = gson.toJson(controlInfo);
-//                            Log.e("---TYPE_READ ---", "count = " + count + "controlInfo = " + str);
-//                            readCmd(infos.get(count), TYPE_READ);
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable e) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onComplete() {
-//
-//                        }
-//                    });
-//        } else {
-//            Observable.interval(0, RXJAVA_TIME, TimeUnit.SECONDS)
-//                    .take(infos.size())
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new DisposableObserver<Long>() {
-//                        @Override
-//                        public void onNext(Long value) {
-//                            int count = value.intValue();
-//                            if (type == TYPE_OPEN) {
-//                                openCmd(infos.get(count));
-//                            } else if (type == TYPE_CLOSE) {
-//                                closeCmd(infos.get(count));
-//                            }
-//
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable e) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onComplete() {
-//
-//                        }
-//                    });
-//            Observable.interval(infos.size() * RXJAVA_TIME, RXJAVA_TIME, TimeUnit.SECONDS)
-//                    .take(infos.size())
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new DisposableObserver<Long>() {
-//                        @Override
-//                        public void onNext(Long value) {
-//                            int count = value.intValue();
-//                            readCmd(infos.get(count), type);
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable e) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onComplete() {
-//
-//                        }
-//                    });
-//        }
-//    }
-
 
     @Override
     protected void onDestroy() {
@@ -536,21 +194,6 @@ public class MainActivity extends SerialPortActivity {
     public void onStatsuEvent(CmdStatus event) {
         FloatWindowUtil.getInstance().onStatsuEvent(event);
     }
-
-
-//    /**
-//     * 查询电量
-//     *
-//     * @param event
-//     */
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onElecEvent(ElecEvent event) {
-//        if (!BaseApp.isGroupStart()) {
-//            List<ControlInfo> controlInfos = ControlInfoSql.queryBindControlList();
-//            optionType = FRAGMENT_0;
-//            optionContron(controlInfos, TYPE_READ);
-//        }
-//    }
 
 
     /**
@@ -585,7 +228,7 @@ public class MainActivity extends SerialPortActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onVideoPlayEvent(VideoPlayEcent event) {
-//        play();
+        play();
     }
 
     /**

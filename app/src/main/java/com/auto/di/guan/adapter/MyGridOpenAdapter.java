@@ -188,11 +188,7 @@ public class MyGridOpenAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void setData(List<DeviceInfo> controlInfos) {
-        datas.clear();
-        datas.addAll(controlInfos);
-        notifyDataSetChanged();
-    }
+
     class ViewHolder {
         public RelativeLayout grid_item_layout;
         public ImageView grid_item_device;
@@ -232,12 +228,12 @@ public class MyGridOpenAdapter extends BaseAdapter {
                     TaskManager.getInstance().startTask();
                 }else if (index == 1) {
                     TaskFactory.createOpenTask(controlInfo);
-                    TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_OPEN_READ ,Entiy.ACTION_TYPE_4);
+                    TaskFactory.createReadSingleTask(controlInfo, TaskEntiy.TASK_OPTION_OPEN_READ ,Entiy.ACTION_TYPE_4);
                     TaskFactory.createReadEndTask();
                     TaskManager.getInstance().startTask();
                 }else if (index == 2) {
                     TaskFactory.createCloseTask(controlInfo);
-                    TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_CLOSE_READ ,Entiy.ACTION_TYPE_4);
+                    TaskFactory.createReadSingleTask(controlInfo, TaskEntiy.TASK_OPTION_CLOSE_READ ,Entiy.ACTION_TYPE_4);
                     TaskFactory.createReadEndTask();
                     TaskManager.getInstance().startTask();
                 }

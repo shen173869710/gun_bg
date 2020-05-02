@@ -1,21 +1,23 @@
 package com.auto.di.guan.jobqueue.task;
 
+import android.os.Handler;
+
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.event.SendCmdEvent;
 import com.auto.di.guan.utils.LogUtils;
-
 import org.greenrobot.eventbus.EventBus;
 
 public abstract class BaseTask {
 
     public final String BASETAG = "BaseTask == ";
     public final int RETRY_COUNT = 2;
-
     private int taskCount = RETRY_COUNT;
     private int taskType;
     private String taskCmd;
     private ControlInfo taskInfo;
+    /*每个任务默认存活的时间*/
+    private int taskLife;
     /**
      *   接收的数据
      */
@@ -102,6 +104,15 @@ public abstract class BaseTask {
      */
     public void finishTask() {
         LogUtils.e("BaseTask", "############################################完成一次操作#############################################");
+
         TaskManager.getInstance().doNextTask();
+    }
+
+    public int getTaskLife() {
+        return taskLife;
+    }
+
+    public void setTaskLife(int taskLife) {
+        this.taskLife = taskLife;
     }
 }

@@ -26,11 +26,9 @@ public class SingleEndTask extends BaseTask{
         finishTask();
     }
 
-
-
     @Override
     public void errorTask() {
-
+        finishTask();
     }
 
     @Override

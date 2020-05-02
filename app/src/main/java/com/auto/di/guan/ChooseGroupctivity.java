@@ -17,7 +17,10 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.db.sql.LevelInfoSql;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.jobqueue.event.ChooseGroupEvent;
 import com.auto.di.guan.utils.NoFastClickUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +104,7 @@ public class ChooseGroupctivity extends Activity {
 						}
 					}
 					DeviceInfoSql.updateDeviceList(deviceInfos);
+					EventBus.getDefault().post(new ChooseGroupEvent());
 					finish();
 				}else  {
 					Toast.makeText(ChooseGroupctivity.this, "没有可用的分组",Toast.LENGTH_LONG).show();

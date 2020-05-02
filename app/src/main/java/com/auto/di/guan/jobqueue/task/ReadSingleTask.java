@@ -1,5 +1,8 @@
 package com.auto.di.guan.jobqueue.task;
+
+import android.os.Handler;
 import android.text.TextUtils;
+
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DeviceInfo;
@@ -12,22 +15,24 @@ import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.OptionUtils;
 import com.auto.di.guan.utils.SendUtils;
 import com.google.gson.Gson;
+
 import org.greenrobot.eventbus.EventBus;
+
 /**
  *   读取设备的状态
  *   rs 012 002 0 01
  *   zt 102 002 1100 090
  */
-public class ReadTask extends BaseTask{
-    private final String TAG = BASETAG+"ReadTask";
+public class ReadSingleTask extends BaseTask{
+    private final String TAG = BASETAG+"ReadSingleTask";
 
     private int actionType;
 
-    public ReadTask(int taskType, String taskCmd) {
+    public ReadSingleTask(int taskType, String taskCmd) {
         super(taskType, taskCmd);
     }
 
-    public ReadTask(int taskType, String taskCmd, ControlInfo taskInfo, int actionType) {
+    public ReadSingleTask(int taskType, String taskCmd, ControlInfo taskInfo, int actionType) {
         super(taskType, taskCmd, taskInfo);
         this.actionType = actionType;
     }
@@ -36,14 +41,18 @@ public class ReadTask extends BaseTask{
     public void startTask() {
         LogUtils.e(TAG, "读取状态 开始 =========================================  cmd =="+getTaskCmd());
         SendUtils.sendReadStart(getTaskCmd(), getTaskInfo());
-        writeCmd(getTaskCmd());
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                writeCmd(getTaskCmd());
+            }
+        }, 3000);
     }
 
     @Override
     public void errorTask() {
         LogUtils.e(TAG, "读取状态 错误 ======="+"errorTask()");
         SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),SendUtils.OPTION_READ_FAILE);
-        EventBus.getDefault().post(new VideoPlayEcent(Entiy.VIDEO_CLOSE_ERROR));
         finishTask();
     }
 
@@ -100,7 +109,7 @@ public class ReadTask extends BaseTask{
     }
 
 
-    public void  doReadStatus(String receive,OptionStatus status) {
+    public void doReadStatus(String receive,OptionStatus status) {
         //status = {"allCmd":"zt 102 002 1100 090\n\u0000","code":"1100","deviceId":"002","elect":"090","projectId":"102","type":"zt","status":0}
         LogUtils.e(TAG, "读取状态 ======="+"doReadStatus == " +(new Gson().toJson(status)));
             DeviceInfo info = OptionUtils.changeStatus(status);

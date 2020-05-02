@@ -1,14 +1,18 @@
 package com.auto.di.guan.jobqueue;
 
-import com.auto.di.guan.jobqueue.task.BaseTask;
-import com.auto.di.guan.utils.LogUtils;
+import android.text.TextUtils;
 
+import com.auto.di.guan.jobqueue.task.BaseTask;
+import com.auto.di.guan.jobqueue.task.MyTimeTask;
+import com.auto.di.guan.utils.LogUtils;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class TaskManager {
     public static BlockingQueue <BaseTask>queue = new LinkedBlockingQueue(200);
     private BaseTask mTask;
+
+    private MyTimeTask myTimeTask;
 
     private static TaskManager mTaskManager = null;
     public static TaskManager getInstance(){
@@ -22,13 +26,24 @@ public class TaskManager {
      *   开始执行任务
      */
     public void startTask(){
-        if (queue.isEmpty()) {
+        if (myTimeTask != null) {
+            myTimeTask.stop();
+            myTimeTask = null;
+        }
+
+        LogUtils.e("BaseTask == ", "队列大小   =  "+queue.size());
+        BaseTask task = queue.poll();
+        if (task == null ) {
             LogUtils.e("BaseTask == ", "队列为空，任务结束");
             return;
         }
-        setmTask(queue.poll());
+        setmTask(task);
         getmTask().startTask();
-        LogUtils.e("BaseTask == ", "队列有数据开始任务");
+        if (!TextUtils.isEmpty(getmTask().getTaskCmd())) {
+            myTimeTask = new MyTimeTask(getmTask());
+            myTimeTask.start();
+        }
+        LogUtils.e("BaseTask == ", "队列有数据开始任务  type = "+getmTask().getTaskType()+ "  cmd = " + getmTask().getTaskCmd());
     }
 
     /**
@@ -55,6 +70,10 @@ public class TaskManager {
      */
     public  void doNextTask() {
         LogUtils.e("BaseTask == ", "doNextTask() 执行下一个");
+        if (myTimeTask != null) {
+            myTimeTask.stop();
+            myTimeTask = null;
+        }
         startTask();
     }
 

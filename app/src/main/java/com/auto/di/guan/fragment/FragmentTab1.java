@@ -14,8 +14,12 @@ import com.auto.di.guan.adapter.MyGridAdapter;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.jobqueue.event.BindIdEvent;
 import com.auto.di.guan.utils.LogUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,15 +50,27 @@ public class FragmentTab1 extends BaseFragment {
                 }
             }
         });
+
+        EventBus.getDefault().register(this);
         return view;
     }
 
     @Override
     public void refreshData() {
-        LogUtils.e("-------------", "111111");
         deviceInfos = DeviceInfoSql.queryDeviceList();
         if (adapter != null)
             adapter.setData(deviceInfos);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onBindIdEvent(BindIdEvent event) {
+        LogUtils.e("FragmentTab1", "onBindIdEvent（）");
+       refreshData();
+    };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

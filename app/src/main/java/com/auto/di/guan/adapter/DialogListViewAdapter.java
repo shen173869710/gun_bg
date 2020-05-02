@@ -20,20 +20,20 @@ public class DialogListViewAdapter extends BaseQuickAdapter<CmdStatus, BaseViewH
             holder.setText(R.id.cmd_name, "控制阀"+ cmdStatus.getControlName());
         }
 
-        if (!TextUtils.isEmpty(cmdStatus.getCmd_start())) {
+        if (cmdStatus.getCmd_start() != null) {
             holder.setText(R.id.cmd_start, Html.fromHtml(cmdStatus.getCmd_start()+""));
         }
 
-        if (!TextUtils.isEmpty(cmdStatus.getCmd_end())) {
+        if (cmdStatus.getCmd_end() != null) {
             holder.setText(R.id.cmd_end, Html.fromHtml(cmdStatus.getCmd_end()+""));
         }
-        if (!TextUtils.isEmpty(cmdStatus.getCmd_read_start())) {
+        if (cmdStatus.getCmd_read_start() != null) {
             holder.setText(R.id.cmd_read_start, Html.fromHtml(cmdStatus.getCmd_read_start()+""));
         }
-        if (!TextUtils.isEmpty(cmdStatus.getCmd_read_middle())) {
+        if (cmdStatus.getCmd_read_middle() != null) {
             holder.setText(R.id.cmd_read_middle, Html.fromHtml(cmdStatus.getCmd_read_middle()+""));
         }
-        if (!TextUtils.isEmpty(cmdStatus.getCmd_read_end())) {
+        if (cmdStatus.getCmd_read_end() != null) {
             holder.setText(R.id.cmd_read_end, Html.fromHtml(cmdStatus.getCmd_read_end()+""));
         }
     }

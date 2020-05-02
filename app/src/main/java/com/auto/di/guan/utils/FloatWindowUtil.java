@@ -20,6 +20,7 @@ import com.auto.di.guan.entity.CmdStatus;
 import com.auto.di.guan.floatWindow.FloatWindow;
 import com.auto.di.guan.floatWindow.MoveType;
 import com.auto.di.guan.floatWindow.Screen;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -60,16 +61,14 @@ public class FloatWindowUtil {
             @Override
             public void onMultiClick(View v) {
                 alist.clear();
+                adapter.notifyDataSetChanged();
                 FloatWindow.destroy(TAG);
             }
         });
-
-
         adapter = new DialogListViewAdapter(alist);
         mListView.setAdapter(adapter);
-        mListView.setHasFixedSize(true);
+        //mListView.setHasFixedSize(true);
         mListView.setLayoutManager(new LinearLayoutManager(mContext));
-
 
     }
 
@@ -96,6 +95,8 @@ public class FloatWindowUtil {
             FloatWindow.get(TAG).show();
         }else {
             if (!FloatWindow.get(TAG).isShowing()) {
+                alist.clear();
+                adapter.notifyDataSetChanged();
                 FloatWindow.get(TAG).show();
             }
         }
@@ -115,6 +116,10 @@ public class FloatWindowUtil {
                 if (status.getControl_id() == event.getControl_id()) {
                     if (!TextUtils.isEmpty(event.getCmd_start())) {
                         status.setCmd_start(event.getCmd_start());
+                        status.setCmd_end("");
+                        status.setCmd_read_start("");
+                        status.setCmd_read_middle("");
+                        status.setCmd_read_end("");
                     }
                     if (!TextUtils.isEmpty(event.getCmd_end())) {
                         status.setCmd_end(event.getCmd_end());
@@ -136,36 +141,9 @@ public class FloatWindowUtil {
             }
 
             if (!isHas) {
-//                if (alist.size() == 5) {
-//                    alist.clear();
-//                }
                 alist.add(event);
             }
             adapter.notifyDataSetChanged();
-//            setListViewHeightBasedOnChildren(mListView);
         }
     }
-
-    public  void setListViewHeightBasedOnChildren(ListView listView) {
-        //获取ListView对应的Adapter
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            // pre-condition
-            return;
-        }
-        int totalHeight = 0;
-        for (int i = 0, len = listAdapter.getCount(); i < len; i++) {   //listAdapter.getCount()返回数据项的数目
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0);  //计算子项View 的宽高
-            totalHeight += listItem.getMeasuredHeight();  //统计所有子项的总高度
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        //listView.getDividerHeight()获取子项间分隔符占用的高度
-        //params.height最后得到整个ListView完整显示需要的高度
-        listView.setLayoutParams(params);
-    }
-
-
 }

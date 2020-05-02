@@ -168,6 +168,11 @@ public class GroupStatusActivity extends FragmentActivity  {
             }
             adapter.getData().set(positin, groupInfo);
             adapter.notifyItemChanged(positin, positin);
+
+            if (openInfos != null && openInfos.size() == 0) {
+                GroupStatusEvent groupStatusEvent = new GroupStatusEvent(groupInfo);
+                onGroupStatusEvent(groupStatusEvent);
+            }
         }
     }
 

@@ -11,7 +11,6 @@ import com.auto.di.guan.jobqueue.TaskEntiy;
 import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.event.AutoTaskEvent;
 import com.auto.di.guan.utils.LogUtils;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -83,6 +82,16 @@ public class TaskFactory {
     }
 
     /**
+     * 创建开阀单个读取状态操作
+     *
+     * @param info
+     */
+    public static void createReadSingleTask(ControlInfo info, int type, int actionType) {
+        final String cmd = Entiy.cmdRead(BaseApp.getProjectId(), info.getDeviceProtocalId());
+        TaskManager.getInstance().addTask(new ReadSingleTask(type, cmd, info,actionType));
+    }
+
+    /**
      * 创建读取结束标志位
      */
     public static void createReadEndTask() {
@@ -101,8 +110,8 @@ public class TaskFactory {
      *
      * @param type      类型
      */
-    public static void createGroupReadEndTask(int type) {
-        TaskManager.getInstance().addTask(new GroupEndTask(type, ""));
+    public static void createGroupReadEndTask(int type, GroupInfo info) {
+        TaskManager.getInstance().addTask(new GroupEndTask(type, "",info));
     }
 
     /**
@@ -174,7 +183,7 @@ public class TaskFactory {
         // 5. 添加开启状态查询task
         addReadGroupTask(openList, TaskEntiy.TASK_OPTION_OPEN_READ,Entiy.ACTION_TYPE_31);
         // 6. 添加开启结束标志位
-        createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_OPEN_READ_END);
+        createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_OPEN_READ_END,groupInfo);
 
         if (closeGroupId > 0 && closeList.size() > 0) {
             // 7 修改需要关闭组的状态为关闭
@@ -186,7 +195,7 @@ public class TaskFactory {
             // 9 添加关闭状态查询task
             addReadGroupTask(closeList, TaskEntiy.TASK_OPTION_CLOSE_READ,Entiy.ACTION_TYPE_31);
             // 10. 添加关闭结束标志位
-            createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_CLOSE_READ_END);
+            createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_CLOSE_READ_END,closeGroupInfo);
         }
         // 添加完成之后启动任务
         TaskManager.getInstance().startTask();
@@ -248,7 +257,7 @@ public class TaskFactory {
         // 1 添加关闭状态查询task
         addReadGroupTask(closeList, TaskEntiy.TASK_OPTION_CLOSE_READ,Entiy.ACTION_TYPE_31);
         // 4. 添加关闭结束标志位
-        createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_CLOSE_READ_END);
+        createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_CLOSE_READ_END,groupInfo);
         // 添加完成之后启动任务
         TaskManager.getInstance().startTask();
     }
@@ -324,7 +333,7 @@ public class TaskFactory {
     }
     /**
      *    自动轮灌开启
-     * 1. 更新当前组的状态为运行
+     * 1. 更新当前组的状态为关闭
      * 2. 获取所有组的设备
      * 3. 添加关闭task
      * 4. 添加关闭状态查询task
@@ -334,6 +343,8 @@ public class TaskFactory {
         LogUtils.e(TAG, "*********************************自动轮灌关闭当前组*****************************");
         //  1. 更新当前组的状态为运行
         groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
+        groupInfo.setGroupRunTime(0);
+        groupInfo.setGroupTime(0);
         groupInfo.setGroupStop(false);
         GroupInfoSql.updateGroup(groupInfo);
         //  2. 获取组的设备信息
@@ -363,14 +374,14 @@ public class TaskFactory {
      */
     public static void createAutoGroupNextTask(GroupInfo groupInfo) {
         LogUtils.e(TAG, "*********************************自动轮灌 是否有下一组需要操作*****************************");
+        groupInfo.setGroupTime(0);
+        groupInfo.setGroupRunTime(0);
+        groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
+        groupInfo.setGroupStop(false);
+        GroupInfoSql.updateGroup(groupInfo);
         //查看是否有下一组
         List<GroupInfo> groupList = GroupInfoSql.queryNextGroupList(groupInfo.getGroupId());
-        if (groupList == null) {
-            groupInfo.setGroupTime(0);
-            groupInfo.setGroupRunTime(0);
-            groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
-            groupInfo.setGroupStop(false);
-            GroupInfoSql.updateGroup(groupInfo);
+        if (groupList != null) {
             createAutoGroupOpenNextTask(groupList.get(0));
             createAutoGroupCloseTask(groupInfo);
             TaskManager.getInstance().startTask();

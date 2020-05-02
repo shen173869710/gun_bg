@@ -61,7 +61,10 @@ public class LoginActivity extends IBaseActivity<LoginPresenter> implements ILog
             Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_LONG).show();
             return;
         }
-        mPresenter.doLogin(id, pwd);
+//        mPresenter.doLogin(id, pwd);
+
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
     }
 
     @Override

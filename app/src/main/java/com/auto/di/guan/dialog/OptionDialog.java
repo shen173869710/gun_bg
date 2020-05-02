@@ -36,6 +36,10 @@ public class OptionDialog extends Dialog {
         ok = findViewById(R.id.dialog_ok);
         icon = findViewById(R.id.dialog_icon);
 
+
+        if (!TextUtils.isEmpty(content.desc)) {
+            desc.setText(content.desc);
+        }
         if (!TextUtils.isEmpty(content.cancle)) {
             cancle.setText(content.cancle);
         }

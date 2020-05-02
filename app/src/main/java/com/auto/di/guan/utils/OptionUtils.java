@@ -25,16 +25,16 @@ public class OptionUtils {
             return null;
         }
         //                                             0123456789abcde
-        //        kf 108 003 0    通讯成功 answer_str  kf 108 003 0 ok
-        //        gf 108 003 0    通讯成功 answer_str  gf 108 003 0 ok
-        //        rs 108 003      通讯成功 answer_str  zt 108 003 1100 090
+        //        kf 00108 003 0    通讯成功 answer_str  kf 00108 003 0 ok
+        //        gf 00108 003 0    通讯成功 answer_str  gf 00108 003 0 ok
+        //        rs 00108 003      通讯成功 answer_str  zt 00108 003 1100 090
 
         /**开启控制阀**/
         if (msg.contains(KF)) {
-            status.projectId = msg.substring(3, 6);
-            status.deviceId = msg.substring(7, 10);
-            status.name = msg.substring(11, 12);
-            String ok = msg.substring(13, 15);
+            status.projectId = msg.substring(3, 8);
+            status.deviceId = msg.substring(9, 12);
+            status.name = msg.substring(13, 14);
+            String ok = msg.substring(15, 17);
             status.type = KF;
             if (OK.toLowerCase().contains(ok)) {
                 status.status = Entiy.CONTROL_STATUS＿RUN;
@@ -43,10 +43,10 @@ public class OptionUtils {
         //        gf 108 003 1110
         /**关闭控制阀**/
         if (msg.contains(GF)) {
-            status.projectId = msg.substring(3, 6);
-            status.deviceId = msg.substring(7, 10);
-            status.name = msg.substring(11, 12);
-            String ok = msg.substring(13, 15);
+            status.projectId = msg.substring(3, 8);
+            status.deviceId = msg.substring(9, 12);
+            status.name = msg.substring(13, 14);
+            String ok = msg.substring(15, 17);
             status.type = GF;
             if (OK.toLowerCase().contains(ok)) {
                 status.status = Entiy.CONTROL_STATUS＿CONNECT;
@@ -57,10 +57,10 @@ public class OptionUtils {
         /**读取控制阀**/
         if (msg.contains(ZT)) {
             status.type = ZT;
-            status.projectId = msg.substring(3, 6);
-            status.deviceId = msg.substring(7, 10);
-            status.code = msg.substring(11, 15);
-            status.elect = msg.substring(16, 19);
+            status.projectId = msg.substring(3, 8);
+            status.deviceId = msg.substring(9, 12);
+            status.code = msg.substring(13, 17);
+            status.elect = msg.substring(18, 21);
         }
 
         if (TextUtils.isEmpty(status.type)) {
@@ -131,8 +131,23 @@ public class OptionUtils {
             } else if (type.contains("1030")) {
                 valueStatus0 = Entiy.CONTROL_STATUS＿NOTCLOSE;
                 valueStatus1 = Entiy.CONTROL_STATUS＿DISCONNECT;
-            } else {
-                return null;
+            } else{
+                String index0 = type.substring(2,3);
+                if ("0".equals(index0)) {
+                    valueStatus0 = Entiy.CONTROL_STATUS＿CONNECT;
+                }else if ("1".equals(index0)) {
+                    valueStatus0 = Entiy.CONTROL_STATUS＿RUN;
+                }else {
+                    valueStatus0 = Entiy.CONTROL_STATUS＿ERROR;
+                }
+                String index1 = type.substring(3,4);
+                if ("0".equals(index1)) {
+                    valueStatus1 = Entiy.CONTROL_STATUS＿CONNECT;
+                }else if ("1".equals(index1)) {
+                    valueStatus1 = Entiy.CONTROL_STATUS＿RUN;
+                }else {
+                    valueStatus1 = Entiy.CONTROL_STATUS＿ERROR;
+                }
             }
             controlInfo0.setValve_status(valueStatus0);
             controlInfo1.setValve_status(valueStatus1);

@@ -1,14 +1,12 @@
 package com.auto.di.guan.basemodel.presenter;
 
 
-
 import com.auto.di.guan.api.HttpManager;
 import com.auto.di.guan.basemodel.model.request.BaseRequest;
 import com.auto.di.guan.basemodel.model.respone.BaseRespone;
 import com.auto.di.guan.basemodel.view.ILoginView;
 import com.auto.di.guan.utils.MacInfo;
 import com.auto.di.guan.utils.Md5Util;
-import com.auto.di.guan.utils.ToastUtils;
 
 import java.util.TreeMap;
 

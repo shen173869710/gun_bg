@@ -21,6 +21,7 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.dialog.WaitingDialog;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.jobqueue.TaskEntiy;
+import com.auto.di.guan.jobqueue.event.BindIdEvent;
 import com.auto.di.guan.jobqueue.event.BindSucessEvent;
 import com.auto.di.guan.jobqueue.task.TaskFactory;
 import com.auto.di.guan.utils.LogUtils;
@@ -104,6 +105,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
         view.findViewById(R.id.title_bar_back_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EventBus.getDefault().post(new BindIdEvent());
                 finish();
             }
         });
@@ -310,17 +312,6 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
-//	private boolean checkId(int id) {
-//		controlInfos = ControlInfoSql.queryControlList();
-//		int size = controlInfos.size();
-//		for (int i = 0; i < size; i++) {
-//			if (controlInfos.get(i).controId == id) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-
     @Override
     public void urlRequestStart(Task result) {
 
@@ -364,6 +355,8 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
             isGroupId = true;
             showToastLongMsg("写入组ID成功");
         }
+
+
     }
 
     @Override
