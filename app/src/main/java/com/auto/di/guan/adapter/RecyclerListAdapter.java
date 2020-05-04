@@ -103,7 +103,7 @@ public class RecyclerListAdapter extends BaseQuickAdapter<GroupInfo, BaseViewHol
                                 .append(info.getGroupTime() / Entiy.RUN_TIME)
                                 .append("</font>")
                                 .append(" 分钟").toString();
-
+                        info.setGroupRunTime(0);
                         option_time_value.setText(Html.fromHtml(desc));
                     }
                 }
@@ -159,6 +159,7 @@ public class RecyclerListAdapter extends BaseQuickAdapter<GroupInfo, BaseViewHol
                 info.setGroupIsJoin(!info.getGroupIsJoin());
                 if (!info.getGroupIsJoin()) {
                     info.setGroupTime(0);
+                    info.setGroupRunTime(0);
                 }
                 notifyDataSetChanged();
             }

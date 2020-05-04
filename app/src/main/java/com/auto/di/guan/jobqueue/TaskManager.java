@@ -30,20 +30,20 @@ public class TaskManager {
             myTimeTask.stop();
             myTimeTask = null;
         }
-
         LogUtils.e("BaseTask == ", "队列大小   =  "+queue.size());
         BaseTask task = queue.poll();
         if (task == null ) {
             LogUtils.e("BaseTask == ", "队列为空，任务结束");
             return;
+        } else {
+            setmTask(task);
+            getmTask().startTask();
+            if (!TextUtils.isEmpty(getmTask().getTaskCmd())) {
+                myTimeTask = new MyTimeTask(getmTask());
+                myTimeTask.start();
+            }
+            LogUtils.e("BaseTask == ", "队列有数据开始任务  type = "+getmTask().getTaskType()+ "  cmd = " + getmTask().getTaskCmd());
         }
-        setmTask(task);
-        getmTask().startTask();
-        if (!TextUtils.isEmpty(getmTask().getTaskCmd())) {
-            myTimeTask = new MyTimeTask(getmTask());
-            myTimeTask.start();
-        }
-        LogUtils.e("BaseTask == ", "队列有数据开始任务  type = "+getmTask().getTaskType()+ "  cmd = " + getmTask().getTaskCmd());
     }
 
     /**

@@ -5,9 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
-
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.sql.GroupInfoSql;
@@ -143,7 +141,7 @@ public class GroupStatusAdapter extends BaseQuickAdapter<GroupInfo, BaseViewHold
                     });
 
                 } else {
-                    DialogUtil.showStartCount(getContext(), new OnDialogClick() {
+                    DialogUtil.showStopCount(getContext(), new OnDialogClick() {
                         @Override
                         public void onDialogOkClick(String value) {
                             info.setGroupStop(true);

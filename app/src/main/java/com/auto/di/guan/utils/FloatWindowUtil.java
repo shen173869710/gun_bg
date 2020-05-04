@@ -36,7 +36,6 @@ public class FloatWindowUtil {
 
     private RecyclerView mListView;
     private DialogListViewAdapter adapter;
-    private TextView textView;
     private ArrayList<CmdStatus> alist = new ArrayList<>();
     private View view;
 
@@ -95,8 +94,6 @@ public class FloatWindowUtil {
             FloatWindow.get(TAG).show();
         }else {
             if (!FloatWindow.get(TAG).isShowing()) {
-                alist.clear();
-                adapter.notifyDataSetChanged();
                 FloatWindow.get(TAG).show();
             }
         }
@@ -104,6 +101,7 @@ public class FloatWindowUtil {
 
     public void distory() {
         alist.clear();
+        adapter.notifyDataSetChanged();
         FloatWindow.destroy(TAG);
     }
 

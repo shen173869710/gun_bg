@@ -41,12 +41,7 @@ public class ReadSingleTask extends BaseTask{
     public void startTask() {
         LogUtils.e(TAG, "读取状态 开始 =========================================  cmd =="+getTaskCmd());
         SendUtils.sendReadStart(getTaskCmd(), getTaskInfo());
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                writeCmd(getTaskCmd());
-            }
-        }, 3000);
+        writeCmd(getTaskCmd());
     }
 
     @Override

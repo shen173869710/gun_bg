@@ -62,7 +62,6 @@ public class LoginActivity extends IBaseActivity<LoginPresenter> implements ILog
             return;
         }
 //        mPresenter.doLogin(id, pwd);
-
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
     }

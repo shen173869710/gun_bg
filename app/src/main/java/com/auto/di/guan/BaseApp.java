@@ -28,6 +28,7 @@ import com.birbit.android.jobqueue.JobManager;
 import com.birbit.android.jobqueue.config.Configuration;
 import com.birbit.android.jobqueue.log.CustomLogger;
 import com.facebook.stetho.Stetho;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
@@ -81,9 +82,8 @@ public class BaseApp extends Application {
         Stetho.initializeWithDefaults(this);
         mSerialPortFinder = new SerialPortFinder();
         LogUtils.setFilterLevel(LogUtils.ALL);
-//        CrashHandler.getInstance().init(getApplicationContext());
-
         FloatWindowUtil.getInstance().initFloatWindow(this);
+        CrashReport.initCrashReport(getApplicationContext(), "d1930c180d", false);
     }
 
 

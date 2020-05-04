@@ -55,6 +55,9 @@ public class GroupStatusActivity extends FragmentActivity  {
         EventBus.getDefault().register(this);
         groupInfos = GroupInfoSql.queryGroupSettingList();
 
+
+        LogUtils.e("GroupStatusActivity", (new Gson().toJson(groupInfos)));
+
         textView = (TextView) view.findViewById(R.id.title_bar_title);
         textView.setText("轮灌操作");
 
@@ -111,6 +114,8 @@ public class GroupStatusActivity extends FragmentActivity  {
                 if(NoFastClickUtils.isFastClick()){
                     return;
                 }
+
+
                 if (groupInfos != null && groupInfos.size() > 0) {
                     if (GroupInfoSql.queryOpenGroupList() != null) {
                         ToastUtils.showLongToast("自动轮灌正在运行当中, 无法再次开启自动轮灌");

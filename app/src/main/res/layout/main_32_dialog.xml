@@ -16,7 +16,7 @@
         <TextView
             android:id="@+id/main_option_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:gravity="center"
@@ -40,7 +40,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dip"
+        android:layout_height="60dip"
         android:gravity="center"
         android:orientation="horizontal" >
         <LinearLayout
@@ -70,7 +70,6 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="horizontal" >
-
             <Button
                 android:id="@+id/main_option_close"
                 android:layout_width="match_parent"

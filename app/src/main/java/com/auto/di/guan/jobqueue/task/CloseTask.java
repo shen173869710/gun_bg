@@ -58,13 +58,7 @@ public class CloseTask extends BaseTask{
              */
             if(receive.toLowerCase().contains("gf") && receive.toLowerCase().contains("ok")) {
                 SendUtils.sendCloseEnd(receive, getTaskInfo());
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        finishTask();
-                    }
-                },3000);
+                finishTask();
             }else {
                 errorTask();
             }

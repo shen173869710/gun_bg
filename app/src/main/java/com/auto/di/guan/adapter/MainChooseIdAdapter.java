@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.db.User;
 
 import java.util.List;
 
