@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.birbit:android-priority-jobqueue:2.0.1@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3cad71643c7973debd1ed6b24c0c5099/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3cad71643c7973debd1ed6b24c0c5099/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3cad71643c7973debd1ed6b24c0c5099/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.birbit/android-priority-jobqueue/2.0.1/53aba3fd974a5c2646f961b7d4d7a95f6f9330e6/android-priority-jobqueue-2.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

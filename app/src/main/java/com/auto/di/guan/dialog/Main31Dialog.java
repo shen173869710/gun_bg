@@ -12,10 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.auto.di.guan.R;
-import com.auto.di.guan.db.ControlInfo;
-import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.utils.NoFastClickUtils;
-import com.auto.di.guan.utils.ShareUtil;
 
 
 public class Main31Dialog extends Dialog {

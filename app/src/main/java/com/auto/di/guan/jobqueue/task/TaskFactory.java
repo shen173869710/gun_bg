@@ -4,6 +4,7 @@ import com.auto.di.guan.BaseApp;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.GroupInfo;
+import com.auto.di.guan.db.sql.ControlInfoSql;
 import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.entity.Entiy;
@@ -22,6 +23,20 @@ import java.util.List;
  */
 public class TaskFactory {
 
+    /**
+     *   创建自动轮灌查询
+     */
+    public static void createPullTask(GroupInfo groupInfo) {
+        List<ControlInfo> controlInfos = ControlInfoSql.queryControlList(groupInfo.getGroupId());
+        if (controlInfos != null) {
+            int size = controlInfos.size();
+            for (int i = 0; i < size; i++) {
+                TaskFactory.createReadTask(controlInfos.get(i), TaskEntiy.TASK_OPTION_READ ,Entiy.ACTION_TYPE_4);
+            }
+            TaskFactory.createReadEndTask();
+            TaskManager.getInstance().startTask();
+        }
+    }
     public static final String TAG = "TaskFactory";
 
     /************************************************************************************************

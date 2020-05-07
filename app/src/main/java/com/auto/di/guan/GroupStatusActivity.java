@@ -12,6 +12,7 @@ import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.sql.ControlInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
+import com.auto.di.guan.dialog.GroupOptionDialog;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.event.AutoCountEvent;
@@ -55,75 +56,24 @@ public class GroupStatusActivity extends FragmentActivity  {
         EventBus.getDefault().register(this);
         groupInfos = GroupInfoSql.queryGroupSettingList();
 
-
-        LogUtils.e("GroupStatusActivity", (new Gson().toJson(groupInfos)));
-
         textView = (TextView) view.findViewById(R.id.title_bar_title);
-        textView.setText("轮灌操作");
-
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(NoFastClickUtils.isFastClick()){
-                    return;
-                }
-                groupInfos = GroupInfoSql.queryGroupList();
-                for (int i = 0; i < groupInfos.size(); i++) {
-                    GroupInfo info = groupInfos.get(i);
-                    info.setGroupRunTime(0);
-                    info.setGroupTime(0);
-                    info.setGroupLevel(0);
-                    info.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
-                }
-                GroupInfoSql.updateGroupList(groupInfos);
-            }
-        });
-
-        final TextView title_bar_pull = (TextView) findViewById(R.id.title_bar_pull);
-        title_bar_pull.setVisibility(View.VISIBLE);
-        if (PollingUtils.isStart) {
-            title_bar_pull.setText("关闭自动查询");
-        }else {
-            title_bar_pull.setText("开启自动查询");
-        }
-        title_bar_pull.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(NoFastClickUtils.isFastClick()){
-                    return;
-                }
-                if(PollingUtils.isStart) {
-                    PollingUtils.stopPollingService(GroupStatusActivity.this);
-                }else {
-                    PollingUtils.startPollingService(GroupStatusActivity.this, MainActivity.ALERM_TIME);
-                }
-                if (PollingUtils.isStart) {
-                    title_bar_pull.setText("关闭自动查询");
-                }else {
-                    title_bar_pull.setText("开启自动查询");
-                }
-            }
-        });
+        textView.setText("轮灌状态");
 
         title_bar_status = (TextView) view.findViewById(R.id.title_bar_status);
         title_bar_status.setVisibility(View.VISIBLE);
-        title_bar_status.setText("开启轮灌");
+        title_bar_status.setText("轮灌操作");
         title_bar_status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(NoFastClickUtils.isFastClick()){
                     return;
                 }
-
-
-                if (groupInfos != null && groupInfos.size() > 0) {
-                    if (GroupInfoSql.queryOpenGroupList() != null) {
-                        ToastUtils.showLongToast("自动轮灌正在运行当中, 无法再次开启自动轮灌");
-                        return;
+                GroupOptionDialog.ShowDialog(GroupStatusActivity.this, "", new GroupOptionDialog.ItemClick() {
+                    @Override
+                    public void onItemClick(int index) {
+                        groupOption(index);
                     }
-                    TaskFactory.createAutoGroupOpenTask(groupInfos.get(0));
-                    TaskManager.getInstance().startTask();
-                }
+                });
             }
         });
         view.findViewById(R.id.title_bar_back_layout).setOnClickListener(new View.OnClickListener() {
@@ -196,6 +146,41 @@ public class GroupStatusActivity extends FragmentActivity  {
             }
         }else {
             LogUtils.e("GroupStatusActivity",  "更新设备失败     设备信息为空-----------------------------");
+        }
+    }
+
+    /**
+     *        index == 1 开启轮灌
+     *        index == 2 关闭轮灌
+     *        index == 3 自动查询
+     * @param index
+     */
+    public void groupOption(int index) {
+        if (index == 1) {
+            if (groupInfos != null && groupInfos.size() > 0) {
+                if (GroupInfoSql.queryOpenGroupList() != null) {
+                    ToastUtils.showLongToast("自动轮灌正在运行当中, 无法再次开启自动轮灌");
+                    return;
+                }
+                TaskFactory.createAutoGroupOpenTask(groupInfos.get(0));
+                TaskManager.getInstance().startTask();
+            }
+        }else if (index == 2) {
+            groupInfos = GroupInfoSql.queryGroupList();
+            for (int i = 0; i < groupInfos.size(); i++) {
+                GroupInfo info = groupInfos.get(i);
+                info.setGroupRunTime(0);
+                info.setGroupTime(0);
+                info.setGroupLevel(0);
+                info.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
+            }
+            GroupInfoSql.updateGroupList(groupInfos);
+        }else if (index == 3) {
+            if(PollingUtils.isStart) {
+                PollingUtils.stopPollingService(GroupStatusActivity.this);
+            }else {
+                PollingUtils.startPollingService(GroupStatusActivity.this, MainActivity.ALERM_TIME);
+            }
         }
     }
 }
