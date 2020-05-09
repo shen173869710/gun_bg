@@ -13,21 +13,9 @@
     <last-search-timestamp>1580803204252</last-search-timestamp>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d7dd5271-1711-4806-8d11-3d300b2eea4e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/ReadPollTask.java" afterDir="false" />
+    <list default="true" id="d7dd5271-1711-4806-8d11-3d300b2eea4e" name="Default Changelist" comment="修改自动轮灌相关操作">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/GroupStatusActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/GroupStatusActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/fragment/FragmentTab0.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/fragment/FragmentTab0.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/fragment/FragmentTab2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/fragment/FragmentTab2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/TaskEntiy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/TaskEntiy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/ReadSingleTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/ReadSingleTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/ReadTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/ReadTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/SingleEndTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/SingleEndTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/TaskFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/TaskFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/utils/PollingUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/utils/PollingUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/utils/SendUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/utils/SendUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/add_user_list_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/add_user_list_item.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/mqtt/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/mqtt/Config.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -291,7 +279,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588907535036</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="修改自动轮灌相关操作">
+      <created>1588998594687</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1588998594687</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -312,6 +307,7 @@
     <MESSAGE value="提交更新库" />
     <MESSAGE value="提交自动查询" />
     <MESSAGE value="提交保存最后一次用户操作" />
-    <option name="LAST_COMMIT_MESSAGE" value="提交保存最后一次用户操作" />
+    <MESSAGE value="修改自动轮灌相关操作" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改自动轮灌相关操作" />
   </component>
 </project>
