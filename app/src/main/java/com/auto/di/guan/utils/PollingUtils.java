@@ -13,8 +13,12 @@ import com.auto.di.guan.entity.Entiy;
  */
 
 public class PollingUtils {
+
+    private static String TAG = PollingUtils.class.getSimpleName();
     //开启轮询服务
     public static boolean isStart;
+    public static boolean isRun;
+
     public static void startPollingService(Context context, int seconds) {
         //获取AlarmManager系统服务
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -28,6 +32,8 @@ public class PollingUtils {
 //        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, pendingIntent);
         manager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), seconds, pendingIntent);
         isStart = true;
+
+        LogUtils.e(TAG, "启动自动轮灌查询");
     }
 
     //停止轮询服务
@@ -39,6 +45,8 @@ public class PollingUtils {
         //取消正在执行的服务
         manager.cancel(pendingIntent);
         isStart = false;
+        isRun = false;
+        LogUtils.e(TAG, "关闭自动轮灌查询");
     }
 
 }

@@ -216,7 +216,7 @@ public class SendUtils {
      * @param type
      * @param info
      */
-    public static void  sendReadEnd( ControlInfo info, int cmd_type, int optionType, int type) {
+    public static void  sendReadEnd( ControlInfo info, int cmd_type, int optionType, int type, boolean isSaveDb) {
         CmdStatus cmdStatus = new CmdStatus();
         String name = info.getValve_alias();
         int controlId = info.getValve_id();
@@ -275,6 +275,9 @@ public class SendUtils {
         cmdStatus.setControlName(name);
         cmdStatus.setControl_id(controlId);
         EventBus.getDefault().post(cmdStatus);
-        ActionUtil.saveAction(info,cmd_type,optionType, desc, isNormal);
+
+        if (isSaveDb) {
+            ActionUtil.saveAction(info,cmd_type,optionType, desc, isNormal);
+        }
     }
 }

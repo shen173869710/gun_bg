@@ -22,16 +22,16 @@ import org.greenrobot.eventbus.EventBus;
  *   rs 012 002 0 01
  *   zt 102 002 1100 090
  */
-public class ReadSingleTask extends BaseTask{
-    private final String TAG = BASETAG+"ReadSingleTask";
+public class ReadPollTask extends BaseTask{
+    private final String TAG = BASETAG+"ReadTask";
 
     private int actionType;
 
-    public ReadSingleTask(int taskType, String taskCmd) {
+    public ReadPollTask(int taskType, String taskCmd) {
         super(taskType, taskCmd);
     }
 
-    public ReadSingleTask(int taskType, String taskCmd, ControlInfo taskInfo, int actionType) {
+    public ReadPollTask(int taskType, String taskCmd, ControlInfo taskInfo, int actionType) {
         super(taskType, taskCmd, taskInfo);
         this.actionType = actionType;
     }
@@ -46,7 +46,8 @@ public class ReadSingleTask extends BaseTask{
     @Override
     public void errorTask() {
         LogUtils.e(TAG, "读取状态 错误 ======="+"errorTask()");
-        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),SendUtils.OPTION_READ_FAILE,true);
+        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),SendUtils.OPTION_READ_FAILE,false);
+        EventBus.getDefault().post(new VideoPlayEcent(Entiy.VIDEO_CLOSE_ERROR));
         finishTask();
     }
 
@@ -103,7 +104,7 @@ public class ReadSingleTask extends BaseTask{
     }
 
 
-    public void doReadStatus(String receive,OptionStatus status) {
+    public void  doReadStatus(String receive,OptionStatus status) {
         //status = {"allCmd":"zt 102 002 1100 090\n\u0000","code":"1100","deviceId":"002","elect":"090","projectId":"102","type":"zt","status":0}
         LogUtils.e(TAG, "读取状态 ======="+"doReadStatus == " +(new Gson().toJson(status)));
             DeviceInfo info = OptionUtils.changeStatus(status);
@@ -295,7 +296,7 @@ public class ReadSingleTask extends BaseTask{
         /**
          *  发送通信结束
          */
-        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),type,true);
+        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),type,false);
     }
 
 

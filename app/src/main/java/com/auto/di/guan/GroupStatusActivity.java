@@ -57,7 +57,7 @@ public class GroupStatusActivity extends FragmentActivity  {
         groupInfos = GroupInfoSql.queryGroupSettingList();
 
         textView = (TextView) view.findViewById(R.id.title_bar_title);
-        textView.setText("轮灌状态");
+        textView.setText("自动轮灌状态");
 
         title_bar_status = (TextView) view.findViewById(R.id.title_bar_status);
         title_bar_status.setVisibility(View.VISIBLE);
@@ -68,7 +68,7 @@ public class GroupStatusActivity extends FragmentActivity  {
                 if(NoFastClickUtils.isFastClick()){
                     return;
                 }
-                GroupOptionDialog.ShowDialog(GroupStatusActivity.this, "", new GroupOptionDialog.ItemClick() {
+                GroupOptionDialog.ShowDialog(GroupStatusActivity.this, "自动轮灌操作", new GroupOptionDialog.ItemClick() {
                     @Override
                     public void onItemClick(int index) {
                         groupOption(index);

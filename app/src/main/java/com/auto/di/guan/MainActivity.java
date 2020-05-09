@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.fragment.app.FragmentManager;
@@ -269,8 +270,28 @@ public class MainActivity extends SerialPortActivity {
             int time = groupInfo.getGroupTime() - groupInfo.getGroupRunTime();
             if (time > 600) {
                 TaskFactory.createPullTask(groupInfo);
+            }else {
+                PollingUtils.stopPollingService(MainActivity.this);
+
             }
         }
+    }
+
+    private long firstTime=0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK && event.getAction()==KeyEvent.ACTION_DOWN){
+            if (System.currentTimeMillis()-firstTime>2000){
+                ToastUtils.showToast("再按一次退出");
+                firstTime=System.currentTimeMillis();
+            }else{
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

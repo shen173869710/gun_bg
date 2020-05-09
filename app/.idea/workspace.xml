@@ -6,19 +6,28 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="AvailableLibraryUpdateStorage">
     <last-search-timestamp>1580803204252</last-search-timestamp>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d7dd5271-1711-4806-8d11-3d300b2eea4e" name="Default Changelist" comment="提交自动查询">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+    <list default="true" id="d7dd5271-1711-4806-8d11-3d300b2eea4e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/ReadPollTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/BaseApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/BaseApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/GroupOptionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/GroupOptionActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/utils/SharedPreferencesUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/utils/SPUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/GroupStatusActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/GroupStatusActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/fragment/FragmentTab0.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/fragment/FragmentTab0.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/fragment/FragmentTab2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/fragment/FragmentTab2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/TaskEntiy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/TaskEntiy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/ReadSingleTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/ReadSingleTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/ReadTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/ReadTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/SingleEndTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/SingleEndTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/TaskFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/TaskFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/utils/PollingUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/utils/PollingUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/utils/SendUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/utils/SendUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/add_user_list_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/add_user_list_item.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -92,11 +101,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.auto.di.guan.jobqueue.task" />
       <recent name="com.auto.di.guan.dialog" />
       <recent name="com.auto.di.guan.utils" />
       <recent name="com.auto.di.guan.base.model.respone" />
       <recent name="com.auto.di.guan.base.model.request" />
-      <recent name="com.auto.di.guan.view" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\android_gun\android\app\src\main\res\layout" />
@@ -275,7 +284,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588840011297</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="提交保存最后一次用户操作">
+      <created>1588907535036</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1588907535036</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -295,6 +311,7 @@
     <MESSAGE value="提交代码修改" />
     <MESSAGE value="提交更新库" />
     <MESSAGE value="提交自动查询" />
-    <option name="LAST_COMMIT_MESSAGE" value="提交自动查询" />
+    <MESSAGE value="提交保存最后一次用户操作" />
+    <option name="LAST_COMMIT_MESSAGE" value="提交保存最后一次用户操作" />
   </component>
 </project>

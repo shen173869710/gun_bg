@@ -20,16 +20,12 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.db.sql.LevelInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
-import com.auto.di.guan.jobqueue.event.BindIdEvent;
 import com.auto.di.guan.jobqueue.event.ChooseGroupEvent;
-import com.auto.di.guan.jobqueue.event.Fragment31Event;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.NoFastClickUtils;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,8 +115,6 @@ public class FragmentTab2 extends BaseFragment {
 		EventBus.getDefault().register(this);
 		return view;
 	}
-
-
 
 	private void initData() {
 		groupLists.clear();
