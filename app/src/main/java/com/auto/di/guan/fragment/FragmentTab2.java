@@ -20,16 +20,12 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.db.sql.LevelInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
-import com.auto.di.guan.jobqueue.event.BindIdEvent;
 import com.auto.di.guan.jobqueue.event.ChooseGroupEvent;
-import com.auto.di.guan.jobqueue.event.Fragment31Event;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.NoFastClickUtils;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,9 +75,6 @@ public class FragmentTab2 extends BaseFragment {
 				MainShowDialog.ShowDialog(getActivity(), "删所有分组除", "当前操作会删除所有的分组", new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						if(NoFastClickUtils.isFastClick()){
-							return;
-						}
 						List<DeviceInfo> deviceInfos = DeviceInfoSql.queryDeviceList();
 						int size = deviceInfos.size();
 						for (int i = 0; i < size; i++) {
@@ -120,8 +113,6 @@ public class FragmentTab2 extends BaseFragment {
 		return view;
 	}
 
-
-
 	private void initData() {
 		groupLists.clear();
 		groupInfos = GroupInfoSql.queryGroupList();
@@ -157,6 +148,7 @@ public class FragmentTab2 extends BaseFragment {
 	public void refreshData() {
 		LogUtils.e("-------------", "222222");
 		initData();
+
 	}
 
 	@Subscribe(threadMode = ThreadMode.MAIN)

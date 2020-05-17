@@ -5,7 +5,6 @@
     android:background="@color/main_bg"
     android:orientation="vertical"
     >
-
     <include
         android:id="@+id/title_bar"
         layout="@layout/main_title_bar" />

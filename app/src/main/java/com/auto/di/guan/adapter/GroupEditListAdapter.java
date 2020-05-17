@@ -9,9 +9,14 @@ import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.sql.ControlInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.jobqueue.event.ChooseGroupEvent;
+import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.NoFastClickUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
+import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 public class GroupEditListAdapter extends BaseQuickAdapter<ControlInfo, BaseViewHolder> {
@@ -39,26 +44,21 @@ public class GroupEditListAdapter extends BaseQuickAdapter<ControlInfo, BaseView
         holder.getView(R.id.group_edit_del).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(NoFastClickUtils.isFastClick()){
-                    return;
-                }
-                if (valveStatus != Entiy.CONTROL_STATUS＿RUN ||
-                        valveStatus != Entiy.CONTROL_STATUS＿ERROR) {
+                if (valveStatus == Entiy.CONTROL_STATUS＿RUN || valveStatus == Entiy.CONTROL_STATUS＿ERROR) {
+                    Toast.makeText(getContext(), "阀控器处于不可以编辑状态", Toast.LENGTH_LONG).show();
+                } else {
                     MainShowDialog.ShowDialog((Activity) getContext(), "退出分组", "是退出当前分组", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(NoFastClickUtils.isFastClick()){
-                                return;
-                            }
                             info.setValve_group_id(0);
                             info.setSelect(false);
                             getData().remove(holder.getAdapterPosition());
                             notifyDataSetChanged();
                             ControlInfoSql.updateControl(info);
+                            EventBus.getDefault().post(new ChooseGroupEvent());
                         }
                     });
-                } else {
-                    Toast.makeText(getContext(), "阀控器处于不可以编辑状态", Toast.LENGTH_LONG).show();
+
                 }
             }
         });

@@ -42,7 +42,7 @@ public class ReadTask extends BaseTask{
     @Override
     public void errorTask() {
         LogUtils.e(TAG, "读取状态 错误 ======="+"errorTask()");
-        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),SendUtils.OPTION_READ_FAILE);
+        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),SendUtils.OPTION_READ_FAILE,true);
         EventBus.getDefault().post(new VideoPlayEcent(Entiy.VIDEO_CLOSE_ERROR));
         finishTask();
     }
@@ -292,7 +292,7 @@ public class ReadTask extends BaseTask{
         /**
          *  发送通信结束
          */
-        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),type);
+        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),type,true);
     }
 
 

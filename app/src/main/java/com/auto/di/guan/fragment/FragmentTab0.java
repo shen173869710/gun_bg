@@ -1,13 +1,11 @@
 package com.auto.di.guan.fragment;
 
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.MyGridAdapter;
 import com.auto.di.guan.db.DeviceInfo;
@@ -16,7 +14,6 @@ import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.NoFastClickUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,10 +58,6 @@ public class FragmentTab0 extends BaseFragment {
                     MainShowDialog.ShowDialog(getActivity(), "删除阀控器", "是删除当前区域阀控器", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(NoFastClickUtils.isFastClick()){
-                                return;
-                            }
-                            LogUtils.e("-----","----------------position ==="+position);
                             info.unBindDevice();
                             DeviceInfoSql.updateDevice(info);
                             deviceInfos = DeviceInfoSql.queryDeviceList();
@@ -80,7 +73,6 @@ public class FragmentTab0 extends BaseFragment {
 
     @Override
     public void refreshData() {
-        LogUtils.e("-------------", "0000000");
         if (adapter != null) {
             adapter.setData(DeviceInfoSql.queryDeviceList());
         }

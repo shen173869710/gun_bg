@@ -50,7 +50,6 @@ public class FragmentTab1 extends BaseFragment {
                 }
             }
         });
-
         EventBus.getDefault().register(this);
         return view;
     }
@@ -58,8 +57,9 @@ public class FragmentTab1 extends BaseFragment {
     @Override
     public void refreshData() {
         deviceInfos = DeviceInfoSql.queryDeviceList();
-        if (adapter != null)
+        if (adapter != null) {
             adapter.setData(deviceInfos);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

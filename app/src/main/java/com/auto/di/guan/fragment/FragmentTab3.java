@@ -72,7 +72,7 @@ public class FragmentTab3 extends BaseFragment {
 					option_title_1_drive.setVisibility(View.INVISIBLE);
 					option_title_2_drive.setVisibility(View.VISIBLE);
 				}
-				fragments.get(position).onResume();
+
 			}
 
 			@Override

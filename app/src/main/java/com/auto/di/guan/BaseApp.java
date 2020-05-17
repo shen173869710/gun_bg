@@ -23,14 +23,10 @@ import com.auto.di.guan.db.update.MySQLiteOpenHelper;
 import com.auto.di.guan.utils.FloatWindowUtil;
 import com.auto.di.guan.utils.GsonUtil;
 import com.auto.di.guan.utils.LogUtils;
-import com.auto.di.guan.utils.SharedPreferencesUtils;
-import com.birbit.android.jobqueue.JobManager;
-import com.birbit.android.jobqueue.config.Configuration;
-import com.birbit.android.jobqueue.log.CustomLogger;
+import com.auto.di.guan.utils.SPUtils;
 import com.facebook.stetho.Stetho;
 import com.tencent.bugly.crashreport.CrashReport;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 
 import java.io.File;
@@ -320,7 +316,7 @@ public class BaseApp extends Application {
 
     public static LoginRespone getLoginRespone() {
         if (loginRespone == null) {
-            String info = SharedPreferencesUtils.getInstance().getString(SharedPreferencesUtils.SAVE_TOKEN_INFO);
+            String info = SPUtils.getInstance().getString(SPUtils.SAVE_TOKEN_INFO);
             if (!TextUtils.isEmpty(info)) {
                 loginRespone = GsonUtil.fromJson(info, LoginRespone.class);
             }

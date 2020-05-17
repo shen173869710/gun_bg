@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.fragment.app.FragmentManager;
@@ -15,6 +16,7 @@ import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.db.sql.LevelInfoSql;
 import com.auto.di.guan.entity.CmdStatus;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.entity.PollingEvent;
 import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.event.AutoCountEvent;
 import com.auto.di.guan.jobqueue.event.AutoTaskEvent;
@@ -86,6 +88,8 @@ public class MainActivity extends SerialPortActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        LogUtils.e("time", "time == "+System.currentTimeMillis());
         setContentView(R.layout.activity_main);
         EventBus.getDefault().register(this);
         textView = (TextView) findViewById(R.id.title_bar_title);
@@ -107,8 +111,8 @@ public class MainActivity extends SerialPortActivity {
             }
             LevelInfoSql.insertLevelInfoList(levelInfos);
         }
+        LogUtils.e("time", "time == "+System.currentTimeMillis());
     }
-
 
     public int getStatusBarHeight() {
         int result = 0;
@@ -117,10 +121,6 @@ public class MainActivity extends SerialPortActivity {
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
-    }
-
-    public void loginOut() {
-        MainActivity.this.finish();
     }
 
     @Override
@@ -260,4 +260,41 @@ public class MainActivity extends SerialPortActivity {
             }
         }
     }
+
+    /**
+     *  自动轮灌查询功能
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPollingEvent(PollingEvent event) {
+        LogUtils.e(TAG,"自动轮灌查询");
+        List<GroupInfo> groupInfos  = GroupInfoSql.queryOpenGroupList();
+        if (groupInfos != null && groupInfos.size() == 1) {
+            GroupInfo groupInfo  = groupInfos.get(0);
+            int time = groupInfo.getGroupTime() - groupInfo.getGroupRunTime();
+            if (time > 600) {
+                TaskFactory.createPullTask(groupInfo);
+            }else {
+                PollingUtils.stopPollingService(MainActivity.this);
+
+            }
+        }
+    }
+
+    private long firstTime=0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK && event.getAction()==KeyEvent.ACTION_DOWN){
+            if (System.currentTimeMillis()-firstTime>2000){
+                ToastUtils.showToast("再按一次退出");
+                firstTime=System.currentTimeMillis();
+            }else{
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

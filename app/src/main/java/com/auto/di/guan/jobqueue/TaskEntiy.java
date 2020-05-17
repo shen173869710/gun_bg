@@ -59,4 +59,9 @@ public class TaskEntiy {
      */
     public static final int TASK_OPTION_AUTO_NEXT = 14;
 
+    /**
+     *   自动查询结束
+     */
+    public static final int TASK_POLL_END = 20;
+
 }

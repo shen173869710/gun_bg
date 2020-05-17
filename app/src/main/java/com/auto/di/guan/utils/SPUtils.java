@@ -8,68 +8,34 @@ import com.auto.di.guan.BaseApp;
 import java.util.Map;
 
 
-public class SharedPreferencesUtils {
+public class SPUtils {
     private SharedPreferences share;
     private SharedPreferences.Editor editor;
-
-    //deviceId
-    public static final String DEVICE_ID="device_id";
-
     //登录的token
     public static final String SAVE_LOGIN_INFO = "save_login_info";
     public static final String SAVE_TOKEN_INFO = "save_token_info";
-
-    //登录的账号密码
-    public static final String SAVE_PWD = "save_pwd";
-    public static final String SAVE_ACCOUNT = "save_account";
-
-    //今天是否请求过
-    public static final String BUSINESS_STATE = "business_state";
-
     /**
-     *  保存本地请求过的banner数据
+     *   设置保存已经设置的设备
      */
-    public static final String BANNER_IMAGES = "banner_images";
-
-    /**
-     * 打印小票公司logo
-     */
-    public static final String COMPANY_TICKET_LOGO="company_ticket_logo";
-    public static final String COMPANY_TICKET_HTTP_URL="COMPANY_TICKET_HTTP_URL";
-
-    /**
-     * 初始化设备是否保存设备唯一值
-     */
-    public static final String DEVICE_ID_VALUE ="DEVICE_ID_VALUE";
-
-    /**
-     * 设备管理密码
-     */
-    public static final String DEVICE_MANAGER_PASSWORD="DEVICE_MANAGER_PASSWORD";
-
-    //订单购物车记录
-    public static final String ORDER_CART_PREFIX="ORDER_CART_";
-
-    //临时订单id
-    public static final String ORDER_Id="orderId";
+    public static final String DEVICE_OPTION ="device_option";
 
 
     /**
      * 单例模式
      */
-    private static SharedPreferencesUtils instance;//单例模式 双重检查锁定
-    public static SharedPreferencesUtils getInstance() {
+    private static SPUtils instance;//单例模式 双重检查锁定
+    public static SPUtils getInstance() {
         if (instance == null) {
-            synchronized (SharedPreferencesUtils.class) {
+            synchronized (SPUtils.class) {
                 if (instance == null) {
-                    instance = new SharedPreferencesUtils();
+                    instance = new SPUtils();
                 }
             }
         }
         return instance;
     }
 
-    private SharedPreferencesUtils() {
+    private SPUtils() {
         share = PreferenceManager.getDefaultSharedPreferences(BaseApp.getInstance());
         editor = share.edit();
     }

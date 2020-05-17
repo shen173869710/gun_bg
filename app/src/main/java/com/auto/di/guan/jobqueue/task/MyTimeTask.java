@@ -27,6 +27,7 @@ public class MyTimeTask {
                     if (life == 0) {
                         LogUtils.e(TAG, "########当前生命周期结束  执行下一个任务 == "+life);
                         stop();
+                        // 有问题
                         baseTask.errorTask();
                     }else {
 

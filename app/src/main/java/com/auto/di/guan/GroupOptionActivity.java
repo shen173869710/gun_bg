@@ -2,27 +2,29 @@ package com.auto.di.guan;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.auto.di.guan.adapter.RecyclerListAdapter;
+import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.jobqueue.event.Fragment32Event;
 import com.auto.di.guan.utils.NoFastClickUtils;
+import com.auto.di.guan.utils.SPUtils;
 import com.auto.di.guan.utils.ToastUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 /**
-
+ *  设置轮灌相关参数
  */
 public class GroupOptionActivity extends Activity  {
 	private View view;
@@ -37,17 +39,32 @@ public class GroupOptionActivity extends Activity  {
 		view = findViewById(R.id.title_bar);
 
 		groupInfos = GroupInfoSql.queryGroupList();
+		String local = SPUtils.getInstance().getString(SPUtils.DEVICE_OPTION);
+		if (TextUtils.isEmpty(local)) {
+			List<GroupInfo> localGroup = new Gson().fromJson(local, new TypeToken<List<GroupInfo>>(){}.getType());
+			if (localGroup != null) {
+				int size = localGroup.size();
+				for (int i = 0; i < size; i++) {
+					int length = groupInfos.size();
+					GroupInfo localInfo = localGroup.get(i);
+					for (int j = 0; j < length; j++) {
+						GroupInfo info = groupInfos.get(j);
+						if (localInfo.getGroupId() == info.getGroupId()) {
+							info.setGroupIsJoin(localInfo.getGroupIsJoin());
+							info.setGroupRunTime(0);
+							info.setGroupTime(localInfo.getGroupTime());
+							info.setGroupLevel(localInfo.getGroupLevel());
+						}
+					}
+				}
+			}
+		}
+
 		textView = (TextView)view.findViewById(R.id.title_bar_title);
 		textView.setText("自动轮灌设置");
 		title_bar_status  = (TextView)view.findViewById(R.id.title_bar_status);
 		title_bar_status.setVisibility(View.VISIBLE);
 		title_bar_status.setText("保存设置");
-//		for (int i = 0; i < groupInfos.size(); i++) {
-//			groupInfos.get(i).setGroupRunTime(0);
-//			groupInfos.get(i).setGroupTime(0);
-//			groupInfos.get(i).setGroupLevel(0);
-//		}
-//		GroupInfoSql.updateGroupList(groupInfos);
 		title_bar_status.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -59,15 +76,6 @@ public class GroupOptionActivity extends Activity  {
 				for (int i = 0; i < size; i++) {
 					GroupInfo groupInfo = groupInfos.get(i);
 					int level = groupInfo.getGroupLevel();
-					int time = groupInfo.getGroupTime();
-
-					boolean isJoin = groupInfo.getGroupIsJoin();
-					if (isJoin) {
-//                        if (time < (1 * Entiy.RUN_TIME)) {
-//                            ToastUtils.showLongToast("参与轮灌的组,轮灌时间不能小于3分钟");
-//                            return;
-//                        }
-                    }
 					if (lv.containsKey(level)) {
 						ToastUtils.showLongToast("不能设置相同的轮灌优先级,或者优先级不能为空");
 						return;
@@ -76,6 +84,7 @@ public class GroupOptionActivity extends Activity  {
 				}
 				GroupInfoSql.updateGroupList(groupInfos);
 				EventBus.getDefault().post(new Fragment32Event());
+				SPUtils.getInstance().putString(SPUtils.DEVICE_OPTION, new Gson().toJson(groupInfos));
 				GroupOptionActivity.this.finish();
 			}
 		});
@@ -91,7 +100,11 @@ public class GroupOptionActivity extends Activity  {
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
+
+
 	}
+
 
 
 }

@@ -1,6 +1,5 @@
 package com.auto.di.guan.jobqueue.task;
 
-import android.os.Handler;
 import android.text.TextUtils;
 
 import com.auto.di.guan.R;
@@ -47,7 +46,7 @@ public class ReadSingleTask extends BaseTask{
     @Override
     public void errorTask() {
         LogUtils.e(TAG, "读取状态 错误 ======="+"errorTask()");
-        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),SendUtils.OPTION_READ_FAILE);
+        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),SendUtils.OPTION_READ_FAILE,true);
         finishTask();
     }
 
@@ -296,7 +295,7 @@ public class ReadSingleTask extends BaseTask{
         /**
          *  发送通信结束
          */
-        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),type);
+        SendUtils.sendReadEnd(getTaskInfo(), getTaskType(),getActionType(),type,true);
     }
 
 

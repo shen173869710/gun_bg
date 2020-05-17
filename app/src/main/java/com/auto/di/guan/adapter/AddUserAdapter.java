@@ -70,9 +70,6 @@ public class AddUserAdapter extends BaseAdapter {
 		viewHolder.user_del.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(NoFastClickUtils.isFastClick()){
-					return;
-				}
 				MainShowDialog.ShowDialog((Activity) ctx, "删除用户","是否删除当前用户", new View.OnClickListener(){
 					@Override
 					public void onClick(View v) {

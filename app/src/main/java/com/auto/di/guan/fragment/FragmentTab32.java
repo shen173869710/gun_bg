@@ -74,9 +74,6 @@ public class FragmentTab32 extends BaseFragment {
 				MainShowDialog.ShowDialog(getActivity(), "开启轮灌组", "是否开启轮灌组轮灌操作", new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						if(NoFastClickUtils.isFastClick()){
-							return;
-						}
                         int size = groupInfos.size();
                         for (int i = 0; i < size; i++) {
                             doRun(true,groupInfos.get(i));
@@ -114,6 +111,7 @@ public class FragmentTab32 extends BaseFragment {
 		});
 		initData();
 		EventBus.getDefault().register(this);
+		LogUtils.e("fragmnet31", "time == "+System.currentTimeMillis());
 		return view;
 	}
 

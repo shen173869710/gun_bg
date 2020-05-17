@@ -4,6 +4,7 @@ import com.auto.di.guan.BaseApp;
 import com.auto.di.guan.db.ControlInfo;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.GroupInfo;
+import com.auto.di.guan.db.sql.ControlInfoSql;
 import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.entity.Entiy;
@@ -11,6 +12,7 @@ import com.auto.di.guan.jobqueue.TaskEntiy;
 import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.event.AutoTaskEvent;
 import com.auto.di.guan.utils.LogUtils;
+import com.auto.di.guan.utils.PollingUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,6 +25,38 @@ import java.util.List;
 public class TaskFactory {
 
     public static final String TAG = "TaskFactory";
+
+
+    /**
+     *   创建自动轮灌查询
+     */
+    public static void createPullTask(GroupInfo groupInfo) {
+        List<ControlInfo> controlInfos = ControlInfoSql.queryControlList(groupInfo.getGroupId());
+        if (controlInfos != null) {
+            int size = controlInfos.size();
+            for (int i = 0; i < size; i++) {
+                TaskFactory.createPollReadTask(controlInfos.get(i), TaskEntiy.TASK_OPTION_READ ,Entiy.ACTION_TYPE_4);
+            }
+            TaskFactory.createPollReadEndTask();
+            TaskManager.getInstance().startTask();
+            PollingUtils.isRun = true;
+        }
+    }
+    /**
+     * 创建自动轮灌查询
+     *
+     * @param info
+     */
+    public static void createPollReadTask(ControlInfo info, int type, int actionType) {
+        final String cmd = Entiy.cmdRead(BaseApp.getProjectId(), info.getDeviceProtocalId());
+        TaskManager.getInstance().addTask(new ReadTask(type, cmd, info,actionType));
+    }
+    /**
+     * 自动轮灌读取
+     */
+    public static void createPollReadEndTask() {
+        TaskManager.getInstance().addTask(new SingleEndTask(TaskEntiy.TASK_POLL_END, ""));
+    }
 
     /************************************************************************************************
      *          绑定gid bid
@@ -97,6 +131,7 @@ public class TaskFactory {
     public static void createReadEndTask() {
         TaskManager.getInstance().addTask(new SingleEndTask(0, ""));
     }
+
 
 
     /************************************************************************************************

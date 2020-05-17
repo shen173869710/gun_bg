@@ -5,57 +5,57 @@
     android:background="@drawable/main_listview_bg"
     android:descendantFocusability="blocksDescendants"
     android:gravity="center"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="50dip"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
+
         <TextView
-            android:text="用户名"
             android:id="@+id/user_name"
             android:layout_width="0dip"
             android:layout_height="50dip"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:gravity="center"
+            android:text="用户名"
             android:textColor="@color/black"
             android:textSize="16.0sp" />
 
         <TextView
-            android:text="权限设置"
             android:id="@+id/user_level"
             android:layout_width="0dip"
             android:layout_height="50dip"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:gravity="center"
+            android:text="权限设置"
             android:textColor="@color/black"
             android:textSize="16.0sp" />
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            >
-        <TextView
-            android:text="删除"
-            android:id="@+id/user_del"
-            android:layout_width="100dip"
-            android:layout_margin="5dp"
-            android:layout_height="fill_parent"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:background="@drawable/bg_red_buttom_rect"
-            android:textSize="16.0sp" />
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/user_del"
+                android:layout_width="100dip"
+                android:layout_height="fill_parent"
+                android:layout_centerInParent="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/bg_red_buttom_rect"
+                android:gravity="center"
+                android:text="删除"
+                android:textColor="@color/white"
+                android:textSize="16.0sp" />
         </RelativeLayout>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/main_divider_width"
-        android:background="@color/main_divider"
-        />
+        android:background="@color/main_divider" />
 </LinearLayout>

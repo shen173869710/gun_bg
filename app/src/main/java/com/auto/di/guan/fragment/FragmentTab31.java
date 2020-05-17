@@ -47,6 +47,7 @@ public class FragmentTab31 extends BaseFragment {
 		expandableListView.setGroupIndicator(null);
 		EventBus.getDefault().register(this);
 		initData();
+		LogUtils.e("fragmnet31", "time == "+System.currentTimeMillis());
 		return view;
 	}
 
