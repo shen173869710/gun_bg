@@ -67,7 +67,10 @@ public class FloatWindowUtil {
         adapter = new DialogListViewAdapter(alist);
         mListView.setAdapter(adapter);
         //mListView.setHasFixedSize(true);
-        mListView.setLayoutManager(new LinearLayoutManager(mContext));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        layoutManager.setStackFromEnd(true);
+        mListView.setLayoutManager(layoutManager);
 
     }
 
@@ -142,6 +145,8 @@ public class FloatWindowUtil {
                 alist.add(event);
             }
             adapter.notifyDataSetChanged();
+            //mListView.smoothScrollToPosition(adapter.getItemCount()-1);
+
         }
     }
 }

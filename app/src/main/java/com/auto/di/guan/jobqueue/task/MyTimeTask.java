@@ -13,7 +13,7 @@ public class MyTimeTask {
     private BaseTask baseTask;
     public MyTimeTask(BaseTask baseTask) {
         this.baseTask = baseTask;
-        this.baseTask.setTaskLife(20);
+        this.baseTask.setTaskLife(30);
         stop();
         if (timer == null){
             timer = new Timer();
@@ -30,13 +30,14 @@ public class MyTimeTask {
                         // 有问题
                         baseTask.errorTask();
                     }else {
-
                         life = life - 1;
                         baseTask.setTaskLife(life);
                         LogUtils.e(TAG, "当前生命周期 =="+baseTask.getTaskLife());
                     }
                 }
             };
+        }else {
+            task.cancel();
         }
     }
 
@@ -45,11 +46,15 @@ public class MyTimeTask {
     }
 
     public void stop(){
+
+        if (task != null) {
+            task.cancel();
+            task = null;
+        }
         if (timer != null) {
             timer.cancel();
-            if (task != null) {
-                task.cancel();
-            }
+            timer.purge();
+            timer = null;
         }
     }
 }

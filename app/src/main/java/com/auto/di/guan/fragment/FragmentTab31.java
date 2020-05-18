@@ -15,6 +15,7 @@ import com.auto.di.guan.db.sql.ControlInfoSql;
 import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.dialog.Main31Dialog;
+import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.event.Fragment31Event;
 import com.auto.di.guan.jobqueue.event.GroupStatusEvent;
 import com.auto.di.guan.jobqueue.task.TaskFactory;
@@ -67,8 +68,10 @@ public class FragmentTab31 extends BaseFragment {
 			public void onItemClick(int index) {
 				if (index == 1) {
 					TaskFactory.createGroupOpenTask(groupInfo);
+					TaskManager.getInstance().startTask();
 				}else if (index == 2) {
 					TaskFactory.createGroupCloseTask(groupInfo);
+					TaskManager.getInstance().startTask();
 				}
 			}
 		});

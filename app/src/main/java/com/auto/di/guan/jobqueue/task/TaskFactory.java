@@ -232,8 +232,6 @@ public class TaskFactory {
             // 10. 添加关闭结束标志位
             createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_CLOSE_READ_END,closeGroupInfo);
         }
-        // 添加完成之后启动任务
-        TaskManager.getInstance().startTask();
     }
 
     /**
@@ -293,8 +291,6 @@ public class TaskFactory {
         addReadGroupTask(closeList, TaskEntiy.TASK_OPTION_CLOSE_READ,Entiy.ACTION_TYPE_31);
         // 4. 添加关闭结束标志位
         createGroupReadEndTask(TaskEntiy.TASK_OPTION_GROUP_CLOSE_READ_END,groupInfo);
-        // 添加完成之后启动任务
-        TaskManager.getInstance().startTask();
     }
 
 

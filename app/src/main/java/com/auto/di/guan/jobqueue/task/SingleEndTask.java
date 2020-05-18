@@ -25,7 +25,11 @@ public class SingleEndTask extends BaseTask{
     public void startTask() {
         LogUtils.e(TAG, "读取结束标志位===================更新fragment4");
         EventBus.getDefault().post(new Fragment4Event());
-
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         if (getTaskType() == TaskEntiy.TASK_POLL_END) {
             PollingUtils.isRun = false;
         }

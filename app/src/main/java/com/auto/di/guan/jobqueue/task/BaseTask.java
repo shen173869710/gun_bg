@@ -103,13 +103,8 @@ public abstract class BaseTask {
      *   任务完成
      */
     public void finishTask() {
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                LogUtils.e("BaseTask", "############################################完成一次操作#############################################");
-//
-//            }
-//        }, 3000);
+        TaskManager.getInstance().finishTask();
+        LogUtils.e("BaseTask", "############################################完成一次操作#############################################");
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {

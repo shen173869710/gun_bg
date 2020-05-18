@@ -11,7 +11,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TaskManager {
     public static BlockingQueue <BaseTask>queue = new LinkedBlockingQueue(200);
     private BaseTask mTask;
-
     private MyTimeTask myTimeTask;
 
     private static TaskManager mTaskManager = null;
@@ -38,11 +37,12 @@ public class TaskManager {
         } else {
             setmTask(task);
             getmTask().startTask();
-            if (!TextUtils.isEmpty(getmTask().getTaskCmd())) {
+            LogUtils.e("BaseTask == ", "task ="+task + "   getmTask()=" +getmTask());
+            if ( getmTask() != null && !TextUtils.isEmpty(getmTask().getTaskCmd())) {
                 myTimeTask = new MyTimeTask(getmTask());
                 myTimeTask.start();
             }
-            LogUtils.e("BaseTask == ", "队列有数据开始任务  type = "+getmTask().getTaskType()+ "  cmd = " + getmTask().getTaskCmd());
+            LogUtils.e("BaseTask == ", "队列有数据开始任务  type = "+getmTask().getTaskType()+ "  cmd = " + task);
         }
     }
 
@@ -70,10 +70,6 @@ public class TaskManager {
      */
     public  void doNextTask() {
         LogUtils.e("BaseTask == ", "doNextTask() 执行下一个");
-        if (myTimeTask != null) {
-            myTimeTask.stop();
-            myTimeTask = null;
-        }
         startTask();
     }
 
@@ -89,8 +85,16 @@ public class TaskManager {
         return mTask;
     }
 
-    public void setmTask(BaseTask mTask) {
-        this.mTask = mTask;
+    public void setmTask(BaseTask task) {
+        this.mTask = task;
     }
 
+    public void finishTask() {
+        LogUtils.e("BaseTask == ", "finishTask() 清空当前task");
+        setmTask(null);
+        if (myTimeTask != null) {
+            myTimeTask.stop();
+            myTimeTask = null;
+        }
+    }
 }

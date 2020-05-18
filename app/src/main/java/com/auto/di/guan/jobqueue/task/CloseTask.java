@@ -41,7 +41,7 @@ public class CloseTask extends BaseTask{
      */
     @Override
     public void endTask(String receive) {
-        LogUtils.e(TAG, "关阀 通信成功====收到信息 =="+receive+ " receive.length() = "+receive.length());
+        LogUtils.e(TAG, "关阀 通信成功====收到信息 =="+receive);
         setReceive(receive);
         /**
          *   如果是未知的命令 如果count == 2 重试一次
@@ -69,7 +69,7 @@ public class CloseTask extends BaseTask{
     public void retryTask() {
         LogUtils.e(TAG, "关阀  重试======="+"retryTask()  cmd =="+getTaskCmd());
         String receive = getReceive();
-        if(getTaskCount() == 2) {
+            if(getTaskCount() == 2) {
             setTaskCount(1);
             SendUtils.sendCloseRet(receive, getTaskInfo());
             writeCmd(getTaskCmd());

@@ -153,7 +153,7 @@ public class MainActivity extends SerialPortActivity {
                 || receive.contains("gf")
                 || receive.contains("rs"))
                 && !receive.contains("ok")) {
-//            LogUtils.e(TAG, "过滤回显信息 -------------------"+receive);
+            LogUtils.e(TAG, "过滤回显信息 -------------------"+receive);
             return;
         }
         runOnUiThread(new Runnable() {
