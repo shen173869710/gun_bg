@@ -5,7 +5,6 @@ import com.auto.di.guan.jobqueue.TaskEntiy;
 import com.auto.di.guan.jobqueue.event.Fragment4Event;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.PollingUtils;
-
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -25,11 +24,6 @@ public class SingleEndTask extends BaseTask{
     public void startTask() {
         LogUtils.e(TAG, "读取结束标志位===================更新fragment4");
         EventBus.getDefault().post(new Fragment4Event());
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         if (getTaskType() == TaskEntiy.TASK_POLL_END) {
             PollingUtils.isRun = false;
         }

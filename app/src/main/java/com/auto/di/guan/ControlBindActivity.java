@@ -217,14 +217,14 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
                     return;
                 }
 
-//				if (!isPeroJectId) {
-//					showToastLongMsg("项目ID未写入");
-//					return;
-//				}
-//				if (!isGroupId) {
-//					showToastLongMsg("组ID未写入");
-//					return;
-//				}
+				if (!isPeroJectId) {
+					showToastLongMsg("项目ID未写入");
+					return;
+				}
+				if (!isGroupId) {
+					showToastLongMsg("组ID未写入");
+					return;
+				}
                 info.setDeviceName(deviceName);
                 ControlInfo controlInfo_0 = info.getValveDeviceSwitchList().get(0);
                 ControlInfo controlInfo_1 = info.getValveDeviceSwitchList().get(1);

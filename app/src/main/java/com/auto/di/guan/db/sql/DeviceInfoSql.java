@@ -3,9 +3,7 @@ package com.auto.di.guan.db.sql;
 import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.greendao.DaoSession;
 import com.auto.di.guan.db.greendao.DeviceInfoDao;
-
 import org.greenrobot.greendao.query.QueryBuilder;
-
 import java.util.ArrayList;
 import java.util.List;
 

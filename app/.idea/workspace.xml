@@ -6,16 +6,23 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="AvailableLibraryUpdateStorage">
     <last-search-timestamp>1580803204252</last-search-timestamp>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d7dd5271-1711-4806-8d11-3d300b2eea4e" name="Default Changelist" comment="修改自动轮灌相关操作">
+    <list default="true" id="d7dd5271-1711-4806-8d11-3d300b2eea4e" name="Default Changelist" comment="修改mqtt配置">
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/mqtt/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/mqtt/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/ControlBindActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/ControlBindActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/adapter/MyGridOpenAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/adapter/MyGridOpenAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/db/sql/DeviceInfoSql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/db/sql/DeviceInfoSql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/TaskManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/TaskManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/ReadTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/ReadTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/SingleEndTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/SingleEndTask.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,7 +34,7 @@
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="VED7N18321005513" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="127.0.0.1:62001" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -69,11 +76,17 @@
   <component name="ProjectId" id="1bWcXgio0vgnZ2iYHknkhF7Aas7" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="DEBUGGABLE_DEVICE" value="motorola-aosp_on_shama-127.0.0.1:62001" />
+    <property name="DEBUGGABLE_PROCESS" value="com.auto.di.guan" />
+    <property name="DEBUGGER_ID" value="Auto" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="127.0.0.1:62001" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-05-19T08:20:51.633Z" />
     <property name="ExportApk.ApkPath" value="F:\guan\android\app" />
     <property name="ExportApk.BuildVariants" value="proRelease&#10;uatRelease" />
     <property name="ExportApk.SignV1" value="true" />
     <property name="ExportApk.SignV2" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="device.picker.selection" value="127.0.0.1:62001" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/res/layout" />
@@ -88,6 +101,9 @@
     <option name="LAST_EDITED_SIGNING_CONFIG" value="release" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\android_gun\android\app\src\main\res\raw" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.auto.di.guan.jobqueue.task" />
       <recent name="com.auto.di.guan.dialog" />
@@ -286,7 +302,21 @@
       <option name="project" value="LOCAL" />
       <updated>1588998594687</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="修改mqtt配置">
+      <created>1589011418851</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1589011418851</updated>
+    </task>
+    <task id="LOCAL-00009" summary="修改mqtt配置">
+      <created>1589342460015</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1589342460015</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -308,6 +338,7 @@
     <MESSAGE value="提交自动查询" />
     <MESSAGE value="提交保存最后一次用户操作" />
     <MESSAGE value="修改自动轮灌相关操作" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改自动轮灌相关操作" />
+    <MESSAGE value="修改mqtt配置" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改mqtt配置" />
   </component>
 </project>

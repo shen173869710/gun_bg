@@ -223,7 +223,7 @@ public class MyGridOpenAdapter extends BaseAdapter {
                  *    index = 2  关阀
                  */
                 if (index == 0) {
-                    TaskFactory.createReadTask(controlInfo, TaskEntiy.TASK_OPTION_READ ,Entiy.ACTION_TYPE_4);
+                    TaskFactory.createReadSingleTask(controlInfo, TaskEntiy.TASK_OPTION_READ ,Entiy.ACTION_TYPE_4);
                     TaskFactory.createReadEndTask();
                     TaskManager.getInstance().startTask();
                 }else if (index == 1) {

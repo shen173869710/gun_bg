@@ -23,6 +23,7 @@ public class ReadTask extends BaseTask{
 
     private int actionType;
 
+
     public ReadTask(int taskType, String taskCmd) {
         super(taskType, taskCmd);
     }
