@@ -44,6 +44,10 @@ public class Entiy {
      */
     public static final int RUN_DO_START = 2;
     /**
+     *    自动轮灌完成
+     */
+    public static final int RUN_DO_FINISH = 3;
+    /**
      *  报警信息
      */
     //  开阀异常

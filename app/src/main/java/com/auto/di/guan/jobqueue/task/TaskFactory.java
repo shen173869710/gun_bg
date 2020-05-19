@@ -405,14 +405,15 @@ public class TaskFactory {
      */
     public static void createAutoGroupNextTask(GroupInfo groupInfo) {
         LogUtils.e(TAG, "*********************************自动轮灌 是否有下一组需要操作*****************************");
+        groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
         groupInfo.setGroupTime(0);
         groupInfo.setGroupRunTime(0);
-        groupInfo.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
         groupInfo.setGroupStop(false);
         GroupInfoSql.updateGroup(groupInfo);
         //查看是否有下一组
         List<GroupInfo> groupList = GroupInfoSql.queryNextGroupList(groupInfo.getGroupId());
         if (groupList != null) {
+
             createAutoGroupOpenNextTask(groupList.get(0));
             createAutoGroupCloseTask(groupInfo);
             TaskManager.getInstance().startTask();

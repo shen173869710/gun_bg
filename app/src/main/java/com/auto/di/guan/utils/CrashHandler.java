@@ -94,15 +94,15 @@ public class CrashHandler implements UncaughtExceptionHandler {
             return false;
         }
         // 使用Toast来显示异常信息
-        new Thread() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                Toast.makeText(mContext, "error", Toast.LENGTH_LONG)
-                        .show();
-                Looper.loop();
-            }
-        }.start();
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                Looper.prepare();
+//                Toast.makeText(mContext, "error", Toast.LENGTH_LONG)
+//                        .show();
+//                Looper.loop();
+//            }
+//        }.start();
         PackageManager pm = mContext.getPackageManager();
         PackageInfo pi = null;
         try {
@@ -124,7 +124,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             ErrorUtil logUtil = new ErrorUtil();
             logUtil.queueMessage(BaseApp.getInstance(),sb.toString());
 
-            Log.e("CrashHandler","ErrorInfo = "+sb.toString());
+            LogUtils.e("CrashHandler","ErrorInfo = "+sb.toString());
         } catch (Exception e) {
 
         }

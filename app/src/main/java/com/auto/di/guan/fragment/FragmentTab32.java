@@ -23,6 +23,7 @@ import com.auto.di.guan.db.sql.DeviceInfoSql;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.entity.Entiy;
+import com.auto.di.guan.jobqueue.event.AutoTaskEvent;
 import com.auto.di.guan.jobqueue.event.Fragment31Event;
 import com.auto.di.guan.jobqueue.event.Fragment32Event;
 import com.auto.di.guan.jobqueue.event.GroupStatusEvent;
@@ -208,4 +209,18 @@ public class FragmentTab32 extends BaseFragment {
 			initData();
 		}
 	};
+
+	/**
+	 *   接收自动轮灌相关操作
+	 */
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onAutoTaskEvent(AutoTaskEvent event) {
+		if (event != null) {
+			if (event.getType() == Entiy.RUN_DO_FINISH) {
+				if (adapter != null) {
+					initData();
+				}
+			}
+		}
+	}
 }

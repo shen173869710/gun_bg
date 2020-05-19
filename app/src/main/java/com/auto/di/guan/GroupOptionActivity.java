@@ -75,12 +75,25 @@ public class GroupOptionActivity extends Activity  {
 				HashMap<Integer, Integer> lv = new HashMap<>();
 				for (int i = 0; i < size; i++) {
 					GroupInfo groupInfo = groupInfos.get(i);
-					int level = groupInfo.getGroupLevel();
-					if (lv.containsKey(level)) {
-						ToastUtils.showLongToast("不能设置相同的轮灌优先级,或者优先级不能为空");
-						return;
+					if (groupInfo.getGroupIsJoin()) {
+						if (groupInfo.getGroupTime() == 0 || groupInfo.getGroupLevel() == 0) {
+							ToastUtils.showLongToast("轮灌优先级或者轮灌时长不能为0");
+							return;
+						}
+					}else {
+						groupInfo.setGroupRunTime(0);
+						groupInfo.setGroupLevel(0);
+						groupInfo.setGroupTime(0);
 					}
-					lv.put(level,level);
+
+					int level = groupInfo.getGroupLevel();
+					if (level > 0) {
+						if (lv.containsKey(level)) {
+							ToastUtils.showLongToast("不能设置相同的轮灌优先级,或者优先级不能为空");
+							return;
+						}
+						lv.put(level,level);
+					}
 				}
 				GroupInfoSql.updateGroupList(groupInfos);
 				EventBus.getDefault().post(new Fragment32Event());

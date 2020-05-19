@@ -30,7 +30,6 @@ public class GroupAutoEndTask extends BaseTask{
         // 如果是这个任务说明开启任务已经全部完成
         if (getTaskType() == TaskEntiy.TASK_OPTION_AUTO_OPEN) {
             LogUtils.e(TAG, "**********************************自动轮灌  开启一组完成****************************\n"+(new Gson().toJson(getGroupInfo())));
-
             EventBus.getDefault().post(new AutoTaskEvent(getGroupInfo()));
             EventBus.getDefault().post(new GroupStatusEvent(getGroupInfo()));
         }else if (getTaskType() == TaskEntiy.TASK_OPTION_AUTO_CLOSE) {

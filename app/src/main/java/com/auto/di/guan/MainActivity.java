@@ -240,14 +240,23 @@ public class MainActivity extends SerialPortActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAutoTaskEvent(AutoTaskEvent event) {
         if(handler != null && event != null) {
+
+
+
             /**
-             *  停止计时
+             *  轮灌完成
              */
-            if (event.getType() == Entiy.RUN_DO_STOP) {
+            if(event.getType() == Entiy.RUN_DO_FINISH) {
+                handler.removeMessages(HANDLER_WHAT_FALG);
+            } else if (event.getType() == Entiy.RUN_DO_STOP) {
+                /**
+                 *  停止计时
+                 */
                 handler.removeMessages(HANDLER_WHAT_FALG);
                 LogUtils.e(TAG, "---------暂停轮灌计时--------- ");
             }else if (event.getType() == Entiy.RUN_DO_START){
                 LogUtils.e(TAG, "---------开启轮灌计时--------- ");
+                // 轮灌开始
                 handler.removeMessages(HANDLER_WHAT_FALG);
                 Message message = new Message();
                 message.obj = event.getGroupInfo();
