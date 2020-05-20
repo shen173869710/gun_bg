@@ -1,7 +1,10 @@
 package com.auto.di.guan.utils;
 
 import android.content.Context;
+import android.graphics.PointF;
+import android.os.Handler;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -9,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.auto.di.guan.BaseApp;
@@ -30,16 +34,11 @@ import java.util.ArrayList;
  */
 
 public class FloatWindowUtil {
-
     private static FloatWindowUtil instance = new FloatWindowUtil();
-
-
     private RecyclerView mListView;
     private DialogListViewAdapter adapter;
     private ArrayList<CmdStatus> alist = new ArrayList<>();
     private View view;
-
-
     public static synchronized FloatWindowUtil getInstance() {
         return instance;
     }
@@ -64,14 +63,12 @@ public class FloatWindowUtil {
                 FloatWindow.destroy(TAG);
             }
         });
-        adapter = new DialogListViewAdapter(alist);
-        mListView.setAdapter(adapter);
-        //mListView.setHasFixedSize(true);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
+        adapter = new DialogListViewAdapter(alist);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
         layoutManager.setStackFromEnd(true);
         mListView.setLayoutManager(layoutManager);
-
+        mListView.setAdapter(adapter);
     }
 
     public boolean isShow() {
@@ -140,12 +137,14 @@ public class FloatWindowUtil {
                     isHas = true;
                 }
             }
-
             if (!isHas) {
                 alist.add(event);
             }
-            adapter.notifyDataSetChanged();
-            //mListView.smoothScrollToPosition(adapter.getItemCount()-1);
+
+            if (adapter != null && mListView != null) {
+                adapter.notifyDataSetChanged();
+                mListView.scrollToPosition(adapter.getItemCount()-1);
+            }
 
         }
     }

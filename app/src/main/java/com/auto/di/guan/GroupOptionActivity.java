@@ -5,13 +5,15 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.auto.di.guan.adapter.RecyclerListAdapter;
-import com.auto.di.guan.db.DeviceInfo;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.jobqueue.event.Fragment32Event;
+import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.NoFastClickUtils;
 import com.auto.di.guan.utils.SPUtils;
 import com.auto.di.guan.utils.ToastUtils;
@@ -19,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +30,8 @@ import java.util.List;
  *  设置轮灌相关参数
  */
 public class GroupOptionActivity extends Activity  {
+
+	private static final String TAG = "GroupOptionActivity";
 	private View view;
 	private TextView textView;
 	private TextView title_bar_status;
@@ -40,6 +45,7 @@ public class GroupOptionActivity extends Activity  {
 
 		groupInfos = GroupInfoSql.queryGroupList();
 		String local = SPUtils.getInstance().getString(SPUtils.DEVICE_OPTION);
+		LogUtils.e(TAG, "local  = "+ local);
 		if (TextUtils.isEmpty(local)) {
 			List<GroupInfo> localGroup = new Gson().fromJson(local, new TypeToken<List<GroupInfo>>(){}.getType());
 			if (localGroup != null) {

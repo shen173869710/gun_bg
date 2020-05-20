@@ -27,11 +27,9 @@ public class RecyclerListAdapter extends BaseQuickAdapter<GroupInfo, BaseViewHol
 
     @Override
     protected void convert(BaseViewHolder holder, final GroupInfo info) {
-
         TextView option_switch = holder.getView(R.id.option_switch);
         TextView option_name = holder.getView(R.id.option_name);
         EditText option_time = holder.getView(R.id.option_time);
-
         EditText option_level = holder.getView(R.id.option_level);
         TextView option_time_value = holder.getView(R.id.option_time_value);
         TextView option_level_value = holder.getView(R.id.option_level_value);

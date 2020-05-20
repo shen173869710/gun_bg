@@ -34,6 +34,8 @@ public class GroupEndTask extends BaseTask{
         }else if (getTaskType() == TaskEntiy.TASK_OPTION_GROUP_CLOSE_READ_END) {
             if (mGroupInfo != null) {
                 mGroupInfo.setGroupStatus(0);
+                mGroupInfo.setGroupTime(0);
+                mGroupInfo.setGroupRunTime(0);
                 GroupInfoSql.updateGroup(mGroupInfo);
             }
             LogUtils.e(TAG, "分组手动关闭     操作结束==========================  cmd =="+getTaskCmd());
