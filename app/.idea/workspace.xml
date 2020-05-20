@@ -13,15 +13,9 @@
     <last-search-timestamp>1580803204252</last-search-timestamp>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d7dd5271-1711-4806-8d11-3d300b2eea4e" name="Default Changelist" comment="修改轮灌结束标志bug修改">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+    <list default="true" id="d7dd5271-1711-4806-8d11-3d300b2eea4e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/GroupOptionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/GroupOptionActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/adapter/RecyclerListAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/adapter/RecyclerListAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/GroupEndTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/jobqueue/task/GroupEndTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/utils/FloatWindowUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/utils/FloatWindowUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_control_bind.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/activity_control_bind.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/res/layout/dialog_listview.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/dialog_listview.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/adapter/GroupStatusAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/adapter/GroupStatusAdapter.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -322,7 +316,14 @@
       <option name="project" value="LOCAL" />
       <updated>1589880023881</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="提交悬浮窗自动滚动问题">
+      <created>1589963025288</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1589963025288</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -346,6 +347,7 @@
     <MESSAGE value="修改自动轮灌相关操作" />
     <MESSAGE value="修改mqtt配置" />
     <MESSAGE value="修改轮灌结束标志bug修改" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改轮灌结束标志bug修改" />
+    <MESSAGE value="提交悬浮窗自动滚动问题" />
+    <option name="LAST_COMMIT_MESSAGE" value="提交悬浮窗自动滚动问题" />
   </component>
 </project>

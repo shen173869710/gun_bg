@@ -171,9 +171,14 @@ public class GroupStatusAdapter extends BaseQuickAdapter<GroupInfo, BaseViewHold
         });
 
         int position = holder.getAdapterPosition();
-        if (mItems.size() == position + 1 || info.getGroupStatus() == 0) {
+        if (info.getGroupStatus() == 0) {
             status_next.setVisibility(View.GONE);
         }
+
+        if (getData().size() == position + 1) {
+            status_next.setVisibility(View.GONE);
+        }
+
     }
 
     public void setData(List<GroupInfo> data) {
