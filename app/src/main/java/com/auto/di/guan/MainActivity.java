@@ -240,15 +240,14 @@ public class MainActivity extends SerialPortActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAutoTaskEvent(AutoTaskEvent event) {
         if(handler != null && event != null) {
-
-
-
             /**
              *  轮灌完成
              */
             if(event.getType() == Entiy.RUN_DO_FINISH) {
                 handler.removeMessages(HANDLER_WHAT_FALG);
-            } else if (event.getType() == Entiy.RUN_DO_STOP) {
+
+                LogUtils.e(TAG, "---------自动轮灌结束--------- ");
+            }  else if (event.getType() == Entiy.RUN_DO_STOP) {
                 /**
                  *  停止计时
                  */
@@ -287,7 +286,6 @@ public class MainActivity extends SerialPortActivity {
                 TaskFactory.createPullTask(groupInfo);
             }else {
                 PollingUtils.stopPollingService(MainActivity.this);
-
             }
         }
     }

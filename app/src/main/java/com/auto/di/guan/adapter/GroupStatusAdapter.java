@@ -98,12 +98,12 @@ public class GroupStatusAdapter extends BaseQuickAdapter<GroupInfo, BaseViewHold
                                 String tag = v.getTag().toString();
                                 if (!TextUtils.isEmpty(tag)) {
                                     int i = Integer.valueOf(tag);
-                                    if (i < 20) {
+                                    if (i <= 0) {
 
                                         Toast.makeText(getContext(), "设置的时间不能小于20分钟", Toast.LENGTH_LONG).show();
                                         return;
                                     }
-                                    info.setGroupTime(i * Entiy.RUN_TIME + info.getGroupRunTime());
+                                    info.setGroupTime(i * Entiy.RUN_TIME + info.getGroupTime());
                                     GroupInfoSql.updateGroup(info);
                                 }
                             }
@@ -165,8 +165,8 @@ public class GroupStatusAdapter extends BaseQuickAdapter<GroupInfo, BaseViewHold
                 if (NoFastClickUtils.isFastClick()) {
                     return;
                 }
-                TaskFactory.createAutoGroupNextTask(info);
-                TaskManager.getInstance().startTask();
+                info.setGroupRunTime(info.getGroupTime());
+                GroupInfoSql.updateGroup(info);
             }
         });
 

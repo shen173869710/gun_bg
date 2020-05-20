@@ -46,7 +46,11 @@ public class Entiy {
     /**
      *    自动轮灌完成
      */
-    public static final int RUN_DO_FINISH = 3;
+    public static final int RUN_DO_NEXT = 3;
+    /**
+     *    自动轮灌完成
+     */
+    public static final int RUN_DO_FINISH = 4;
     /**
      *  报警信息
      */
