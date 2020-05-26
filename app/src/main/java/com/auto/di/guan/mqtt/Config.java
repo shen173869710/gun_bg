@@ -5,7 +5,7 @@ public class Config {
     public static final String clientId = "GID_Smart@@@"+System.currentTimeMillis();
     public static final String instanceId = "1111111111";
     public static final String accessKey = "2222222222222222";
-    public static final String secretKey = "3333333333333333";
+    public static final String secretKey = "33333333333333331";
     public static final String topic = "topic_smart";
 
 
