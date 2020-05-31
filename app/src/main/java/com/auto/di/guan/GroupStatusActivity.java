@@ -168,17 +168,18 @@ public class GroupStatusActivity extends FragmentActivity  {
                 TaskManager.getInstance().startTask();
             }
         }else if (index == 2) {
-            List<GroupInfo> infos = GroupInfoSql.queryGroupList();
-            for (int i = 0; i < infos.size(); i++) {
-                GroupInfo info = infos.get(i);
+            groupInfos = GroupInfoSql.queryGroupSettingList();
+            for (int i = 0; i < groupInfos.size(); i++) {
+                GroupInfo info = groupInfos.get(i);
                 info.setGroupRunTime(0);
                 info.setGroupTime(0);
                 info.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
             }
-            GroupInfoSql.updateGroupList(infos);
+            GroupInfoSql.updateGroupList(groupInfos);
             PollingUtils.stopPollingService(GroupStatusActivity.this);
             EventBus.getDefault().post(new AutoTaskEvent(Entiy.RUN_DO_FINISH));
-            adapter.setData(infos);
+            adapter = new GroupStatusAdapter(groupInfos);
+            recyclerView.setAdapter(adapter);
             openAdapter.setData(new ArrayList<>());
             closeAdapter.setData(new ArrayList<>());
         }else if (index == 3) {

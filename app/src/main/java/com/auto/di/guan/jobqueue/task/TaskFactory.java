@@ -11,6 +11,7 @@ import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.jobqueue.TaskEntiy;
 import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.event.AutoTaskEvent;
+import com.auto.di.guan.utils.FloatWindowUtil;
 import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.PollingUtils;
 
@@ -37,9 +38,12 @@ public class TaskFactory {
             for (int i = 0; i < size; i++) {
                 TaskFactory.createPollReadTask(controlInfos.get(i), TaskEntiy.TASK_OPTION_READ ,Entiy.ACTION_TYPE_4);
             }
+
+            FloatWindowUtil.getInstance().cleanList();
             TaskFactory.createPollReadEndTask();
             TaskManager.getInstance().startTask();
             PollingUtils.isRun = true;
+
         }
     }
     /**

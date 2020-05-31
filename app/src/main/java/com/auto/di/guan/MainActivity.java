@@ -275,7 +275,7 @@ public class MainActivity extends SerialPortActivity {
     public void onPollingEvent(PollingEvent event) {
         LogUtils.e(TAG,"--------------------------------自动轮灌查询执行-----------------------------------");
 
-        if (TaskManager.getInstance().hasTask()) {
+        if (!TaskManager.getInstance().hasTask()) {
             LogUtils.e(TAG,"--------------------------------自动轮灌查询执行, 有任务正在执行跳过-----------------------------------");
             return;
         }

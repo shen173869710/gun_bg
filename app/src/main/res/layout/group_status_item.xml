@@ -85,7 +85,7 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:background="@drawable/bg_red_buttom_rect"
                 android:padding="10dp"
-                android:text="设置时间"
+                android:text="增加时间"
                 android:textColor="@android:color/white" />
 
 

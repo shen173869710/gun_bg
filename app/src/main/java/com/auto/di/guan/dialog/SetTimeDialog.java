@@ -47,7 +47,7 @@ public class SetTimeDialog extends Dialog {
 	private void setCustomView() {
 		mView = LayoutInflater.from(getContext()).inflate(R.layout.set_time_dialog, null);
 		sure_load_title =  (TextView) mView.findViewById(R.id.sure_load_title);
-		sure_load_title.setText("设置时间");
+		sure_load_title.setText("增加时间");
 		sure_load_group_value = (EditText) mView.findViewById(R.id.sure_load_group_value);
 		sure_load_sure = (Button) mView.findViewById(R.id.sure_load_sure);
 		sure_load_cancle = (Button) mView.findViewById(R.id.sure_load_cancle);

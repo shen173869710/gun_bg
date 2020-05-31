@@ -46,7 +46,7 @@ public class GroupOptionActivity extends Activity  {
 		groupInfos = GroupInfoSql.queryGroupList();
 		String local = SPUtils.getInstance().getString(SPUtils.DEVICE_OPTION);
 		LogUtils.e(TAG, "local  = "+ local);
-		if (TextUtils.isEmpty(local)) {
+		if (!TextUtils.isEmpty(local)) {
 			List<GroupInfo> localGroup = new Gson().fromJson(local, new TypeToken<List<GroupInfo>>(){}.getType());
 			if (localGroup != null) {
 				int size = localGroup.size();

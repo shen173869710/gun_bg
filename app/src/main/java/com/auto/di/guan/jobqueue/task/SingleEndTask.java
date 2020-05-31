@@ -27,7 +27,6 @@ public class SingleEndTask extends BaseTask{
         EventBus.getDefault().post(new Fragment4Event());
         if (getTaskType() == TaskEntiy.TASK_POLL_END) {
             PollingUtils.isRun = false;
-            FloatWindowUtil.getInstance().cleanList();
         }
         finishTask();
     }
