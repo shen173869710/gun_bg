@@ -5,7 +5,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
+
 import com.auto.di.guan.R;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.sql.GroupInfoSql;
@@ -13,15 +15,17 @@ import com.auto.di.guan.dialog.DialogUtil;
 import com.auto.di.guan.dialog.OnDialogClick;
 import com.auto.di.guan.dialog.SetTimeDialog;
 import com.auto.di.guan.entity.Entiy;
-import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.event.AutoTaskEvent;
-import com.auto.di.guan.jobqueue.task.TaskFactory;
 import com.auto.di.guan.utils.NoFastClickUtils;
+import com.auto.di.guan.utils.PollingUtils;
+import com.auto.di.guan.utils.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.daimajia.numberprogressbar.NumberProgressBar;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.annotation.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -163,6 +167,10 @@ public class GroupStatusAdapter extends BaseQuickAdapter<GroupInfo, BaseViewHold
             @Override
             public void onClick(View v) {
                 if (NoFastClickUtils.isFastClick()) {
+                    return;
+                }
+                if (PollingUtils.isRun) {
+                    ToastUtils.showLongToast("自动查询操作当中，请稍后");
                     return;
                 }
                 info.setGroupRunTime(info.getGroupTime());

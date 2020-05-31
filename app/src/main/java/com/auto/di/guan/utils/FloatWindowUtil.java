@@ -71,6 +71,13 @@ public class FloatWindowUtil {
         mListView.setAdapter(adapter);
     }
 
+    public void cleanList() {
+        if (adapter != null) {
+            alist.clear();
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     public boolean isShow() {
         if (FloatWindow.get(TAG) == null) {
             return false;

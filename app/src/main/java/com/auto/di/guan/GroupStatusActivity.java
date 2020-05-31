@@ -16,6 +16,7 @@ import com.auto.di.guan.dialog.GroupOptionDialog;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.jobqueue.TaskManager;
 import com.auto.di.guan.jobqueue.event.AutoCountEvent;
+import com.auto.di.guan.jobqueue.event.AutoTaskEvent;
 import com.auto.di.guan.jobqueue.event.GroupStatusEvent;
 import com.auto.di.guan.jobqueue.task.TaskFactory;
 import com.auto.di.guan.utils.DiffStatusCallback;
@@ -162,24 +163,35 @@ public class GroupStatusActivity extends FragmentActivity  {
                     ToastUtils.showLongToast("自动轮灌正在运行当中, 无法再次开启自动轮灌");
                     return;
                 }
+                PollingUtils.stopPollingService(GroupStatusActivity.this);
                 TaskFactory.createAutoGroupOpenTask(groupInfos.get(0));
                 TaskManager.getInstance().startTask();
             }
         }else if (index == 2) {
-            groupInfos = GroupInfoSql.queryGroupList();
-            for (int i = 0; i < groupInfos.size(); i++) {
-                GroupInfo info = groupInfos.get(i);
+            List<GroupInfo> infos = GroupInfoSql.queryGroupList();
+            for (int i = 0; i < infos.size(); i++) {
+                GroupInfo info = infos.get(i);
                 info.setGroupRunTime(0);
                 info.setGroupTime(0);
-                info.setGroupLevel(0);
                 info.setGroupStatus(Entiy.GROUP_STATUS_COLSE);
             }
-            GroupInfoSql.updateGroupList(groupInfos);
+            GroupInfoSql.updateGroupList(infos);
+            PollingUtils.stopPollingService(GroupStatusActivity.this);
+            EventBus.getDefault().post(new AutoTaskEvent(Entiy.RUN_DO_FINISH));
+            adapter.setData(infos);
+            openAdapter.setData(new ArrayList<>());
+            closeAdapter.setData(new ArrayList<>());
         }else if (index == 3) {
-            if(PollingUtils.isStart) {
+            if(!TaskManager.getInstance().hasTask()) {
+                ToastUtils.showLongToast("轮灌操作执行当中,请稍后操作");
+                PollingUtils.stopPollingService(GroupStatusActivity.this);
+                return;
+            }
+
+            if(PollingUtils.isIsStart()) {
                 PollingUtils.stopPollingService(GroupStatusActivity.this);
             }else {
-                PollingUtils.startPollingService(GroupStatusActivity.this, MainActivity.ALERM_TIME);
+                PollingUtils.startPollingService(GroupStatusActivity.this, Entiy.ALERM_TIME);
             }
         }
     }

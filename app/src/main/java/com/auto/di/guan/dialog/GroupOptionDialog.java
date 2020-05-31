@@ -86,7 +86,7 @@ public class GroupOptionDialog extends Dialog {
 		});
 
 
-		if (PollingUtils.isStart) {
+		if (PollingUtils.isIsStart()) {
 			dialog.option_auto.setText("关闭自动查询");
 		}else {
 			dialog.option_auto.setText("开启自动查询");

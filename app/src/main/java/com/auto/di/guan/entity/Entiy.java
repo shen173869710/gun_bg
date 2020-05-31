@@ -9,6 +9,15 @@ import com.auto.di.guan.BaseApp;
 public class Entiy {
 
     /**
+     *   数据保存本地时间间隔
+     */
+    public static final int DB_SAVE_TIME = 1 * 60 * 1000;
+    /**
+     *  自动查询 时间间隔
+     **/
+    public static final int ALERM_TIME = 1 * 60;
+
+    /**
      *   绑定     上开关  右
      *            下开关  右
      *            按下复位  写
@@ -31,9 +40,12 @@ public class Entiy {
      */
 
     /**
-     *   设置轮灌时间比例时间
+     *   设置轮灌时间比例时间 目前是分钟
      */
     public static final int RUN_TIME = 60;
+    /**
+     *   设置轮灌定时器  1000ms
+     */
     public static final int RUN_TIME_COUNT = 1000;
     /**
      *    暂停轮灌计时

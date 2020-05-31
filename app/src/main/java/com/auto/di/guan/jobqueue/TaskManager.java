@@ -72,11 +72,7 @@ public class TaskManager {
     }
 
     public boolean hasTask(){
-        if (queue.isEmpty()) {
-            return false;
-        }else {
-            return true;
-        }
+        return queue.isEmpty();
     }
 
     public BaseTask getmTask() {

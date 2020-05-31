@@ -3,6 +3,7 @@ package com.auto.di.guan.db.sql;
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.greendao.DaoSession;
 import com.auto.di.guan.db.greendao.GroupInfoDao;
+import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.utils.LogUtils;
 
 import org.greenrobot.greendao.query.QueryBuilder;
@@ -90,6 +91,7 @@ public class GroupInfoSql extends BaseSql {
         GroupInfoDao dao = daoSession.getGroupInfoDao();
         QueryBuilder<GroupInfo> qb = dao.queryBuilder();
         qb.where(GroupInfoDao.Properties.GroupStatus.eq(1));
+        qb.where(GroupInfoDao.Properties.GroupIsJoin.eq(true));
         qb.orderAsc(GroupInfoDao.Properties.GroupLevel);
         List<GroupInfo> list = qb.list();
         if(list != null && list.size() > 0) {
@@ -133,11 +135,12 @@ public class GroupInfoSql extends BaseSql {
         return null;
     }
 
+
     /**
      *   更新当前的group
      */
     public static void updateRunGroup (GroupInfo groupInfo){
-        if (groupInfo.getGroupRunTime() % 10 == 0) {
+        if (groupInfo.getGroupRunTime() % Entiy.DB_SAVE_TIME== 0) {
             GroupInfoSql.updateGroup(groupInfo);
         }
     }

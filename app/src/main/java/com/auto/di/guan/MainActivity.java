@@ -7,10 +7,8 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.TextView;
-
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.LevelInfo;
 import com.auto.di.guan.db.sql.GroupInfoSql;
@@ -29,7 +27,6 @@ import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.PollingUtils;
 import com.auto.di.guan.utils.ToastUtils;
 import com.google.gson.Gson;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -43,11 +40,6 @@ public class MainActivity extends SerialPortActivity {
     private FragmentManager manager;
     private FragmentTransaction transaction;
     private TextView textView;
-    /**
-     * 定时任务时间   你自己在这里修改
-     * 5 分钟
-     **/
-    public static final int ALERM_TIME = 2 * 60 * 1000;
     private static final int HANDLER_WHAT_FALG = 1;
     private MediaPlayer mp;
     /**
@@ -81,6 +73,10 @@ public class MainActivity extends SerialPortActivity {
                      */
                     GroupInfoSql.updateRunGroup(groupInfo);
                     EventBus.getDefault().post(new AutoCountEvent(groupInfo));
+
+                    if(groupInfo.getGroupRunTime() % Entiy.ALERM_TIME == 0 && PollingUtils.isIsStart()) {
+                        onPollingEvent(new PollingEvent());
+                    }
                 }
             }
         }
@@ -277,12 +273,17 @@ public class MainActivity extends SerialPortActivity {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPollingEvent(PollingEvent event) {
-        LogUtils.e(TAG,"自动轮灌查询");
+        LogUtils.e(TAG,"--------------------------------自动轮灌查询执行-----------------------------------");
+
+        if (TaskManager.getInstance().hasTask()) {
+            LogUtils.e(TAG,"--------------------------------自动轮灌查询执行, 有任务正在执行跳过-----------------------------------");
+            return;
+        }
         List<GroupInfo> groupInfos  = GroupInfoSql.queryOpenGroupList();
         if (groupInfos != null && groupInfos.size() == 1) {
             GroupInfo groupInfo  = groupInfos.get(0);
             int time = groupInfo.getGroupTime() - groupInfo.getGroupRunTime();
-            if (time > 600) {
+            if (time > Entiy.ALERM_TIME) {
                 TaskFactory.createPullTask(groupInfo);
             }else {
                 PollingUtils.stopPollingService(MainActivity.this);
