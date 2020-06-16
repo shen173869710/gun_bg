@@ -13,9 +13,9 @@ public class Entiy {
      */
     public static final int DB_SAVE_TIME = 1 * 60 * 1000;
     /**
-     *  自动查询 时间间隔
+     *  自动查询 时间间隔秒
      **/
-    public static final int ALERM_TIME = 1 * 60;
+    public static final int ALERM_TIME = 10 * 60;
 
     /**
      *   绑定     上开关  右
