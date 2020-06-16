@@ -128,11 +128,11 @@ public class ActivationActivity extends IBaseActivity<LoginPresenter> implements
 		user.setAvatar("");
 		user.setLoginName("test");
 		user.setPhonenumber("18675570791");
-		user.setProjectName("测试项目");
-		user.setProjectId("00002");
-		user.setProjectGroupId("00002");
-		user.setPileOutNum(10);
-		user.setTrunkPipeNum(10);
+		user.setProjectName(Entiy.GUN_NAME);
+		user.setProjectId(Entiy.GUN_ID);
+		user.setProjectGroupId(Entiy.GUN_ID);
+		user.setPileOutNum(Entiy.GUN_ROW);
+		user.setTrunkPipeNum(Entiy.GUN_COLUMN);
 		UserSql.insertUser(user);
 		BaseApp.setUser(user);
 		int num = user.getPileOutNum()*user.getTrunkPipeNum();

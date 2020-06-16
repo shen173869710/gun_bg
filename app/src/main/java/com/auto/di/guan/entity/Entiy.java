@@ -7,15 +7,22 @@ import com.auto.di.guan.BaseApp;
  */
 
 public class Entiy {
-
+    /*设置项目的行数*/
+    public static final int GUN_ROW = 16;
+    /*设置项目的列数*/
+    public static final int GUN_COLUMN = 16;
+    /**设置项目的通讯id**/
+    public static final String GUN_ID = "00002";
+    /**设置项目的名称**/
+    public static final String GUN_NAME= "测试项目";
     /**
-     *   数据保存本地时间间隔
+     *   数据保存本地时间间隔 单位毫秒
      */
-    public static final int DB_SAVE_TIME = 1 * 60 * 1000;
+    public static final int DB_SAVE_TIME = 2 * 60 * 1000;
     /**
-     *  自动查询 时间间隔
+     *  自动查询 时间间隔 单位秒
      **/
-    public static final int ALERM_TIME = 1 * 60;
+    public static final int ALERM_TIME = 10 * 60;
 
     /**
      *   绑定     上开关  右
