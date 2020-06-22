@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.auto.di.guan.R;
 import com.auto.di.guan.adapter.PumpLeftAdapter;
+import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.entity.PumpInfo;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -33,14 +34,6 @@ public class FragmentTab6 extends BaseFragment {
 	private TextView pump_pram_2;
 	private TextView pump_pram_3;
 	private TextView pump_pram_4;
-
-
-	private String [] pram = {
-			"参数1",
-			"参数2",
-			"参数3",
-			"参数4"
-	};
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,12 +72,10 @@ public class FragmentTab6 extends BaseFragment {
 	public void setData(PumpInfo info) {
 		pump_open.setText(info.getPumpName() + "开启");
 		pump_close.setText(info.getPumpName() + "关闭");
-
-		pump_pram_1.setText(pram[0]+ "");
-		pump_pram_2.setText(pram[1] + "");
-		pump_pram_3.setText(pram[2] + "");
-		pump_pram_4.setText(pram[3] + "");
-
+		pump_pram_1.setText(Entiy.PUMP_PRAM[0]+ "");
+		pump_pram_2.setText(Entiy.PUMP_PRAM[1] + "");
+		pump_pram_3.setText(Entiy.PUMP_PRAM[2] + "");
+		pump_pram_4.setText(Entiy.PUMP_PRAM[3] + "");
 	}
 
 	@Override

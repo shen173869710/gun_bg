@@ -4,7 +4,6 @@ import com.auto.di.guan.db.GroupInfo;
 import com.auto.di.guan.db.greendao.DaoSession;
 import com.auto.di.guan.db.greendao.GroupInfoDao;
 import com.auto.di.guan.entity.Entiy;
-import com.auto.di.guan.utils.LogUtils;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
@@ -19,6 +18,17 @@ public class GroupInfoSql extends BaseSql {
         DaoSession daoSession = getDaoWriteSession();
         GroupInfoDao dao = daoSession.getGroupInfoDao();
         dao.delete(info);
+    }
+
+
+    /**
+     *       删除一个组
+     * @param groupId
+     */
+    public static void deleteGroup(int  groupId) {
+        DaoSession daoSession = getDaoWriteSession();
+        GroupInfoDao dao = daoSession.getGroupInfoDao();
+        dao.queryBuilder().where(GroupInfoDao.Properties.GroupId.eq(groupId)).buildDelete().executeDeleteWithoutDetachingEntities();
     }
     /**
      *        更新单个组的状态

@@ -125,6 +125,7 @@ public class ChooseGridAdapter extends BaseAdapter {
             }
             holder.grid_item_device_value.setText(deviceInfo.getElectricQuantity()+"%");
             ControlInfo info1 = deviceInfo.getValveDeviceSwitchList().get(0);
+
             if (info1.getValve_imgage_id() == 0) {
                 holder.grid_item_left_layout.setVisibility(View.INVISIBLE);
                 holder.grid_item_left_layout.setOnClickListener(null);

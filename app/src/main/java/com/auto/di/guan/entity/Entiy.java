@@ -38,6 +38,16 @@ public class Entiy {
      *
      */
 
+    /**
+     *  施肥管理相关参数设置
+     */
+    public static String [] PUMP_PRAM = {
+            "参数1",
+            "参数2",
+            "参数3",
+            "参数4"
+    };
+
 
     /**
      * 操作的页面
