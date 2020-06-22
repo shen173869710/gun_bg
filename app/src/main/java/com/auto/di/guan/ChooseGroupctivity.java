@@ -18,7 +18,9 @@ import com.auto.di.guan.db.sql.GroupInfoSql;
 import com.auto.di.guan.db.sql.LevelInfoSql;
 import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.jobqueue.event.ChooseGroupEvent;
+import com.auto.di.guan.utils.LogUtils;
 import com.auto.di.guan.utils.NoFastClickUtils;
+import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -56,6 +58,7 @@ public class ChooseGroupctivity extends Activity {
 		button = (Button) findViewById(R.id.choose_ok);
 		gridView = (GridView) findViewById(R.id.choose_gridview);
 		deviceInfos = DeviceInfoSql.queryDeviceList();
+		LogUtils.e("----", ""+(new Gson().toJson(deviceInfos)));
 		adapter = new ChooseGridAdapter(this, deviceInfos);
 		gridView.setAdapter(adapter);
 		groupInfo = new GroupInfo();

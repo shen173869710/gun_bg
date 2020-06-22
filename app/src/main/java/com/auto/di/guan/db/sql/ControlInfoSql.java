@@ -19,9 +19,11 @@ public class ControlInfoSql extends BaseSql {
             ControlInfo controlInfo_1 = deviceInfos.get(i).getValveDeviceSwitchList().get(1);
             if (info.getValve_id() == controlInfo_0.getValve_id()) {
                 controlInfo_0.setValve_group_id(0);
+                controlInfo_0.setSelect(info.isSelect());
             }
             if (info.getValve_id() == controlInfo_1.getValve_id()) {
                 controlInfo_1.setValve_group_id(0);
+                controlInfo_1.setSelect(info.isSelect());
             }
         }
         updateDeviceList(deviceInfos);

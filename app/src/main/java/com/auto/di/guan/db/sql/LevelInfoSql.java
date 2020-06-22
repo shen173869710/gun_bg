@@ -1,7 +1,6 @@
 package com.auto.di.guan.db.sql;
 
 import com.auto.di.guan.db.LevelInfo;
-import com.auto.di.guan.db.greendao.DaoMaster;
 import com.auto.di.guan.db.greendao.DaoSession;
 import com.auto.di.guan.db.greendao.LevelInfoDao;
 
@@ -18,6 +17,23 @@ public class LevelInfoSql extends BaseSql {
         QueryBuilder<LevelInfo> qb = levelInfoDao.queryBuilder();
         List<LevelInfo> list = qb.list();
         return list;
+    }
+
+    /**
+     *        查询可用的level
+     * @param level
+     * @return
+     */
+    public static LevelInfo queryLevelInfo(int level) {
+        DaoSession daoSession = getDaoWriteSession();
+        LevelInfoDao levelInfoDao = daoSession.getLevelInfoDao();
+        QueryBuilder<LevelInfo> qb = levelInfoDao.queryBuilder();
+        qb.where(LevelInfoDao.Properties.LevelId.eq(level));
+        List<LevelInfo> list = qb.list();
+        if (list == null || list.size() != 1) {
+            return  null;
+        }
+        return list.get(0);
     }
 
     public static void delLevelInfoList() {

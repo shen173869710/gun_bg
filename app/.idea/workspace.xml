@@ -6,7 +6,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="AvailableLibraryUpdateStorage">
@@ -15,8 +15,10 @@
   <component name="ChangeListManager">
     <list default="true" id="d7dd5271-1711-4806-8d11-3d300b2eea4e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/ActivationActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/ActivationActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/entity/Entiy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/entity/Entiy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/ChooseGroupctivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/ChooseGroupctivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/GroupEditctivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/GroupEditctivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/adapter/GroupEditListAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/adapter/GroupEditListAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/db/sql/ControlInfoSql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/db/sql/ControlInfoSql.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,6 +30,7 @@
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="127.0.0.1:62001" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -73,7 +76,7 @@
     <property name="DEBUGGABLE_PROCESS" value="com.auto.di.guan" />
     <property name="DEBUGGER_ID" value="Auto" />
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="127.0.0.1:62001" />
-    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-05-20T07:47:07.253Z" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-06-22T10:39:34.378Z" />
     <property name="ExportApk.ApkPath" value="F:\guan\android\app" />
     <property name="ExportApk.BuildVariants" value="proRelease&#10;uatRelease" />
     <property name="ExportApk.SignV1" value="true" />
@@ -82,7 +85,7 @@
     <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="device.picker.selection" value="127.0.0.1:62001" />
-    <property name="last_opened_file_path" value="E:/flutter_project/linjiashop-flutter-master" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/res/layout" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -94,22 +97,22 @@
     <option name="LAST_EDITED_SIGNING_CONFIG" value="release" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\android_gun\android\app\src\main\res\raw" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.auto.di.guan.adapter" />
+      <recent name="com.auto.di.guan.jobqueue.task" />
+      <recent name="com.auto.di.guan.dialog" />
+      <recent name="com.auto.di.guan.utils" />
+      <recent name="com.auto.di.guan.base.model.respone" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\android_gun\android\app\src\main\res\layout" />
       <recent name="F:\guan\android\app\src\main\res\drawable" />
       <recent name="F:\guan\android\app\src\main\res\mipmap-xxhdpi" />
       <recent name="F:\guan\android\app\src\main\res\drawable-xhdpi" />
       <recent name="F:\guan\android\app\src\main\java\com\auto\di\guan\base\model" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.auto.di.guan.jobqueue.task" />
-      <recent name="com.auto.di.guan.dialog" />
-      <recent name="com.auto.di.guan.utils" />
-      <recent name="com.auto.di.guan.base.model.respone" />
-      <recent name="com.auto.di.guan.base.model.request" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\android_gun\android\app\src\main\res\raw" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -344,7 +347,28 @@
       <option name="project" value="LOCAL" />
       <updated>1592273930026</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="设置全局可配置的变量">
+      <created>1592274320752</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1592274320752</updated>
+    </task>
+    <task id="LOCAL-00016" summary="提交施肥管理相关">
+      <created>1592816872924</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1592816872924</updated>
+    </task>
+    <task id="LOCAL-00017" summary="提交解散分组相关代码">
+      <created>1592822522969</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1592822522969</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -371,6 +395,9 @@
     <MESSAGE value="提交悬浮窗自动滚动问题" />
     <MESSAGE value="修改token" />
     <MESSAGE value="设置自动轮灌最后一个不可见" />
-    <option name="LAST_COMMIT_MESSAGE" value="设置自动轮灌最后一个不可见" />
+    <MESSAGE value="设置全局可配置的变量" />
+    <MESSAGE value="提交施肥管理相关" />
+    <MESSAGE value="提交解散分组相关代码" />
+    <option name="LAST_COMMIT_MESSAGE" value="提交解散分组相关代码" />
   </component>
 </project>

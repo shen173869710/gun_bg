@@ -50,6 +50,11 @@ public class GroupEditListAdapter extends BaseQuickAdapter<ControlInfo, BaseView
                     MainShowDialog.ShowDialog((Activity) getContext(), "退出分组", "是退出当前分组", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if(getData().size() == 1) {
+                                Toast.makeText(getContext(), "当前小组只有一个阀控器, 如果要退出, 请点击解散分组", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+
                             info.setValve_group_id(0);
                             info.setSelect(false);
                             getData().remove(holder.getAdapterPosition());

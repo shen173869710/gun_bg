@@ -1,15 +1,10 @@
 package com.auto.di.guan;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-
-
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,6 +12,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.ListFragment;
 
+import com.auto.di.guan.adapter.MyListAdapter;
+import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.fragment.FragmentTab0;
 import com.auto.di.guan.fragment.FragmentTab1;
 import com.auto.di.guan.fragment.FragmentTab10;
@@ -27,10 +24,7 @@ import com.auto.di.guan.fragment.FragmentTab4;
 import com.auto.di.guan.fragment.FragmentTab5;
 import com.auto.di.guan.fragment.FragmentTab6;
 import com.auto.di.guan.fragment.FragmentTab7;
-import com.auto.di.guan.fragment.FragmentTab8;
 import com.auto.di.guan.fragment.FragmentTab9;
-import com.auto.di.guan.adapter.MyListAdapter;
-import com.auto.di.guan.entity.Entiy;
 import com.auto.di.guan.utils.LogUtils;
 
 import java.util.ArrayList;
