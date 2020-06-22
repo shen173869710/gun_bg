@@ -15,7 +15,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d7dd5271-1711-4806-8d11-3d300b2eea4e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/adapter/GroupStatusAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/adapter/GroupStatusAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/ActivationActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/ActivationActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/entity/Entiy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/auto/di/guan/entity/Entiy.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,7 +28,6 @@
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="127.0.0.1:62001" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -82,7 +82,7 @@
     <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="device.picker.selection" value="127.0.0.1:62001" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/res/layout" />
+    <property name="last_opened_file_path" value="E:/flutter_project/linjiashop-flutter-master" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -323,7 +323,28 @@
       <option name="project" value="LOCAL" />
       <updated>1589963025288</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="设置自动轮灌最后一个不可见">
+      <created>1589963497366</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1589963497366</updated>
+    </task>
+    <task id="LOCAL-00013" summary="修改token">
+      <created>1590464107676</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1590464107676</updated>
+    </task>
+    <task id="LOCAL-00014" summary="设置自动轮灌最后一个不可见">
+      <created>1592273930026</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1592273930026</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -348,6 +369,8 @@
     <MESSAGE value="修改mqtt配置" />
     <MESSAGE value="修改轮灌结束标志bug修改" />
     <MESSAGE value="提交悬浮窗自动滚动问题" />
-    <option name="LAST_COMMIT_MESSAGE" value="提交悬浮窗自动滚动问题" />
+    <MESSAGE value="修改token" />
+    <MESSAGE value="设置自动轮灌最后一个不可见" />
+    <option name="LAST_COMMIT_MESSAGE" value="设置自动轮灌最后一个不可见" />
   </component>
 </project>

@@ -39,12 +39,13 @@ public class BindIdTask extends BaseTask{
                 finishTask();
             }
         }else {
-            if (getTaskCount() == 2) {
-                setTaskCount(1);
-                retryTask();
-            }else {
-                errorTask();
-            }
+//            if (getTaskCount() == 2) {
+//                setTaskCount(1);
+//                retryTask();
+//            }else {
+//                errorTask();
+//            }
+
         }
     }
 

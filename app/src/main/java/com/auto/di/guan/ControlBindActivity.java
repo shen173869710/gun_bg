@@ -278,6 +278,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
                     controlInfo_1.setValve_id(0);
 
                 }
+                EventBus.getDefault().post(new BindIdEvent());
                 finish();
                 break;
             case R.id.bind_deivce_id:
@@ -335,6 +336,7 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBindSucessEvent(BindSucessEvent event) {
+        LogUtils.e("bin--------d","event"+event.getType());
         if (dialog != null) {
             dialog.dismiss();
         }
@@ -350,10 +352,14 @@ public class ControlBindActivity extends FragmentActivity implements View.OnClic
         LogUtils.e("BaseTask == ", "onBindSucessEvent"+event.getType());
         if (event.getType() == TaskEntiy.TASK_READ_GID) {
             isPeroJectId = true;
-            showToastLongMsg("写入项目ID成功");
+//            showToastLongMsg("写入项目ID成功");
+            Toast.makeText(ControlBindActivity.this, "写入项目ID成功",Toast.LENGTH_LONG).show();
+            LogUtils.e("BaseTask == ", "写入项目ID成功");
         }else if (event.getType() == TaskEntiy.TASK_READ_BID) {
             isGroupId = true;
-            showToastLongMsg("写入组ID成功");
+//            showToastLongMsg("写入组ID成功");
+            Toast.makeText(ControlBindActivity.this, "写入组ID成功",Toast.LENGTH_LONG).show();
+            LogUtils.e("BaseTask == ", "写入组ID成功");
         }
 
 

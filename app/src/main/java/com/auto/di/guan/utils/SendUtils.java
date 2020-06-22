@@ -262,9 +262,11 @@ public class SendUtils {
                 desc = OPTION_READ_ERROR_VALUE;
                 break;
             case OPTION_READ_CONNECT:
+                isNormal = true;
                 desc = OPTION_READ_CONNECT_VALUE;
                 break;
             case OPTION_READ_RUN:
+                isNormal = true;
                 desc = OPTION_READ_RUN_VALUE;
                 break;
             case OPTION_READ_DIS:

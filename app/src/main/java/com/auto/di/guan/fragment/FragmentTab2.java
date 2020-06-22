@@ -91,6 +91,7 @@ public class FragmentTab2 extends BaseFragment {
 							GroupInfoSql.deleteGroup(groupInfos.get(i));
 						}
 						groupInfos.clear();
+						groupLists.clear();
 						adapter.notifyDataSetChanged();
 						LevelInfoSql.delLevelInfoList();
 						if (LevelInfoSql.queryLevelInfoList().size() == 0) {

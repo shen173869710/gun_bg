@@ -7,13 +7,20 @@ import com.auto.di.guan.BaseApp;
  */
 
 public class Entiy {
-
+    /*设置项目的行数*/
+    public static final int GUN_ROW = 9;
+    /*设置项目的列数*/
+    public static final int GUN_COLUMN = 8;
+    /**设置项目的通讯id**/
+    public static final String GUN_ID = "00002";
+    /**设置项目的名称**/
+    public static final String GUN_NAME= "烧坊庄实验地·";
     /**
-     *   数据保存本地时间间隔
+     *   数据保存本地时间间隔 单位毫秒
      */
-    public static final int DB_SAVE_TIME = 1 * 60 * 1000;
+    public static final int DB_SAVE_TIME = 2 * 60 * 1000;
     /**
-     *  自动查询 时间间隔秒
+     *  自动查询 时间间隔 单位秒
      **/
     public static final int ALERM_TIME = 10 * 60;
 
@@ -83,8 +90,8 @@ public class Entiy {
             "轮灌操作",
             "手动操作",
             "查询用户",
-//            "用户管理",
-//            "系统维护",
+            "水泵控制",
+            "施肥管理",
 //            "读取参数",
             "视频监控",
             "农田管理",

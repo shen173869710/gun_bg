@@ -61,8 +61,8 @@ public class ArticleListFragment extends ListFragment {
 		fragments.add(new FragmentTab3());
 		fragments.add(new FragmentTab4());
 		fragments.add(new FragmentTab5());
-//		fragments.add(new FragmentTab6());
-//		fragments.add(new FragmentTab7());
+		fragments.add(new FragmentTab6());
+		fragments.add(new FragmentTab7());
 //		fragments.add(new FragmentTab8());
 		fragments.add(new FragmentTab10());
 		fragments.add(new FragmentTab11());
