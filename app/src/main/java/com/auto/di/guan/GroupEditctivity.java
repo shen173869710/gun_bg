@@ -21,6 +21,7 @@ import com.auto.di.guan.db.sql.LevelInfoSql;
 import com.auto.di.guan.dialog.MainShowDialog;
 import com.auto.di.guan.jobqueue.event.ChooseGroupEvent;
 import com.auto.di.guan.utils.NoFastClickUtils;
+import com.auto.di.guan.utils.ToastUtils;
 import com.facebook.stetho.common.LogUtil;
 import com.google.gson.Gson;
 
@@ -81,6 +82,10 @@ public class GroupEditctivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						int size = controls.size();
+						if (size == 0) {
+							ToastUtils.showLongToast("当前分组为空");
+							return;
+						}
 						for (int i = 0; i < size; i++) {
 							ControlInfo info = controls.get(i);
 							info.setValve_group_id(0);
