@@ -5,32 +5,87 @@
     android:orientation="horizontal"
     tools:context=".MainActivity" >
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/user_listview"
-            android:layout_width="fill_parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pump_list"
+            android:layout_width="200dp"
             android:layout_height="fill_parent"
             android:cacheColorHint="#00000000"
             android:divider="@color/main_bg"
             android:scrollbars="none"
             android:fadingEdge="none"
-            android:layout_marginBottom="70dp"
             android:listSelector="@drawable/dialogue_listview_selector" />
 
-        <Button
-            android:id="@+id/user_add"
-            android:layout_width="@dimen/main_button_width"
-            android:layout_height="@dimen/main_button_height"
-            android:text="新增用户"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/main_button_magin_bottom"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/white"
-            android:background="@drawable/bg_red_buttom_rect"
-            />
+        <LinearLayout
+            android:layout_toRightOf="@+id/pump_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <Button
+                    android:id="@+id/pump_open"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    ></Button>
+
+                <Button
+                    android:id="@+id/pump_close"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    ></Button>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/pump_pram_1"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textSize="@dimen/size_18"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:id="@+id/pump_pram_2"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textSize="@dimen/size_18"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:id="@+id/pump_pram_3"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textSize="@dimen/size_18"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:id="@+id/pump_pram_4"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textSize="@dimen/size_18"
+                android:textColor="@color/black"
+                />
+        </LinearLayout>
+
     </RelativeLayout>
 </LinearLayout>
