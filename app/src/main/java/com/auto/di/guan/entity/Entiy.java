@@ -8,13 +8,13 @@ import com.auto.di.guan.BaseApp;
 
 public class Entiy {
     /*设置项目的行数*/
-    public static final int GUN_ROW = 9;
+    public static final int GUN_ROW = 8;
     /*设置项目的列数*/
-    public static final int GUN_COLUMN = 8;
+    public static final int GUN_COLUMN = 18;
     /**设置项目的通讯id**/
-    public static final String GUN_ID = "00002";
+    public static final String GUN_ID = "00003";
     /**设置项目的名称**/
-    public static final String GUN_NAME= "烧坊庄实验地·";
+    public static final String GUN_NAME= "浓场1-7号地·";
     /**
      *   数据保存本地时间间隔 单位毫秒
      */
@@ -42,10 +42,10 @@ public class Entiy {
      *  施肥管理相关参数设置
      */
     public static String [] PUMP_PRAM = {
-            "参数1",
-            "参数2",
-            "参数3",
-            "参数4"
+            "电压",
+            "电流",
+            "流量",
+            "压力"
     };
 
 

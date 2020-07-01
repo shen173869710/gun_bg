@@ -184,6 +184,18 @@ public class MyGridOpenAdapter extends BaseAdapter {
                     }
                 });
             }
+
+            if (controlInfo_0.getValve_imgage_id() == 0) {
+                holder.grid_item_left_layout.setVisibility(View.INVISIBLE);
+            }else{
+                holder.grid_item_left_layout.setVisibility(View.VISIBLE);
+            }
+
+            if (controlInfo_1.getValve_imgage_id() == 0) {
+                holder.grid_item_right_layout.setVisibility(View.INVISIBLE);
+            }else{
+                holder.grid_item_right_layout.setVisibility(View.VISIBLE);
+            }
         }
         return convertView;
     }
