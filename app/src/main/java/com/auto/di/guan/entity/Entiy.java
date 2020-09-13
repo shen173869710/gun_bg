@@ -10,11 +10,11 @@ public class Entiy {
     /*设置项目的行数*/
     public static final int GUN_ROW = 8;
     /*设置项目的列数*/
-    public static final int GUN_COLUMN = 18;
+    public static final int GUN_COLUMN = 4;
     /**设置项目的通讯id**/
-    public static final String GUN_ID = "00003";
+    public static final String GUN_ID = "00004";
     /**设置项目的名称**/
-    public static final String GUN_NAME= "浓场1-7号地·";
+    public static final String GUN_NAME= "酒厂西地块";
     /**
      *   数据保存本地时间间隔 单位毫秒
      */
