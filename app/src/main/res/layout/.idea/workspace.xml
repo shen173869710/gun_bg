@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b300e1de-2e73-4836-9a78-8b6f54c10f14" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/ActivationActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/WelcomeActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity_activation.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/activity_welcome.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../mipmap-xxhdpi/welcome_bg.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../.idea/caches/gradle_models.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/AddUserActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/AddUserActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/BaseApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/BaseApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/LoginActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/OptionSettingActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/OptionSettingActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/SerialPortActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/SerialPortActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/adapter/AddUserAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/adapter/AddUserAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/adapter/MainChooseAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/adapter/MainChooseAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/basemodel/presenter/LoginPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/basemodel/presenter/LoginPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/basemodel/view/ILoginView.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/basemodel/view/ILoginView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/DBManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/DBManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/DeviceInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/DeviceInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/DaoMaster.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/DaoMaster.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/DaoSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/DaoSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/DeviceInfoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/DeviceInfoDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/GroupInfoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/GroupInfoDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/LevelInfoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/LevelInfoDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/UserActionDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/UserActionDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/db/greendao/UserDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/auto/di/guan/fragment/FragmentTab5.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/auto/di/guan/fragment/FragmentTab5.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../jni/Application.mk" beforeDir="false" afterPath="$PROJECT_DIR$/../../jni/Application.mk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/activity_login.xml" beforeDir="false" afterPath="$PROJECT_DIR$/activity_login.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../.." />
+  </component>
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/.idea/modules.xml" />
+        <option value="$PROJECT_DIR$/.idea/codeStyles/Project.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="216" />
+    <option name="y" value="294" />
+    <option name="width" value="1938" />
+    <option name="height" value="1050" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="layout" type="b2602c69:ProjectViewProjectNode" />
+              <item name="layout" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+    <property name="last_opened_file_path" value="F:/chuanbei/ChuanbeiCasher-Android" />
+    <property name="settings.editor.selected.configurable" value="android.sdk-updates" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+    </configuration>
+    <configuration default="true" type="Applet">
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="TestNG">
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b300e1de-2e73-4836-9a78-8b6f54c10f14" name="Default Changelist" comment="" />
+      <created>1581691726729</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1581691726729</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="216" y="294" width="1938" height="1050" extended-state="0" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" visible="true" weight="0.32980973" />
+      <window_info id="Structure" side_tool="true" />
+      <window_info id="Image Layers" />
+      <window_info id="Designer" />
+      <window_info id="Resources Explorer" />
+      <window_info id="Capture Tool" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info id="Captures" order="0" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="TODO" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Palette&#9;" />
+    </layout>
+  </component>
+</project>

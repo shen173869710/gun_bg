@@ -1,0 +1,23 @@
+ext {
+    androidUrl = [
+            //以下为各个环境的网络地址  pro 线上正式版本 uat 测试环境,uattest测试外网  sit  开发环境
+            pro  : [
+                    http_post_url   : '\"http://192.168.0.103:80\"',      //行业商户http请求地址
+                    http_pay_post_url : '\"http://cbpay.wuzhenpay.com\"',   //支付接口请求地址
+                    mqtt_host       : '\"112.124.194.148\"',            //mqtt通信
+                    mqtt_host_port  : '\"2883\"',                     //mqtt端口
+                    mqtt_user_name  : '\"cb_shouyin\"',                     //mqtt账号
+                    mqtt_password  : '\"chuanbei888.\"',                     //mqtt密码
+                    secret : '\"e607ac9d931cd646e3f765503e5307a4\"',   //设备激活密钥
+            ],
+
+            uat  : [
+                    http_post_url   : '\"http://192.168.0.103:80\"',      //行业商户http请求地址
+                    mqtt_host       : '\"192.168.10.61\"',            //mqtt通信
+                    mqtt_host_port  : '\"1883\"',                     //mqtt端口
+                    mqtt_user_name  : '\"admin\"',                     //mqtt账号
+                    mqtt_password  : '\"admin\"',                     //mqtt密码
+                    secret : '\"e607ac9d931cd646e3f765503e5307a4\"',   //设备激活密钥
+            ],
+    ]
+}

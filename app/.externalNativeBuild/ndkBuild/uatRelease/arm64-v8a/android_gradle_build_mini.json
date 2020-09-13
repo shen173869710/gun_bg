@@ -1,0 +1,17 @@
+{
+  "buildFiles": [
+    "F:\\new_gun\\android\\app\\src\\main\\jni\\Android.mk",
+    "F:\\new_gun\\android\\app\\src\\main\\jni\\Application.mk"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk-bundle\\ndk-build.cmd NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003dF:\\new_gun\\android\\app\\src\\main\\jni\\Android.mk NDK_APPLICATION_MK\u003dF:\\new_gun\\android\\app\\src\\main\\jni\\Application.mk APP_ABI\u003darm64-v8a NDK_ALL_ABIS\u003darm64-v8a NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-17 NDK_OUT\u003dF:/new_gun/android/app/build/intermediates/ndkBuild/uat/release/obj NDK_LIBS_OUT\u003dF:\\new_gun\\android\\app\\build\\intermediates\\ndkBuild\\uat\\release\\lib clean"
+  ],
+  "libraries": {
+    "serial_port-uatRelease-arm64-v8a": {
+      "artifactName": "serial_port",
+      "buildCommand": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk-bundle\\ndk-build.cmd NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003dF:\\new_gun\\android\\app\\src\\main\\jni\\Android.mk NDK_APPLICATION_MK\u003dF:\\new_gun\\android\\app\\src\\main\\jni\\Application.mk APP_ABI\u003darm64-v8a NDK_ALL_ABIS\u003darm64-v8a NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-17 NDK_OUT\u003dF:/new_gun/android/app/build/intermediates/ndkBuild/uat/release/obj NDK_LIBS_OUT\u003dF:\\new_gun\\android\\app\\build\\intermediates\\ndkBuild\\uat\\release\\lib F:/new_gun/android/app/build/intermediates/ndkBuild/uat/release/obj/local/arm64-v8a/libserial_port.so",
+      "abi": "arm64-v8a",
+      "output": "F:\\new_gun\\android\\app\\build\\intermediates\\ndkBuild\\uat\\release\\obj\\local\\arm64-v8a\\libserial_port.so"
+    }
+  }
+}

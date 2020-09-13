@@ -1,0 +1,17 @@
+{
+  "buildFiles": [
+    "F:\\new_gun\\android\\app\\src\\main\\jni\\Android.mk",
+    "F:\\new_gun\\android\\app\\src\\main\\jni\\Application.mk"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk-bundle\\ndk-build.cmd NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003dF:\\new_gun\\android\\app\\src\\main\\jni\\Android.mk NDK_APPLICATION_MK\u003dF:\\new_gun\\android\\app\\src\\main\\jni\\Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-17 NDK_OUT\u003dF:/new_gun/android/app/build/intermediates/ndkBuild/pro/debug/obj NDK_LIBS_OUT\u003dF:\\new_gun\\android\\app\\build\\intermediates\\ndkBuild\\pro\\debug\\lib clean"
+  ],
+  "libraries": {
+    "serial_port-proDebug-armeabi-v7a": {
+      "artifactName": "serial_port",
+      "buildCommand": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\ndk-bundle\\ndk-build.cmd NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003dF:\\new_gun\\android\\app\\src\\main\\jni\\Android.mk NDK_APPLICATION_MK\u003dF:\\new_gun\\android\\app\\src\\main\\jni\\Application.mk APP_ABI\u003darmeabi-v7a NDK_ALL_ABIS\u003darmeabi-v7a NDK_DEBUG\u003d1 APP_PLATFORM\u003dandroid-17 NDK_OUT\u003dF:/new_gun/android/app/build/intermediates/ndkBuild/pro/debug/obj NDK_LIBS_OUT\u003dF:\\new_gun\\android\\app\\build\\intermediates\\ndkBuild\\pro\\debug\\lib F:/new_gun/android/app/build/intermediates/ndkBuild/pro/debug/obj/local/armeabi-v7a/libserial_port.so",
+      "abi": "armeabi-v7a",
+      "output": "F:\\new_gun\\android\\app\\build\\intermediates\\ndkBuild\\pro\\debug\\obj\\local\\armeabi-v7a\\libserial_port.so"
+    }
+  }
+}

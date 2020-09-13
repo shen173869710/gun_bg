@@ -1,0 +1,1 @@
+make: `F:/new_gun/android/app/build/intermediates/ndkBuild/pro/debug/obj/local/armeabi-v7a/libserial_port.so' is up to date.
