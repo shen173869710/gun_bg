@@ -1,21 +1,178 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="70dp">
-    <TextView
-        android:id="@+id/list_item"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical">
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:gravity="center"
-        android:layout_centerInParent="true"
-        android:textSize="20sp"
-        />
+        android:background="@color/main_bg">
 
-    <View
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/main_expand_height"
+            android:layout_marginLeft="30dip"
+            android:gravity="center"
+            android:text="水泵1 "
+            android:textColor="@color/main_title_color"
+            android:textSize="@dimen/text_size_14" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/item_open"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="15dip"
+                android:background="@drawable/main_ok_bg"
+                android:text="开启"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_18" />
+
+            <Button
+                android:id="@+id/item_close"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/main_cancle_bg"
+                android:text="关闭"
+                android:textColor="@color/red"
+                android:textSize="@dimen/text_size_18" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1sp"
-        android:background="@color/login_line"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+        <TextView
+            android:id="@+id/item_1"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/main_expand_group_child"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:textColor="@color/main_item_color"
+            android:textSize="@dimen/text_size_18" />
+
+        <TextView
+            android:id="@+id/item_1_value"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/main_expand_group_child"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/main_item_color"
+            android:textSize="@dimen/text_size_18" />
+    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/main_divider_width"
         android:layout_alignParentBottom="true"
-        ></View>
-</RelativeLayout>
+        android:background="@color/main_divider" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+        <TextView
+            android:id="@+id/item_2"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/main_expand_group_child"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:textColor="@color/main_item_color"
+            android:textSize="@dimen/text_size_18" />
+
+        <TextView
+            android:id="@+id/item_2_value"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/main_expand_group_child"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/main_item_color"
+            android:textSize="@dimen/text_size_18" />
+    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/main_divider_width"
+        android:layout_alignParentBottom="true"
+        android:background="@color/main_divider" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+        <TextView
+            android:id="@+id/item_3"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/main_expand_group_child"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:textColor="@color/main_item_color"
+            android:textSize="@dimen/text_size_18" />
+
+        <TextView
+            android:id="@+id/item_3_value"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/main_expand_group_child"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/main_item_color"
+            android:textSize="@dimen/text_size_18" />
+    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/main_divider_width"
+        android:layout_alignParentBottom="true"
+        android:background="@color/main_divider" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+        <TextView
+            android:id="@+id/item_4"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/main_expand_group_child"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:textColor="@color/main_item_color"
+            android:textSize="@dimen/text_size_18" />
+
+        <TextView
+            android:id="@+id/item_4_value"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/main_expand_group_child"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/main_item_color"
+            android:textSize="@dimen/text_size_18" />
+    </LinearLayout>
+
+
+</LinearLayout>
